@@ -27,7 +27,7 @@ const SignInPage = () => {
         if (res?.error) {
         setError("Email atau password salah");
         } else {
-        router.push("/"); // arahkan ke halaman utama/dashboard
+        router.push("/redirect"); // arahkan ke halaman utama/dashboard
         }
     };
   return (
