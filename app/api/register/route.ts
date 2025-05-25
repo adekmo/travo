@@ -28,6 +28,7 @@ export async function POST(req: Request) {
       role: role || "customer",
     });
 
+    console.log(newUser);
     await newUser.save();
 
     return NextResponse.json({ message: "Pendaftaran berhasil" }, { status: 201 });
