@@ -66,6 +66,9 @@ const SellerPackagePage = () => {
                 <p className="text-sm text-gray-800 font-medium">
                   Rp {pkg.price.toLocaleString()}
                 </p>
+                {pkg.image && (
+                <img src={pkg.image} alt={pkg.title} className="w-full max-w-sm rounded mb-2" />
+              )}
               </div>
               <div className="flex gap-2">
                 <button
@@ -77,7 +80,7 @@ const SellerPackagePage = () => {
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(pkg._id)}
+                  onClick={() => handleDelete(pkg._id!)}
                   className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                 >
                   Hapus

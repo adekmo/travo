@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+import { CldUploadWidget } from 'next-cloudinary'
+
 const CreatePackagePage = () => {
      const [form, setForm] = useState({
         title: '',
@@ -10,6 +12,7 @@ const CreatePackagePage = () => {
         price: '',
         date: '',
         location: '',
+        image: '',
     })
     const [loading, setLoading] = useState(false)
 
@@ -93,6 +96,36 @@ const CreatePackagePage = () => {
           className="w-full border px-3 py-2 rounded"
           required
         />
+
+        <div>
+          <label className="block mb-2 font-medium">Upload Gambar</label>
+            <CldUploadWidget
+              uploadPreset="recipe_upload" // ganti sesuai preset cloudinary kamu
+              onSuccess={(result) => {
+                const info = result.info as { secure_url?: string }
+                if (info?.secure_url) {
+                  setForm((prev) => ({
+                    ...prev,
+                    image: info.secure_url!,
+                  }))
+                }
+              }}
+            >
+              {({ open }) => (
+                <button
+                  type="button"
+                  onClick={() => open()}
+                  className="bg-gray-200 text-black px-4 py-2 rounded hover:bg-gray-300"
+                >
+                  Upload Gambar
+                </button>
+              )}
+            </CldUploadWidget>
+
+            {form.image && (
+              <img src={form.image} alt="Preview" className="w-40 h-auto mt-2 rounded" />
+            )}
+        </div>
 
         <button
           type="submit"

@@ -4,17 +4,21 @@ import { use, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { TravelPackage } from '@/types/travelPackage'
 
+import { CldUploadWidget } from 'next-cloudinary'
+
 type Params = { id: string }
 
 const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
 
     const { id } = use(params)
     const [form, setForm] = useState<TravelPackage>({
+        _id: '',
         title: '',
         description: '',
         price: 0,
         date: '',
         location: '',
+        image: '',
     })
     const [loading, setLoading] = useState(false)
     const router = useRouter()
@@ -108,6 +112,40 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
           className="w-full border px-3 py-2 rounded"
           required
         />
+
+        <div>
+          <label className="block mb-2 font-medium">Upload Gambar</label>
+          <CldUploadWidget
+            uploadPreset="recipe_upload" // Ganti sesuai preset Cloudinary kamu
+            onSuccess={(result) => {
+              const info = result.info as { secure_url?: string }
+              if (info?.secure_url) {
+                setForm((prev) => ({
+                  ...prev,
+                  image: info.secure_url!,
+                }))
+              }
+            }}
+          >
+            {({ open }) => (
+              <button
+                type="button"
+                onClick={() => open()}
+                className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
+              >
+                Pilih Gambar
+              </button>
+            )}
+          </CldUploadWidget>
+
+          {form.image && (
+            <img
+              src={form.image}
+              alt="Preview Gambar"
+              className="mt-4 rounded w-full max-h-64 object-cover"
+            />
+          )}
+        </div>
 
         <button
           type="submit"
