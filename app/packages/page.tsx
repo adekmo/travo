@@ -36,6 +36,9 @@ export default function PackagesPage() {
     if (minPrice) params.set('minPrice', minPrice)
     if (maxPrice) params.set('maxPrice', maxPrice)
 
+    const sort = searchParams.get('sort') || ''
+    if (sort) params.set('sort', sort)
+
     const res = await fetch(`/api/packages?${params.toString()}`)
     if (res.ok) {
       const data = await res.json()
@@ -98,6 +101,28 @@ export default function PackagesPage() {
       >
         Cari
       </button>
+      <div className="mb-4">
+        <label className="mr-2 font-medium">Sort:</label>
+        <select
+          value={searchParams.get('sort') || ''}
+          onChange={(e) => {
+            const params = new URLSearchParams(searchParams.toString())
+            const value = e.target.value
+            if (value) {
+              params.set('sort', value)
+            } else {
+              params.delete('sort')
+            }
+            router.push(`/packages?${params.toString()}`)
+          }}
+          className="border px-3 py-2 rounded"
+        >
+          <option value="">Default</option>
+          <option value="price_asc">Harga Termurah</option>
+          <option value="price_desc">Harga Termahal</option>
+          <option value="newest">Terbaru</option>
+        </select>
+      </div>
       <h1 className="text-3xl font-bold mb-6">Paket Travel Tersedia</h1>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {packages.length > 0 ? (

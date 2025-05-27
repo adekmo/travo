@@ -9,26 +9,22 @@ export async function GET(req: NextRequest) {
 
   const search = searchParams.get('search') || ''
   const location = searchParams.get('location') || ''
-  const minPrice = searchParams.get('minPrice')
-  const maxPrice = searchParams.get('maxPrice')
+  const minPrice = Number(searchParams.get('minPrice')) || 0
+  const maxPrice = Number(searchParams.get('maxPrice')) || 10000000
+  const sort = searchParams.get('sort') || ''
 
-  const query: any = {}
-
-  if (search) {
-    query.title = { $regex: search, $options: 'i' }
+  const query: any = {
+      title: { $regex: search, $options: 'i' },
+      location: { $regex: location, $options: 'i' },
+      price: { $gte: minPrice, $lte: maxPrice },
   }
 
-  if (location) {
-    query.location = { $regex: location, $options: 'i' }
-  }
+  let sortQuery = {}
+  if (sort === 'price_asc') sortQuery = { price: 1 }
+  else if (sort === 'price_desc') sortQuery = { price: -1 }
+  else if (sort === 'newest') sortQuery = { createdAt: -1 }
 
-  if (minPrice || maxPrice) {
-    query.price = {}
-    if (minPrice) query.price.$gte = Number(minPrice)
-    if (maxPrice) query.price.$lte = Number(maxPrice)
-  }
-
-  const packages = await TravelPackage.find(query).sort({ createdAt: -1 })
+  const packages = await TravelPackage.find(query).sort(sortQuery)
 
   return NextResponse.json(packages)
 }
