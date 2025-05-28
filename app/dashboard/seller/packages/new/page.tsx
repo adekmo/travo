@@ -1,11 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { CldUploadWidget } from 'next-cloudinary'
+import { useSession } from 'next-auth/react'
+
 
 const CreatePackagePage = () => {
+  const { data: session, status } = useSession()
+  console.log(session)
      const [form, setForm] = useState({
         title: '',
         description: '',
@@ -15,8 +19,22 @@ const CreatePackagePage = () => {
         image: '',
     })
     const [loading, setLoading] = useState(false)
+    const [checking, setChecking] = useState(true)
+    const [isVerified, setIsVerified] = useState(false)
 
     const router = useRouter()
+
+    useEffect(() => {
+      if (status === 'loading') return // Menunggu session selesai
+
+      // Cek verifikasi dari session
+      if (session?.user.role === 'seller') {
+        setIsVerified(session.user.isVerified) // Dapatkan status verifikasi dari session
+        setChecking(false)
+      } else {
+        router.push('/dashboard/seller/packages') // Jika bukan seller, redirect
+      }
+    }, [session, status, router])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target
@@ -48,6 +66,18 @@ const CreatePackagePage = () => {
 
         setLoading(false)
     }
+
+    if (!isVerified) {
+      return (
+        <div className="max-w-xl mx-auto p-6 text-center">
+          <h1 className="text-2xl font-bold mb-4 text-red-600">Akses Ditolak</h1>
+          <p className="text-gray-700">
+            Anda belum diverifikasi sebagai seller. Silakan hubungi admin untuk verifikasi akun Anda sebelum bisa mengunggah paket.
+          </p>
+        </div>
+      )
+    }
+
   return (
     <div className="max-w-xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Tambah Paket Travel</h1>
@@ -100,7 +130,7 @@ const CreatePackagePage = () => {
         <div>
           <label className="block mb-2 font-medium">Upload Gambar</label>
             <CldUploadWidget
-              uploadPreset="recipe_upload" // ganti sesuai preset cloudinary kamu
+              uploadPreset="recipe_upload" 
               onSuccess={(result) => {
                 const info = result.info as { secure_url?: string }
                 if (info?.secure_url) {
