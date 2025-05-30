@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export interface TravelPackage  {
   _id?: string;
   title: string;
@@ -6,4 +8,5 @@ export interface TravelPackage  {
   date: string;
   location: string;
   image?: string;
+  seller: User
 };
