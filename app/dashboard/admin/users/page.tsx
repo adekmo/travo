@@ -37,8 +37,6 @@ const UserList = () => {
         });
 
         const data = await res.json();
-        console.log("RESPONSE STATUS:", res.status);
-        console.log("RESPONSE BODY:", data);
 
         if (res.ok) {
             // Refresh data setelah verifikasi berhasil
@@ -51,6 +49,25 @@ const UserList = () => {
             alert("Gagal memverifikasi user");
         }
     };
+
+    const handleToggleBlock = async (id: string, currentStatus: boolean) => {
+      const res = await fetch(`/api/admin/users/${id}/block`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isBlocked: !currentStatus }),
+    });
+
+    if (res.ok) {
+      const updatedUser = await res.json();
+      setUsers((prev) =>
+        prev.map((u: any) =>
+          u._id === id ? { ...u, isBlocked: updatedUser.isBlocked } : u
+        )
+      );
+    } else {
+      alert("Gagal mengubah status blokir");
+    }
+  };
 
 
   return (
@@ -106,6 +123,14 @@ const UserList = () => {
                 {!user.isVerified && user.role === 'seller' && (
                   <button onClick={() => handleVerify(user._id)} className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
                     Verifikasi
+                  </button>
+                )}
+                {user.role !== 'admin' && (
+                  <button
+                    onClick={() => handleToggleBlock(user._id, user.isBlocked)}
+                    className={`px-3 py-1 rounded text-sm text-white ${user.isBlocked ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'}`}
+                  >
+                    {user.isBlocked ? 'Buka Blokir' : 'Blokir'}
                   </button>
                 )}
               </td>

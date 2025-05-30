@@ -39,6 +39,23 @@ const AdminDashboard = () => {
     }
   }
 
+  const handleDelete = async (id: string) => {
+    if (!confirm('Yakin ingin menghapus paket ini?')) return;
+
+    try {
+      const res = await fetch(`/api/admin/packages/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) throw new Error('Gagal menghapus');
+
+      setPackages((prev) => prev.filter((pkg) => pkg._id !== id));
+    } catch (error) {
+      console.error(error);
+      alert('Terjadi kesalahan saat menghapus paket');
+    }
+  };
+
 
    if (loading) return <p>Memuat data...</p>
   return (
@@ -50,7 +67,8 @@ const AdminDashboard = () => {
             <th className="p-2 border">Judul</th>
             <th className="p-2 border">Lokasi</th>
             <th className="p-2 border">Harga</th>
-            <th className="p-2 border">Pembuat</th>
+            <th className="p-2 border">Seller</th>
+            <th className="p-2 border">Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -60,6 +78,14 @@ const AdminDashboard = () => {
               <td className="p-2 border">{pkg.location}</td>
               <td className="p-2 border">Rp{Number(pkg.price).toLocaleString()}</td>
               <td className="p-2 border">{pkg.seller?.name || '-'}</td>
+              <td className="p-2 border">
+                <button
+                  onClick={() => handleDelete(pkg._id!)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"
+                >
+                  Hapus
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

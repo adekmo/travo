@@ -25,9 +25,13 @@ const SignInPage = () => {
         });
 
         if (res?.error) {
-        setError("Email atau password salah");
+          if (res.error === "UserBlocked") {
+            setError("Akun Anda telah diblokir oleh admin. Silahkan hubungi Admin untuk melakukan Banding");
+          } else {
+            setError("Email atau password salah");
+          }
         } else {
-        router.push("/redirect"); // arahkan ke halaman utama/dashboard
+        router.push("/redirect"); //
         }
     };
   return (

@@ -25,6 +25,10 @@ export const authOptions: NextAuthOptions = {
 
         if (!user) throw new Error("User not found");
 
+        if (user.isBlocked) {
+          throw new Error("UserBlocked");
+        }
+
         const isValid = await bcrypt.compare(credentials!.password, user.password);
         if (!isValid) throw new Error("Invalid credentials");
 
