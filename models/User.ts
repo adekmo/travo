@@ -8,6 +8,8 @@ const UserSchema = new mongoose.Schema(
     role: { type: String, enum: ["admin", "seller", "customer"], default: "customer" },
     isVerified: { type: Boolean, default: false },
     isBlocked: { type: Boolean, default: false },
+    phone: String,
+    address: String,
   },
   { timestamps: true }
 );

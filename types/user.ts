@@ -7,4 +7,6 @@ export interface User {
   role: Role;
   isVerified: boolean;
   isBlocked: boolean;
+  phone?: string;
+  address?: string;
 }

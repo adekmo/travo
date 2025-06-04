@@ -9,6 +9,8 @@ declare module "next-auth" {
       email: string;
       role: "admin" | "seller" | "customer";
       isVerified: boolean;
+      phone?: string;
+      address?: string;
     };
   }
 
