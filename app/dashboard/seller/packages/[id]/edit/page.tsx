@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { TravelPackage } from '@/types/travelPackage'
 
 import { CldUploadWidget } from 'next-cloudinary'
+import User from '@/models/User'
 
 type Params = { id: string }
 
@@ -19,6 +20,16 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
         date: '',
         location: '',
         image: '',
+        seller: {
+           _id: '',
+            name: '',
+            email: '',
+            role: 'seller',
+            isVerified: false,
+            isBlocked: false,
+            phone: '',
+            address: '',
+        },
     })
     const [loading, setLoading] = useState(false)
     const router = useRouter()

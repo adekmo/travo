@@ -40,7 +40,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
       <img src={packageData.image} alt={packageData.title} className="w-full h-80 object-cover mb-6" />
       <p className="text-lg mb-6">{packageData.description}</p>
       <div className="mb-6">
-        <strong>Harga: </strong> ${packageData.price}
+        <strong>Harga: </strong> Rp {packageData.price}
       </div>
       <div className="mb-6">
         <strong>Lokasi: </strong> {packageData.location}
@@ -50,7 +50,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
       </div>
       <button
         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        onClick={() => alert('Pesan Paket Sekarang!')}
+        onClick={() => router.push(`/packages/${id}/booking`)}
       >
         Pesan Paket
       </button>

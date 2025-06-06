@@ -1,12 +1,14 @@
 'use client'
 
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const ProfilePage = () => {
 
     const { data: session } = useSession();
     const user = session?.user;
+    const router = useRouter();
 
     const [form, setForm] = useState({
         name: user?.name || "",
@@ -34,7 +36,7 @@ const ProfilePage = () => {
 
             if (!res.ok) throw new Error(data.message || "Gagal update profil");
 
-            alert("Profil berhasil diperbarui!");
+            router.back();
         } catch (err: any) {
             alert(err.message);
         }
