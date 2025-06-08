@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { TravelPackage } from '@/types/travelPackage'
+import Link from 'next/link'
 
 const AdminDashboard = () => {
   const { data: session, status } = useSession()
@@ -61,6 +62,11 @@ const AdminDashboard = () => {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">Dashboard Admin</h1>
+      <div className='mb-2'>
+        <Link href="/dashboard/admin/bookings" className="text-blue-600 underline mr-2">
+          Bookings
+        </Link>
+      </div>
       <table className="w-full table-auto border border-gray-300">
         <thead>
           <tr className="bg-gray-100 text-left">
