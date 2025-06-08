@@ -47,6 +47,24 @@ const CustomerBookingPage = () => {
               <p><strong>Jumlah Orang:</strong> {booking.numberOfPeople}</p>
               {booking.note && <p><strong>Catatan:</strong> {booking.note}</p>}
               <p><strong>Total Harga:</strong> {formatRupiah(booking.packageId.price * booking.numberOfPeople)}</p>
+              {booking.status === "pending" && (
+                <button
+                  className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                  onClick={async () => {
+                    const confirmCancel = confirm("Yakin ingin membatalkan booking ini?");
+                    if (!confirmCancel) return;
+                    const res = await fetch(`/api/bookings/${booking._id}`, { method: "DELETE" });
+                    if (res.ok) {
+                      setBookings(prev => prev.filter(b => b._id !== booking._id));
+                    } else {
+                      const err = await res.json();
+                      alert(err.message || "Gagal membatalkan booking");
+                    }
+                  }}
+                >
+                  Batalkan Booking
+                </button>
+              )}
             </li>
           ))}
         </ul>
