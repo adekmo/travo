@@ -21,6 +21,23 @@ const SellerBookingPage = () => {
         fetchBookings()
     }, [])
 
+    const handleUpdateStatus = async (id: string, status: "confirmed" | "cancelled") => {
+      const res = await fetch(`/api/bookings/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      })
+
+      if (res.ok) {
+        const updated = await res.json()
+        setBookings(prev =>
+          prev.map(b => (b._id === id ? { ...b, status: updated.status } : b))
+        )
+      } else {
+        alert("Gagal mengubah status booking.")
+      }
+    }
+
     if (loading) return <div className="p-6">Loading...</div>
   return (
     <div className="max-w-5xl mx-auto p-6">
@@ -46,6 +63,22 @@ const SellerBookingPage = () => {
                   {booking.status}
                 </span>
               </p>
+              {booking.status === "pending" && (
+                <div className="mt-2 space-x-2">
+                  <button
+                    onClick={() => handleUpdateStatus(booking._id, "confirmed")}
+                    className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700"
+                  >
+                    Konfirmasi
+                  </button>
+                  <button
+                    onClick={() => handleUpdateStatus(booking._id, "cancelled")}
+                    className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                  >
+                    Batalkan
+                  </button>
+                </div>
+              )}
             </li>
           ))}
         </ul>
