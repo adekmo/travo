@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react'
 
 const PackagesReviewList = ({ packageId }: { packageId: string }) => {
   const [reviews, setReviews] = useState<Review[]>([])
+  const [averageRating, setAverageRating] = useState(0)
+  const [totalReviews, setTotalReviews] = useState(0)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -12,7 +14,9 @@ const PackagesReviewList = ({ packageId }: { packageId: string }) => {
       const res = await fetch(`/api/reviews?packageId=${packageId}`)
       if (res.ok) {
         const data = await res.json()
-        setReviews(data)
+        setReviews(data.reviews)
+        setAverageRating(data.averageRating)
+        setTotalReviews(data.totalReviews)
       }
       setLoading(false)
     }
@@ -26,6 +30,9 @@ const PackagesReviewList = ({ packageId }: { packageId: string }) => {
   return (
     <div className="mt-8">
       <h2 className="text-xl font-semibold mb-4">Ulasan Pelanggan</h2>
+      <p className="text-yellow-600 font-medium mb-4">
+        Total Rating : {averageRating.toFixed(1)} / 5 ({totalReviews} ulasan)
+      </p>
       <ul className="space-y-4">
         {reviews.map((review) => (
           <li key={review._id} className="p-4 border rounded shadow-sm">

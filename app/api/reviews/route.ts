@@ -23,7 +23,14 @@ export async function GET(req: Request) {
       .populate("customer", "name") // hanya ambil nama customer
       .sort({ createdAt: -1 }); // terbaru duluan
 
-    return NextResponse.json(reviews);
+    const totalRating = reviews.reduce((sum, r) => sum + r.rating, 0)
+    const averageRating = reviews.length ? totalRating / reviews.length : 0
+
+    return NextResponse.json({
+      reviews,
+      averageRating,
+      totalReviews: reviews.length,
+    })
   } catch (error) {
     console.error("Gagal mengambil review:", error);
     return NextResponse.json(
