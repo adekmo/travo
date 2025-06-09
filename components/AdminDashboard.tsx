@@ -20,17 +20,17 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Dashboard Admin</h1>
+    <div className='p-6'>
+      <h1 className="text-3xl font-bold mb-6">Dashboard Admin</h1>
 
       {/* Statistik */}
       <StatsCard />
 
-      <div className="my-6">
-        <Link href="/dashboard/admin/bookings" className="text-blue-600 underline mr-2">
+      <div className="mt-4 space-x-4">
+        <Link href="/dashboard/admin/bookings" className="text-blue-600 hover:underline font-medium">
           Lihat Semua Booking
         </Link>
-        <Link href="/dashboard/admin/users" className="text-blue-600 underline mr-2">
+        <Link href="/dashboard/admin/users" className="text-blue-600 hover:underline font-medium">
           Lihat Semua User
         </Link>
       </div>

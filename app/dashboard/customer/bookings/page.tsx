@@ -2,16 +2,12 @@
 
 import { useEffect, useState } from "react"
 import { Booking } from "@/types/booking"
+import CustomerBookingItem from "@/components/CustomerBookingItem"
 
 const CustomerBookingPage = () => {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
   
-  const formatRupiah = (number: number) =>
-    new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-    }).format(number)
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -26,6 +22,19 @@ const CustomerBookingPage = () => {
     fetchBookings()
   }, [])
 
+  const handleCancel = async (id: string) => {
+    const confirmCancel = confirm("Yakin ingin membatalkan booking ini?")
+    if (!confirmCancel) return
+
+    const res = await fetch(`/api/bookings/${id}`, { method: "DELETE" })
+    if (res.ok) {
+      setBookings(prev => prev.filter(b => b._id !== id))
+    } else {
+      const err = await res.json()
+      alert(err.message || "Gagal membatalkan booking")
+    }
+  }
+
   
   if (loading) return <div className="p-6">Loading...</div>
   return (
@@ -36,36 +45,11 @@ const CustomerBookingPage = () => {
       ) : (
         <ul className="space-y-4">
           {bookings.map((booking) => (
-            <li key={booking._id} className="border rounded p-4 shadow-sm">
-              <h2 className="text-lg font-semibold">{booking.packageId.title}</h2>
-              <p><strong>Lokasi:</strong> {booking.packageId.location}</p>
-              <p><strong>Tanggal Booking:</strong> {new Date(booking.date).toLocaleDateString()}</p>
-              <p><strong>Status:</strong> <span className={
-                booking.status === "confirmed" ? "text-green-600" :
-                booking.status === "cancelled" ? "text-red-600" : "text-yellow-600"
-              }>{booking.status}</span></p>
-              <p><strong>Jumlah Orang:</strong> {booking.numberOfPeople}</p>
-              {booking.note && <p><strong>Catatan:</strong> {booking.note}</p>}
-              <p><strong>Total Harga:</strong> {formatRupiah(booking.packageId.price * booking.numberOfPeople)}</p>
-              {booking.status === "pending" && (
-                <button
-                  className="mt-2 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                  onClick={async () => {
-                    const confirmCancel = confirm("Yakin ingin membatalkan booking ini?");
-                    if (!confirmCancel) return;
-                    const res = await fetch(`/api/bookings/${booking._id}`, { method: "DELETE" });
-                    if (res.ok) {
-                      setBookings(prev => prev.filter(b => b._id !== booking._id));
-                    } else {
-                      const err = await res.json();
-                      alert(err.message || "Gagal membatalkan booking");
-                    }
-                  }}
-                >
-                  Batalkan Booking
-                </button>
-              )}
-            </li>
+            <CustomerBookingItem
+              key={booking._id}
+              booking={booking}
+              onCancel={handleCancel}
+            />
           ))}
         </ul>
       )}
