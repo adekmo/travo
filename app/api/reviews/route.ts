@@ -5,6 +5,34 @@ import { connectDB } from "@/lib/mongodb";
 import Review from "@/models/Review";
 import Booking from "@/models/Booking";
 
+export async function GET(req: Request) {
+  await connectDB();
+
+  const { searchParams } = new URL(req.url);
+  const packageId = searchParams.get("packageId");
+
+  if (!packageId) {
+    return NextResponse.json(
+      { message: "packageId diperlukan" },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const reviews = await Review.find({ package: packageId })
+      .populate("customer", "name") // hanya ambil nama customer
+      .sort({ createdAt: -1 }); // terbaru duluan
+
+    return NextResponse.json(reviews);
+  } catch (error) {
+    console.error("Gagal mengambil review:", error);
+    return NextResponse.json(
+      { message: "Terjadi kesalahan saat mengambil review" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(req: Request) {
   await connectDB();
 

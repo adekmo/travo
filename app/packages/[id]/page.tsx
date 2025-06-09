@@ -3,6 +3,7 @@
 import { use, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { TravelPackage } from '@/types/travelPackage'
+import PackagesReviewList from '@/components/PackagesReviewList'
 
 type Params = { id: string }
 
@@ -48,6 +49,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
       <div className="mb-6">
         <strong>Tanggal: </strong> {new Date(packageData.date).toLocaleDateString()}
       </div>
+      <PackagesReviewList packageId={packageData._id ?? ''} />
       <button
         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
         onClick={() => router.push(`/packages/${id}/booking`)}
