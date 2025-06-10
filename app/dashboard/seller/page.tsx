@@ -15,6 +15,9 @@ const SellerDashboardPage = () => {
       <Link href="/dashboard/seller/bookings" className="text-blue-600 underline mr-2">
           Booking
       </Link>
+      <Link href="/dashboard/seller/reviews" className="text-blue-600 underline mr-2">
+          Reviews
+      </Link>
     </div>
   )
 }

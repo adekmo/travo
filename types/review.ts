@@ -5,5 +5,8 @@ export interface Review {
   customer: {
     name: string
   }
+  package: {
+    title: string
+  }
   createdAt: string
 }
