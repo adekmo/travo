@@ -6,6 +6,8 @@ import { useEffect, useState } from "react"
 const SellerBookingPage = () => {
 
     const [bookings, setBookings] = useState<SellerBooking[]>([])
+    const [searchTerm, setSearchTerm] = useState("")
+    const [statusFilter, setStatusFilter] = useState("all")
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -42,11 +44,40 @@ const SellerBookingPage = () => {
   return (
     <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">Booking Masuk</h1>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <input
+          type="text"
+          placeholder="Cari customer atau paket..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="border px-3 py-2 rounded w-full md:w-1/2"
+        />
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="border px-3 py-2 rounded w-full md:w-1/3"
+        >
+          <option value="all">Semua Status</option>
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
       {bookings.length === 0 ? (
         <p>Belum ada booking yang masuk.</p>
       ) : (
         <ul className="space-y-4">
-          {bookings.map((booking) => (
+          {bookings.filter((book) => {
+            const matchesSearch =
+              book.customerId.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              book.packageId.title.toLowerCase().includes(searchTerm.toLowerCase())
+
+            const matchesStatus =
+              statusFilter === "all" ? true : book.status === statusFilter
+
+            return matchesSearch && matchesStatus
+          })
+          .map((booking) => (
             <li key={booking._id} className="border rounded p-4 shadow-sm">
               <h2 className="text-lg font-semibold">{booking.packageId.title}</h2>
               <p><strong>Lokasi:</strong> {booking.packageId.location}</p>

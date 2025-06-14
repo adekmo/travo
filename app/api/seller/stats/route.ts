@@ -27,6 +27,12 @@ export async function GET(req: NextRequest) {
     // 2. Jumlah total paket
     const totalPackages = packages.length;
 
+    // jumlah booking berdasarkan status
+    const pendingBookingsCount = await Booking.countDocuments({
+      packageId: { $in: packageIds },
+      status: "pending",
+    });
+
     // 3. Jumlah booking
     const totalBookings = await Booking.countDocuments({
       packageId: { $in: packageIds },
@@ -37,6 +43,7 @@ export async function GET(req: NextRequest) {
       packageId: { $in: packageIds },
       status: "confirmed",
     });
+    const confirmedBookingsCount = confirmedBookings.length;
 
     const totalRevenue = confirmedBookings.reduce((sum, booking) => {
       const pkg = packages.find((p) => p._id.equals(booking.packageId));
@@ -54,6 +61,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       totalPackages,
       totalBookings,
+      pendingBookings: pendingBookingsCount,
+      confirmedBookings: confirmedBookingsCount,
       totalRevenue,
       totalReviews,
       avgRating: Number(avgRating.toFixed(2)),

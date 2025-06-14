@@ -26,8 +26,16 @@ const SellerStats = () => {
         <p className="text-xl">{stats.totalPackages}</p>
       </div>
       <div className="p-4 border rounded shadow">
-        <h3 className="font-semibold">Total Booking</h3>
+        <h3 className="font-semibold">Semua Booking</h3>
         <p className="text-xl">{stats.totalBookings}</p>
+      </div>
+      <div className="p-4 border rounded shadow">
+        <h3 className="font-semibold">Booking (Pending)</h3>
+        <p className="text-xl">{stats.pendingBookings}</p>
+      </div>
+      <div className="p-4 border rounded shadow">
+        <h3 className="font-semibold">Booking (Confirmed)</h3>
+        <p className="text-xl">{stats.confirmedBookings}</p>
       </div>
       <div className="p-4 border rounded shadow">
         <h3 className="font-semibold">Total Pendapatan</h3>
