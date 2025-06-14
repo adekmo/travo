@@ -1,11 +1,13 @@
+import SellerCharts from '@/components/SellerCharts'
+import SellerReviewList from '@/components/SellerReviewList'
+import SellerStats from '@/components/SellerStats'
 import Link from 'next/link'
 import React from 'react'
 
 const SellerDashboardPage = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Seller Dashboard</h1>
-      <p>Selamat datang Seller. Di sini kamu bisa mengelola paket liburan dan melihat pesanan customer.</p>
+    <div className="space-y-8">
+      <h1 className="text-2xl font-bold">Dashboard Seller</h1>
       <Link href="/dashboard/profile" className="text-blue-600 underline mr-2">
           Edit Profil
       </Link>
@@ -18,6 +20,16 @@ const SellerDashboardPage = () => {
       <Link href="/dashboard/seller/reviews" className="text-blue-600 underline mr-2">
           Reviews
       </Link>
+
+      <div>
+        <SellerStats />
+      </div>
+      <div>
+        <SellerReviewList />
+      </div>
+      <div>
+        <SellerCharts />
+      </div>
     </div>
   )
 }
