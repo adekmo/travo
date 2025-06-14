@@ -2,9 +2,16 @@
 
 import { useEffect, useState } from "react"
 import { Review } from "@/types/review"
+import Link from "next/link"
 
-const SellerReviewList = () => {
+interface Props {
+  limit?: number
+  showSeeMore?: boolean
+}
+
+const SellerReviewList = ({ limit, showSeeMore }: Props) => {
     const [reviews, setReviews] = useState<Review[]>([])
+    const [hasMore, setHasMore] = useState(false);
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -12,13 +19,20 @@ const SellerReviewList = () => {
         const res = await fetch("/api/seller/reviews")
         if (res.ok) {
             const data = await res.json()
-            setReviews(data)
+            const sorted = data.sort((a: Review, b: Review) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+            if (limit && sorted.length > limit) {
+              setHasMore(true)
+              setReviews(sorted.slice(0, limit))
+            } else {
+              setHasMore(false)
+              setReviews(sorted)
+            }
         }
         setLoading(false)
         }
 
         fetchReviews()
-    }, [])
+    }, [limit])
 
     if (loading) return <p>Memuat ulasan...</p>
     if (reviews.length === 0) return <p>Belum ada ulasan untuk paket Anda.</p>
@@ -36,6 +50,14 @@ const SellerReviewList = () => {
           </li>
         ))}
       </ul>
+
+      {showSeeMore && hasMore && (
+        <div className="mt-4">
+          <Link href="/dashboard/seller/reviews" className="text-blue-600 hover:underline">
+            Lihat Semua Ulasan →
+          </Link>
+        </div>
+      )}
     </div>
   )
 }

@@ -17,15 +17,15 @@ const SellerDashboardPage = () => {
       <Link href="/dashboard/seller/bookings" className="text-blue-600 underline mr-2">
           Booking
       </Link>
-      <Link href="/dashboard/seller/reviews" className="text-blue-600 underline mr-2">
+      {/* <Link href="/dashboard/seller/reviews" className="text-blue-600 underline mr-2">
           Reviews
-      </Link>
+      </Link> */}
 
       <div>
         <SellerStats />
       </div>
       <div>
-        <SellerReviewList />
+        <SellerReviewList limit={5} showSeeMore />
       </div>
       <div>
         <SellerCharts />
