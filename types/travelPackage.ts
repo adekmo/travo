@@ -5,7 +5,7 @@ export interface TravelPackage  {
   title: string;
   description: string;
   price: number;
-  date: string;
+  // date: string;
   location: string;
   image?: string;
   seller: User

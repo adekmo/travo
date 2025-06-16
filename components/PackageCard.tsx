@@ -13,7 +13,7 @@ const PackageCard = ({ pkg }: { pkg: TravelPackage }) => {
       )}
       <h2 className="text-xl font-semibold">{pkg.title}</h2>
       <p className="text-gray-600">{pkg.location}</p>
-      <p className="text-sm mb-2">{new Date(pkg.date).toLocaleDateString()}</p>
+      {/* <p className="text-sm mb-2">{new Date(pkg.date).toLocaleDateString()}</p> */}
       <p className="font-bold text-blue-600 mb-4">Rp{pkg.price.toLocaleString()}</p>
       <Link
         href={`/packages/${pkg._id}`}

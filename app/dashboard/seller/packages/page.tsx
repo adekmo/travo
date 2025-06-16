@@ -60,9 +60,9 @@ const SellerPackagePage = () => {
               <div>
                 <h2 className="text-xl font-semibold">{pkg.title}</h2>
                 <p className="text-sm text-gray-600">{pkg.location}</p>
-                <p className="text-sm text-gray-600">
+                {/* <p className="text-sm text-gray-600">
                   {new Date(pkg.date).toLocaleDateString()}
-                </p>
+                </p> */}
                 <p className="text-sm text-gray-800 font-medium">
                   Rp {pkg.price.toLocaleString()}
                 </p>

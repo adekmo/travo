@@ -14,7 +14,7 @@ const CreatePackagePage = () => {
         title: '',
         description: '',
         price: '',
-        date: '',
+        // date: '',
         location: '',
         image: '',
     })
@@ -108,7 +108,7 @@ const CreatePackagePage = () => {
           className="w-full border px-3 py-2 rounded"
           required
         />
-        <input
+        {/* <input
           name="date"
           type="date"
           placeholder="Tanggal"
@@ -116,7 +116,7 @@ const CreatePackagePage = () => {
           onChange={handleChange}
           className="w-full border px-3 py-2 rounded"
           required
-        />
+        /> */}
         <input
           name="location"
           type="text"

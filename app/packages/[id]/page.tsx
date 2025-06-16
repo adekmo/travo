@@ -46,9 +46,9 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
       <div className="mb-6">
         <strong>Lokasi: </strong> {packageData.location}
       </div>
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <strong>Tanggal: </strong> {new Date(packageData.date).toLocaleDateString()}
-      </div>
+      </div> */}
       <PackagesReviewList packageId={packageData._id ?? ''} />
       <button
         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"

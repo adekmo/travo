@@ -5,7 +5,7 @@ const TravelPackageSchema = new mongoose.Schema(
     title: { type: String, required: true },
     description: String,
     price: { type: Number, required: true },
-    date: { type: Date, required: true },
+    // date: { type: Date, required: true },
     location: String,
     image: String, // URL dari Cloudinary nanti
     seller: {
