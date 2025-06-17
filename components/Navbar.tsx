@@ -12,21 +12,30 @@ const Navbar = () => {
   const [hasUnread, setHasUnread] = useState(false)
 
    useEffect(() => {
-  const fetchUnreadStatus = async () => {
-    if (session?.user?.role === 'seller') {
-      try {
-        const res = await fetch('/api/notifications')
-        const data = await res.json()
-        const unreadExists = data.some((notif: any) => !notif.isRead)
-        setHasUnread(unreadExists)
-      } catch (error) {
-        console.error('Gagal mengambil notifikasi')
+      const fetchUnreadStatus = async () => {
+        if (session?.user?.role === 'seller') {
+          try {
+            const res = await fetch('/api/notifications')
+            const data = await res.json()
+            const unreadExists = data.some((notif: any) => !notif.isRead)
+            setHasUnread(unreadExists)
+          } catch (error) {
+            console.error('Gagal mengambil notifikasi')
+          }
+        }
       }
-    }
-  }
 
-  fetchUnreadStatus()
-}, [session, pathname])
+      // Jalankan sekali saat mount & ketika pathname berubah
+      fetchUnreadStatus()
+
+      // Update ulang saat notifikasi ditandai dibaca dari halaman notif
+      const handleRead = () => fetchUnreadStatus()
+      window.addEventListener('notificationsRead', handleRead)
+
+      return () => {
+        window.removeEventListener('notificationsRead', handleRead)
+      }
+    }, [session, pathname])
 
   return (
     <nav className="flex justify-between items-center px-6 py-4 bg-white shadow">
