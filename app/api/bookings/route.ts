@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from "@/lib/mongodb";
 import Booking from '@/models/Booking'
+import Notification from '@/models/Notification'
+import TravelPackage from '@/models/TravelPackage'
 
 export async function POST(req: NextRequest) {
   try {
@@ -31,6 +33,18 @@ export async function POST(req: NextRequest) {
       numberOfPeople,
       note,
     })
+
+    const travelPackage = await TravelPackage.findById(packageId)
+    if (travelPackage && travelPackage.seller) {
+      const notif = await Notification.create({
+        sellerId: travelPackage.seller,
+        packageId,
+        bookingId: newBooking._id,
+        message: `Booking baru untuk paket: ${travelPackage.title}`,
+        isRead: false,
+      })
+    }
+    
 
     return NextResponse.json(newBooking)
   } catch (error) {
