@@ -6,11 +6,12 @@ import BookingCalendar from '@/components/BookingCalendar'
 import SellerCharts from '@/components/SellerCharts'
 import SellerReviewList from '@/components/SellerReviewList'
 import SellerStats from '@/components/SellerStats'
-import Link from 'next/link'
 import React from 'react'
+import { Booking } from '@/types/booking'
 
 const SellerDashboardPage = () => {
   const [events, setEvents] = useState([])
+  const [bookings, setBookings] = useState([])
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -25,6 +26,7 @@ const SellerDashboardPage = () => {
       }))
 
       setEvents(mapped)
+      setBookings(data) // <- tambahkan ini
     }
 
     fetchBookings()
@@ -36,7 +38,7 @@ const SellerDashboardPage = () => {
         <SellerStats />
       </div>
       <div>
-        <BookingCalendar events={events} />
+        <BookingCalendar bookings={bookings} events={events} />
       </div>
       <div>
         <SellerReviewList limit={5} showSeeMore />
