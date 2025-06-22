@@ -26,15 +26,6 @@ const AdminDashboard = () => {
       {/* Statistik */}
       <StatsCard />
 
-      <div className="mt-4 space-x-4">
-        <Link href="/dashboard/admin/bookings" className="text-blue-600 hover:underline font-medium">
-          Lihat Semua Booking
-        </Link>
-        <Link href="/dashboard/admin/users" className="text-blue-600 hover:underline font-medium">
-          Lihat Semua User
-        </Link>
-      </div>
-
       {/* Tabel Paket */}
       <PackageTable />
     </div>

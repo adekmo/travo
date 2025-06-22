@@ -4,6 +4,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
+import AdminNotification from "@/models/AdminNotification"
+
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
@@ -43,6 +45,15 @@ export async function PUT(
     body,
     { new: true }
   );
+
+  if (updated) {
+    await AdminNotification.create({
+      message: `Seller memperbarui paket: ${updated.title}`,
+      type: 'updated_package',
+      sellerId: session.user.id,
+      packageId: updated._id,
+    })
+  }
 
   if (!updated) {
     return NextResponse.json({ message: "Not found or not yours" }, { status: 404 });

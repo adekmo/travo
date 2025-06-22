@@ -17,7 +17,7 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
         title: '',
         description: '',
         price: 0,
-        date: '',
+        // date: '',
         location: '',
         image: '',
         seller: {
@@ -106,14 +106,14 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
           className="w-full border px-3 py-2 rounded"
           required
         />
-        <input
+        {/* <input
           type="date"
           name="date"
           value={form.date}
           onChange={handleChange}
           className="w-full border px-3 py-2 rounded"
           required
-        />
+        /> */}
         <input
           type="text"
           placeholder="Lokasi"

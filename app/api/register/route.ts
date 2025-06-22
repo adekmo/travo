@@ -4,6 +4,9 @@ import clientPromise from "@/lib/mongodb-client";
 import User from "@/models/User";
 import mongoose from "mongoose";
 
+import AdminNotification from "@/models/AdminNotification"
+
+
 export async function POST(req: Request) {
   const { name, email, password, role } = await req.json();
 
@@ -28,8 +31,16 @@ export async function POST(req: Request) {
       role: role || "customer",
     });
 
-    console.log(newUser);
+    // console.log(newUser);
     await newUser.save();
+
+    if (newUser.role === 'seller') {
+      await AdminNotification.create({
+        message: `Seller baru mendaftar: ${newUser.name}`,
+        type: 'new_seller',
+        sellerId: newUser._id,
+      })
+    }
 
     return NextResponse.json({ message: "Pendaftaran berhasil" }, { status: 201 });
 
