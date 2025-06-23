@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/User";
+import ActivityLog from "@/models/ActivityLog";
 
 export async function GET(req: NextRequest) {
   await connectDB();
@@ -36,6 +37,15 @@ export async function POST(req: NextRequest) {
     ...body,
     seller: session.user.id,
   });
+
+  if(newPackage) {
+    await ActivityLog.create({
+      seller: session.user.id,
+      action: 'add-package',
+      packageId: newPackage._id,
+      message: `Menambahkan paket: ${newPackage.title}`
+    });
+  }
 
   return NextResponse.json(newPackage, { status: 201 });
 }

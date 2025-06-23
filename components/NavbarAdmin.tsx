@@ -43,6 +43,9 @@ const NavbarAdmin = () => {
         <Link href="/dashboard/admin/users" className="text-blue-600 underline">
           Users
         </Link>
+        <Link href="/dashboard/admin/activity" className="text-blue-600 underline">
+          Activity Logs
+        </Link>
         <Link href="/dashboard/admin/notifications" className="relative">
           <Bell className="w-6 h-6 text-gray-700 hover:text-blue-600 transition" />
           {hasUnread && (

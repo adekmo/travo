@@ -5,6 +5,7 @@ import User from "@/models/User";
 import mongoose from "mongoose";
 
 import AdminNotification from "@/models/AdminNotification"
+import ActivityLog from "@/models/ActivityLog";
 
 
 export async function POST(req: Request) {
@@ -39,6 +40,14 @@ export async function POST(req: Request) {
         message: `Seller baru mendaftar: ${newUser.name}`,
         type: 'new_seller',
         sellerId: newUser._id,
+      })
+    }
+
+    if (newUser.role === 'seller'){
+      await ActivityLog.create({
+        seller: newUser._id,
+        action: 'register',
+        message: `${newUser.name} mendaftar sebagai seller`
       })
     }
 

@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 import AdminNotification from "@/models/AdminNotification"
+import ActivityLog from "@/models/ActivityLog";
 
 export async function GET(
   req: NextRequest,
@@ -55,6 +56,15 @@ export async function PUT(
     })
   }
 
+  if(updated){
+    await ActivityLog.create({
+      seller: session.user.id,
+      action: 'update-package',
+      packageId: updated._id,
+      message: `Mengubah paket: ${updated.title}`
+    });
+  }
+
   if (!updated) {
     return NextResponse.json({ message: "Not found or not yours" }, { status: 404 });
   }
@@ -72,7 +82,23 @@ export async function DELETE(
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
+  const existingPackage = await TravelPackage.findOne({
+    _id: params.id,
+    seller: session.user.id,
+  });
+
+  if (!existingPackage) {
+    return NextResponse.json({ message: "Not found or not yours" }, { status: 404 });
+  }
+
   await TravelPackage.findOneAndDelete({ _id: params.id, seller: session.user.id });
+
+  await ActivityLog.create({
+    seller: session.user.id,
+    action: "delete-package",
+    packageId: existingPackage._id,
+    message: `Menghapus paket: ${existingPackage.title}`,
+  });
 
   return NextResponse.json({ message: "Deleted successfully" });
 }
