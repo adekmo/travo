@@ -10,7 +10,7 @@ export async function GET() {
       .limit(20)
       .populate('sellerId', 'name')
       .populate('packageId', 'title')
-    return NextResponse.json(notifications)
+    return NextResponse.json({notifications})
   } catch (error) {
     console.error(error)
     return NextResponse.json({ message: 'Gagal mengambil notifikasi' }, { status: 500 })

@@ -15,7 +15,7 @@ const NavbarAdmin = () => {
         const fetchUnread = async () => {
             const res = await fetch('/api/admin-notifications')
             const data = await res.json()
-            const unreadExists = data.some((n: any) => !n.isRead)
+            const unreadExists =  (data.notifications || []).some((n: { isRead: any }) => !n.isRead)
             setHasUnread(unreadExists)
         }
 

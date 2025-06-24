@@ -8,6 +8,8 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const start = searchParams.get('start');
   const end = searchParams.get('end');
+  const page = parseInt(searchParams.get('page') || '1');
+  const limit = parseInt(searchParams.get('limit') || '10');
 
   const filter: any = {};
 
@@ -33,10 +35,18 @@ export async function GET(req: NextRequest) {
     };
   }
 
+  const total = await ActivityLog.countDocuments(filter);
   const logs = await ActivityLog.find(filter)
     .populate('seller', 'name email')
-    .populate('packageId', 'title')
-    .sort({ createdAt: -1 });
+    .populate({ path: 'packageId', select: 'title', match: {} })
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit);
 
-  return NextResponse.json(logs);
+  return NextResponse.json({
+    logs,
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  });
 }

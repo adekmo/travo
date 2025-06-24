@@ -13,7 +13,7 @@ const AdminNotifications = () => {
         const fetchNotifications = async () => {
         const res = await fetch('/api/admin-notifications')
         const data = await res.json()
-        setNotifications(data)
+        setNotifications(data.notifications || [])
         setLoading(false)
         }
 

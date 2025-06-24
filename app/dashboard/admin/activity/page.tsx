@@ -16,19 +16,22 @@ const ActivityLogPage = () => {
       },
     ])
 
-    const [logs, setLogs] = useState([])
+    const [logs, setLogs] = useState<any[]>([])
+    const [page, setPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
 
     useEffect(() => {
         const fetchLogs = async () => {
           const start = range[0].startDate.toISOString()
           const end = range[0].endDate.toISOString()
-          const res = await fetch(`/api/admin/activity-logs?start=${start}&end=${end}`)
-          const data = await res.json()
-          setLogs(data)
+          const res = await fetch(`/api/admin/activity-logs?start=${start}&end=${end}&page=${page}&limit=5`)
+          const result = await res.json()
+          setLogs(result.logs || [])
+          setTotalPages(result.totalPages || 1)
         }
 
         fetchLogs()
-    }, [range])
+    }, [range, page])
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-6">Riwayat Aktivitas Seller</h1>
@@ -57,6 +60,28 @@ const ActivityLogPage = () => {
           </li>
         ))}
       </ul>
+
+        <div className="mt-6 flex items-center justify-between">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage((prev) => prev - 1)}
+            className={`px-4 py-2 rounded ${page === 1 ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+          >
+            Sebelumnya
+          </button>
+
+          <span className="text-sm text-gray-700">
+            Halaman {page} dari {totalPages}
+          </span>
+
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage((prev) => prev + 1)}
+            className={`px-4 py-2 rounded ${page === totalPages ? 'bg-gray-300 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+          >
+            Berikutnya
+          </button>
+        </div>
     </div>
   )
 }
