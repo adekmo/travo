@@ -8,5 +8,6 @@ export interface Review {
   package: {
     title: string
   }
+  hidden: boolean
   createdAt: string
 }

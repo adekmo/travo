@@ -19,7 +19,7 @@ export async function GET(req: Request) {
   }
 
   try {
-    const reviews = await Review.find({ package: packageId })
+    const reviews = await Review.find({ package: packageId, hidden: { $ne: true } })
       .populate("customer", "name") // hanya ambil nama customer
       .sort({ createdAt: -1 }); // terbaru duluan
 

@@ -43,6 +43,9 @@ const NavbarAdmin = () => {
         <Link href="/dashboard/admin/users" className="text-blue-600 underline">
           Users
         </Link>
+        <Link href="/dashboard/admin/reviews" className="text-blue-600 underline">
+          Reviews
+        </Link>
         <Link href="/dashboard/admin/activity" className="text-blue-600 underline">
           Activity Logs
         </Link>

@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
 
     const packageIds = packages.map((p) => p._id)
 
-    const reviews = await Review.find({ package: { $in: packageIds } })
+    const reviews = await Review.find({ package: { $in: packageIds }, hidden: { $ne: true } })
         .populate("customer", "name")
         .populate("package", "title")
 
