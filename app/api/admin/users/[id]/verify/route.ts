@@ -4,14 +4,10 @@ import User from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     await connectDB();
     const userId = params.id;
-    // console.log("🔧 PATCH called for", params.id);
 
     const user = await User.findById(userId);
     if (!user) return NextResponse.json({ message: "User tidak ditemukan" }, { status: 404 });

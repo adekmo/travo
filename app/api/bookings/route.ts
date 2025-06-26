@@ -3,11 +3,20 @@ import { connectDB } from "@/lib/mongodb";
 import Booking from '@/models/Booking'
 import Notification from '@/models/Notification'
 import TravelPackage from '@/models/TravelPackage'
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 export async function POST(req: NextRequest) {
   try {
     await connectDB()
-    const { customerId, packageId, date, numberOfPeople, note } = await req.json()
+
+    const session = await getServerSession(authOptions);
+
+    if(!session || session.user.role !== 'customer'){
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
+    const { packageId, date, numberOfPeople, note } = await req.json()
+    const customerId = session.user.id;
 
     // Hitung jumlah booking untuk packageId + date (tanggal saja, tanpa jam)
     const targetDate = new Date(date)

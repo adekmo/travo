@@ -13,13 +13,14 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const booking = await Booking.findById(params.id);
+    // const booking = await Booking.findById(params.id);
+    const deleteBooking = await Booking.findByIdAndDelete(params.id);
 
-    if (!booking) {
+    if (!deleteBooking) {
       return NextResponse.json({ message: "Booking not found" }, { status: 404 });
     }
 
-    await Booking.findByIdAndDelete(params.id);
+    // await Booking.findByIdAndDelete(params.id);
 
     return NextResponse.json({ message: "Booking deleted successfully" });
   } catch (error) {
