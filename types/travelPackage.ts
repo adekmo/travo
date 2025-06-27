@@ -9,4 +9,8 @@ export interface TravelPackage  {
   location: string;
   image?: string;
   seller: User
+  category: {
+    _id: string
+    name: string
+  }
 };

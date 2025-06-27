@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import "@/models/User";
+import "@/models/Category";
 
 const TravelPackageSchema = new mongoose.Schema(
   {
@@ -12,6 +14,11 @@ const TravelPackageSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+    },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: false,
     },
   },
   { timestamps: true }

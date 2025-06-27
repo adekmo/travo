@@ -5,11 +5,12 @@ import { useRouter } from 'next/navigation'
 
 import { CldUploadWidget } from 'next-cloudinary'
 import { useSession } from 'next-auth/react'
+import { Category } from '@/types/category'
 
 
 const CreatePackagePage = () => {
   const { data: session, status } = useSession()
-  console.log(session)
+
      const [form, setForm] = useState({
         title: '',
         description: '',
@@ -17,15 +18,34 @@ const CreatePackagePage = () => {
         // date: '',
         location: '',
         image: '',
+        category: '',
     })
     const [loading, setLoading] = useState(false)
     const [checking, setChecking] = useState(true)
     const [isVerified, setIsVerified] = useState(false)
+    const [categories, setCategories] = useState<Category[]>([]);
 
     const router = useRouter()
 
     useEffect(() => {
-      if (status === 'loading') return // Menunggu session selesai
+      const fetchCategoriesData = async () => {
+        try {
+          const res = await fetch('/api/categories'); // Panggil API GET Categories (publik)
+          if (!res.ok) {
+            throw new Error('Gagal memuat daftar kategori.');
+          }
+          const data = await res.json();
+          setCategories(data);
+        } catch (error) {
+          console.error('Error fetching categories:', error);
+          alert('Gagal memuat kategori: ' + (error as Error).message); // Tampilkan pesan error ke user
+        }
+      };
+      fetchCategoriesData();
+    }, []);
+
+    useEffect(() => {
+      if (status === 'loading') return
 
       // Cek verifikasi dari session
       if (session?.user.role === 'seller') {
@@ -36,7 +56,7 @@ const CreatePackagePage = () => {
       }
     }, [session, status, router])
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target
         setForm((prev) => ({
         ...prev,
@@ -126,6 +146,24 @@ const CreatePackagePage = () => {
           className="w-full border px-3 py-2 rounded"
           required
         />
+
+        <div>
+          <label className="block mb-2 font-semibold">Kategori</label>
+          <select
+            name="category"
+            value={form.category}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+            required
+          >
+            <option value="">Pilih Kategori</option>
+            {categories.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <div>
           <label className="block mb-2 font-medium">Upload Gambar</label>

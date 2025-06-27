@@ -6,6 +6,8 @@ import { TravelPackage } from '@/types/travelPackage';
 
 const SellerPackagePage = () => {
     const [packages, setPackages] = useState<TravelPackage[]>([]);
+    console.log(packages, 'pckgs');
+    
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
@@ -59,12 +61,15 @@ const SellerPackagePage = () => {
             >
               <div>
                 <h2 className="text-xl font-semibold">{pkg.title}</h2>
-                <p className="text-sm text-gray-600">{pkg.location}</p>
+                <p className="text-sm text-gray-800">{pkg.location}</p>
                 {/* <p className="text-sm text-gray-600">
                   {new Date(pkg.date).toLocaleDateString()}
                 </p> */}
                 <p className="text-sm text-gray-800 font-medium">
                   Rp {pkg.price.toLocaleString()}
+                </p>
+                <p className="text-sm text-gray-400 font-medium">
+                  #{pkg.category?.name || 'Tanpa kategori'}
                 </p>
                 {pkg.image && (
                 <img src={pkg.image} alt={pkg.title} className="w-full max-w-sm rounded mb-2" />
