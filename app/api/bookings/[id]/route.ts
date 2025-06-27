@@ -5,19 +5,27 @@ import Booking from "@/models/Booking"
 import { connectDB } from "@/lib/mongodb"
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  await connectDB()
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
-  }
-
   try {
+     await connectDB()
+     const session = await getServerSession(authOptions)
+
+     if (!session) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
+     }
     const { status } = await req.json()
     const validStatus = ["confirmed", "cancelled"]
     if (!validStatus.includes(status)) {
       return NextResponse.json({ message: "Invalid status" }, { status: 400 })
     }
+
+    // Opsi: hanya seller terkait yang bisa mengubah status booking paketnya
+    // const bookingToUpdate = await Booking.findById(params.id).populate('packageId');
+    // if (!bookingToUpdate) {
+    //   return NextResponse.json({ message: "Booking not found" }, { status: 404 });
+    // }
+    // if (session.user.role === 'seller' && bookingToUpdate.packageId.seller.toString() !== session.user.id) {
+    //   return NextResponse.json({ message: "Forbidden: Anda hanya bisa mengubah status booking untuk paket Anda sendiri." }, { status: 403 });
+    // }
 
     const booking = await Booking.findByIdAndUpdate(
       params.id,
@@ -32,6 +40,13 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     return NextResponse.json(booking)
   } catch (error) {
     console.error("Update booking error:", error)
+    // console.error("Update booking error details:", {
+    //   message: error.message,
+    //   stack: error.stack,
+    //   name: error.name,
+    //   bookingId: params.id,
+    //   // Tambahkan data dari body jika memungkinkan dan aman
+    // });
     return NextResponse.json({ message: "Internal server error" }, { status: 500 })
   }
 }
