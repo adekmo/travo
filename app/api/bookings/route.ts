@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
 
     if(!session || session.user.role !== 'customer'){
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ message: 'Harap Login Terlebih Dahulu' }, { status: 401 });
     }
     const { packageId, date, numberOfPeople, note } = await req.json()
     const customerId = session.user.id;

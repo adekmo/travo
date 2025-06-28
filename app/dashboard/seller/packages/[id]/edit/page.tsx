@@ -6,12 +6,14 @@ import { TravelPackage } from '@/types/travelPackage'
 
 import { CldUploadWidget } from 'next-cloudinary'
 import User from '@/models/User'
+import { Category } from '@/types/category'
 
 type Params = { id: string }
 
 const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
 
     const { id } = use(params)
+    const [categories, setCategories] = useState<Category[]>([]);
     const [form, setForm] = useState<TravelPackage>({
         _id: '',
         title: '',
@@ -30,9 +32,19 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
             phone: '',
             address: '',
         },
+        category: {
+          _id: '',
+          name: '',
+        }
     })
     const [loading, setLoading] = useState(false)
     const router = useRouter()
+
+    const fetchCategories = async () => {
+      const res = await fetch('/api/categories');
+      const data = await res.json();
+      setCategories(data);
+    };
 
     useEffect(() => {
         const fetchPackage = async () => {
@@ -45,6 +57,7 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
         }
         }
 
+        fetchCategories()
         fetchPackage()
     }, [id])
 
@@ -123,6 +136,36 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
           className="w-full border px-3 py-2 rounded"
           required
         />
+
+        <div>
+          <label className="block font-medium mb-1">Kategori</label>
+          <select
+            name="category"
+            value={form.category._id}
+            onChange={(e) => {
+              const selectedId = e.target.value;
+              const selectedCategory = categories.find((cat) => cat._id === selectedId);
+              if (selectedCategory) {
+                setForm((prev) => ({
+                  ...prev,
+                  category: {
+                    _id: selectedCategory._id,
+                    name: selectedCategory.name,
+                  },
+                }));
+              }
+            }}
+            className="w-full border px-3 py-2 rounded"
+            required
+          >
+            <option value="">Pilih Kategori</option>
+            {categories.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <div>
           <label className="block mb-2 font-medium">Upload Gambar</label>

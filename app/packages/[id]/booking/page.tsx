@@ -69,10 +69,13 @@ const BookingPages = ({ params }: { params: Promise<Params> }) => {
         setNumberOfPeople(1)
         setNote("")
         setTimeout(() => {
-          router.push("/dashboard/customer") // arahkan setelah sukses
+          router.push("/dashboard/customer")
         }, 1500)
       } else {
         toast.error(result.message || "Gagal membuat booking")
+        setTimeout(() => {
+          router.push("/auth/signin")
+        }, 1500)
       }
 
       setLoading(false)
