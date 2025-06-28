@@ -15,6 +15,7 @@ const PackageCard = ({ pkg }: { pkg: TravelPackage }) => {
       <p className="text-gray-600">{pkg.location}</p>
       {/* <p className="text-sm mb-2">{new Date(pkg.date).toLocaleDateString()}</p> */}
       <p className="font-bold text-blue-600 mb-4">Rp{pkg.price.toLocaleString()}</p>
+      <p className="text-gray-600">#{pkg.category?.name ? pkg.category?.name : 'Tanpa Kategori'}</p>
       <Link
         href={`/packages/${pkg._id}`}
         className="text-white bg-blue-600 px-3 py-1 rounded hover:bg-blue-700"
