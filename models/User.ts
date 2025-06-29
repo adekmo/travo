@@ -10,6 +10,12 @@ const UserSchema = new mongoose.Schema(
     isBlocked: { type: Boolean, default: false },
     phone: String,
     address: String,
+    wishlist: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'TravelPackage',
+    }
+  ],
   },
   { timestamps: true }
 );

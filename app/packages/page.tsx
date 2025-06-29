@@ -44,7 +44,7 @@ export default function PackagesPage() {
     const currentLoc = searchParams.get('location') || '';
     const currentMinPrice = Number(searchParams.get('minPrice')) || 0;
     const currentMaxPrice = Number(searchParams.get('maxPrice')) || 10000000;
-    const currentCategory = searchParams.get('category') || ''; // <<< Pastikan kategori diambil dari URL
+    const currentCategory = searchParams.get('category') || ''; 
 
     if (currentSearch) params.set('search', currentSearch);
     if (currentLoc) params.set('location', currentLoc);
@@ -63,10 +63,10 @@ export default function PackagesPage() {
       } else {
         alert('Gagal memuat paket');
       }
-    } catch (error: any) { // Tangkap error untuk pesan yang lebih informatif
+    } catch (error: any) { 
       console.error('Error fetching packages:', error);
       alert(`Gagal memuat paket: ${error.message || 'Terjadi kesalahan.'}`);
-      setPackages([]); // Kosongkan daftar paket jika terjadi error
+      setPackages([]);
     } finally {
       setLoading(false);
     }
@@ -78,14 +78,14 @@ export default function PackagesPage() {
     setLocation(searchParams.get('location') || '');
     setMinPrice(Number(searchParams.get('minPrice')) || 0);
     setMaxPrice(Number(searchParams.get('maxPrice')) || 10000000);
-    setSelectedCategory(searchParams.get('category') || ''); // <<< Sinkronkan selectedCategory dari URL
+    setSelectedCategory(searchParams.get('category') || ''); //
 
-    fetchPackages(); // Panggil fetchPackages setelah state disinkronkan
+    fetchPackages();
   }, [searchParams.toString()]);
 
   const handleFilter = () => {
     const params = new URLSearchParams()
-    // --- PERBAIKAN 3: `handleFilter` harus membaca semua filter dari state lokal terbaru ---
+    
     if (search) params.set('search', search)
     else params.delete('search')
 
@@ -95,12 +95,9 @@ export default function PackagesPage() {
     params.set('minPrice', minPrice.toString())
     params.set('maxPrice', maxPrice.toString())
 
-    // Tambahkan selectedCategory dari state lokal
     if (selectedCategory) params.set('category', selectedCategory)
     else params.delete('category')
-    // --- AKHIR PERBAIKAN 3 ---
 
-    // Pertahankan parameter sort yang sudah ada di URL
     const currentSort = searchParams.get('sort')
     if (currentSort) {
       params.set('sort', currentSort)
@@ -112,25 +109,22 @@ export default function PackagesPage() {
   }
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value; // Ambil nilai kategori yang dipilih (ID)
-    setSelectedCategory(value); // <<< UNCOMMENT BARIS INI: Update state `selectedCategory` di sini
+    const value = e.target.value;
+    setSelectedCategory(value);
 
-    const params = new URLSearchParams(searchParams.toString()); // Mulai dengan params URL yang ada
+    const params = new URLSearchParams(searchParams.toString());
     
-    // Perbarui atau hapus parameter 'category'
     if (value) {
       params.set('category', value);
     } else {
       params.delete('category');
     }
 
-    // Pastikan filter lain yang sudah ada di state lokal juga ikut terkirim ke URL
     if (search) params.set('search', search); else params.delete('search');
     if (location) params.set('location', location); else params.delete('location');
     params.set('minPrice', minPrice.toString());
     params.set('maxPrice', maxPrice.toString());
 
-    // Pertahankan sort parameter
     const currentSort = searchParams.get('sort');
     if (currentSort) {
       params.set('sort', currentSort);

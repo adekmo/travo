@@ -12,6 +12,9 @@ const CustomerDashboardPage = () => {
       <Link href="/dashboard/customer/bookings" className="text-blue-600 underline mr-2">
         Booking
       </Link>
+      <Link href="/dashboard/customer/wishlist" className="text-blue-600 underline mr-2">
+        Wishlists
+      </Link>
     </div>
   )
 }

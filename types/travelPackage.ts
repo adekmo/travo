@@ -9,7 +9,7 @@ export interface TravelPackage  {
   location: string;
   image?: string;
   seller: User
-  category: {
+  category?: {
     _id: string
     name: string
   }
