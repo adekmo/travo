@@ -4,6 +4,7 @@ import { use, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { TravelPackage } from '@/types/travelPackage'
 import PackagesReviewList from '@/components/PackagesReviewList'
+import Link from 'next/link'
 
 type Params = { id: string }
 
@@ -46,6 +47,9 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
       <div className="mb-6">
         <strong>Lokasi: </strong> {packageData.location}
       </div>
+      <div className="mb-6">
+        <strong>Seller: </strong> {packageData.seller?.name}
+      </div>
       {/* <div className="mb-6">
         <strong>Tanggal: </strong> {new Date(packageData.date).toLocaleDateString()}
       </div> */}
@@ -56,6 +60,12 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
       >
         Pesan Paket
       </button>
+      <Link
+        href={`/dashboard/customer/chat/${packageData.seller._id}`}
+        className="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mx-2"
+      >
+        💬 Chat Seller
+      </Link>
     </div>
   )
 }

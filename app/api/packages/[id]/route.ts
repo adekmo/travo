@@ -7,7 +7,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   await connectDB();
 
   try {
-    const travelPackage = await TravelPackage.findById(params.id);
+    const travelPackage = await TravelPackage.findById(params.id)
+      .populate('seller', 'name');
 
     if (!travelPackage) {
       return NextResponse.json({ message: "Paket tidak ditemukan" }, { status: 404 });
