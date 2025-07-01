@@ -20,14 +20,21 @@ const SellerChatPage = () => {
 
   useEffect(() => {
     fetchMessages()
-
-    const interval = setInterval(fetchMessages, 3000)
-    return () => clearInterval(interval)
+    // const interval = setInterval(fetchMessages, 3000)
+    // return () => clearInterval(interval)
   }, [])
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  useEffect(() => {
+    const markAsRead = async () => {
+      await fetch(`/api/message/read/${customerId}`, { method: 'POST' })
+    }
+
+    markAsRead()
+  }, [customerId])
 
   const handleSendMessage = async () => {
     if (!newMessage.trim()) return

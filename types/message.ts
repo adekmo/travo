@@ -1,13 +1,14 @@
 export type Message = {
-    _id: string
+    _id: string,
   senderId: {
-    _id: string
-    name: string
-  }
+    _id: string,
+    name: string,
+  },
   receiverId: {
-    _id: string
-    name: string
+    _id: string,
+    name: string,
   }
-  message: string
-  createdAt: string
+  message: string,
+  isRead: boolean,
+  createdAt: string,
 }
