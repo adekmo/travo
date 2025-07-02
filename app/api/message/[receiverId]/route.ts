@@ -16,6 +16,15 @@ export async function GET(req: NextRequest, { params }: { params: { receiverId: 
     const userId = session.user.id;
     const receiverId = params.receiverId;
 
+    await Message.updateMany(
+      {
+        senderId: receiverId,
+        receiverId: userId,
+        isRead: false,
+      },
+      { $set: { isRead: true } }
+    );
+
     const messages = await Message.find({
       $or: [
         { senderId: userId, receiverId },

@@ -21,8 +21,11 @@ const ChatPage = () => {
     }
 
     useEffect(() => {
-        fetchMessages()
+      fetchMessages().then(() => {
+        window.dispatchEvent(new Event("notificationsRead"))
+      })
     }, [])
+
 
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
