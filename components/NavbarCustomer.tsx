@@ -1,6 +1,6 @@
 'use client'
 
-import { MessageSquare } from 'lucide-react'
+import { Bell, MessageSquare } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -13,21 +13,21 @@ const NavbarCustomer = () => {
     const [hasChatUnread, setHasChatUnread] = useState(false)
 
     useEffect(() => {
-      const checkCustomerUnread = async () => {
+      const checkNotifications = async () => {
         if (session?.user?.role === 'customer') {
           try {
-            const res = await fetch('/api/message/customer-unread')
+            const res = await fetch('/api/bookings/customer/notifications')
             const data = await res.json()
-            setHasChatUnread(data.unreadExists)
+            const unread = data.some((n: any) => !n.isRead)
+            setHasNotifUnread(unread)
           } catch (err) {
-            console.error('Gagal mengambil status pesan customer')
+            console.error('Gagal mengambil notifikasi customer')
           }
         }
       }
 
-      checkCustomerUnread()
-
-      const interval = setInterval(checkCustomerUnread, 5000) // polling tiap 10 detik
+      checkNotifications()
+      const interval = setInterval(checkNotifications, 5000)
       return () => clearInterval(interval)
     }, [session])
 
@@ -72,17 +72,15 @@ const NavbarCustomer = () => {
           )}
         </Link>
 
-        {/* {pathname.includes('/dashboard/seller') && (
-          <Link href="/dashboard/seller/notifications" className="relative">
-            <Bell className="w-6 h-6 text-gray-700 hover:text-blue-600 transition" />
-            {hasNotifUnread  && (
+        <Link href="/dashboard/customer/notifications" className="relative">
+          <Bell className="w-6 h-6 text-gray-700 hover:text-blue-600 transition" />
+          {hasNotifUnread && (
+            <>
               <span className="absolute top-0 right-0 block w-2 h-2 bg-red-600 rounded-full animate-ping"></span>
-            )}
-            {hasNotifUnread  && (
               <span className="absolute top-0 right-0 block w-2 h-2 bg-red-600 rounded-full"></span>
-            )}
-          </Link>
-        )} */}
+            </>
+          )}
+        </Link>
       </div>
     </nav>
   )

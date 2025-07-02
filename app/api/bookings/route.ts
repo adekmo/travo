@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     const travelPackage = await TravelPackage.findById(packageId)
     if (travelPackage && travelPackage.seller) {
       const notif = await Notification.create({
-        sellerId: travelPackage.seller,
+        userId: travelPackage.seller,
         packageId,
         bookingId: newBooking._id,
         message: `Booking baru untuk paket: ${travelPackage.title}`,

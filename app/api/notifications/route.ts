@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
     }
 
-    const notifications = await Notification.find({ sellerId: user.id })
+    const notifications = await Notification.find({ userId: user.id })
       .sort({ createdAt: -1 })
       console.log('notifRead', notifications);
       

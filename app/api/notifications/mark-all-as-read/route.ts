@@ -5,14 +5,14 @@ import Notification from '@/models/Notification'
 export async function PATCH(req: NextRequest) {
   try {
     await connectDB()
-    const { sellerId } = await req.json()
+    const { userId } = await req.json()
 
-    if (!sellerId) {
+    if (!userId) {
       return NextResponse.json({ message: "sellerId wajib diisi" }, { status: 400 })
     }
 
     await Notification.updateMany(
-      { sellerId, isRead: false },
+      { userId, isRead: false },
       { $set: { isRead: true } }
     )
 

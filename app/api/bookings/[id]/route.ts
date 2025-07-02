@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import Booking from "@/models/Booking"
 import { connectDB } from "@/lib/mongodb"
+import Notification from "@/models/Notification"
+import TravelPackage from '@/models/TravelPackage'
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
@@ -36,6 +38,15 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     if (!booking) {
       return NextResponse.json({ message: "Booking not found" }, { status: 404 })
     }
+
+    const updatedBooking = await Booking.findById(params.id).populate('packageId')
+
+    await Notification.create({
+      userId: updatedBooking.customerId, // ✅ untuk customer
+      packageId: updatedBooking.packageId._id,
+      bookingId: updatedBooking._id,
+      message: `Booking Anda untuk paket "${updatedBooking.packageId.title}" telah ${status === 'confirmed' ? 'dikonfirmasi' : 'dibatalkan'}.`,
+    })
 
     return NextResponse.json(booking)
   } catch (error) {
