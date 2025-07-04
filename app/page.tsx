@@ -1,101 +1,237 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import PackageCard from '@/components/PackageCard'
+import { TravelPackage } from '@/types/travelPackage'
+
+import Slider from 'rc-slider'
+import 'rc-slider/assets/index.css'
+import { Category } from '@/types/category'
+
+const formatRupiah = (value: number) => `Rp${new Intl.NumberFormat('id-ID').format(value)}`
+
+export default function PackagesPage() {
+
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const [packages, setPackages] = useState<TravelPackage[]>([])
+  const [loading, setLoading] = useState(false)
+
+  const [search, setSearch] = useState('')
+  const [location, setLocation] = useState('')
+  const [minPrice, setMinPrice] = useState<number>(0)
+  const [maxPrice, setMaxPrice] = useState<number>(10000000)
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '')
+  const [categories, setCategories] = useState<Category[]>([])
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const res = await fetch('/api/categories');
+      const data = await res.json();
+      setCategories(data);
+    }
+    fetchCategories();
+  }, []);
+  
+  const fetchPackages = async () => {
+    setLoading(true)
+    const params = new URLSearchParams()
+
+    // Ambil semua filter dari `searchParams` yang merupakan representasi URL terkini
+    const currentSearch = searchParams.get('search') || '';
+    const currentLoc = searchParams.get('location') || '';
+    const currentMinPrice = Number(searchParams.get('minPrice')) || 0;
+    const currentMaxPrice = Number(searchParams.get('maxPrice')) || 10000000;
+    const currentCategory = searchParams.get('category') || ''; 
+
+    if (currentSearch) params.set('search', currentSearch);
+    if (currentLoc) params.set('location', currentLoc);
+    if (currentMinPrice) params.set('minPrice', currentMinPrice.toString());
+    if (currentMaxPrice) params.set('maxPrice', currentMaxPrice.toString());
+    if (currentCategory) params.set('category', currentCategory); // <<< Tambahkan kategori ke params
+
+    const sort = searchParams.get('sort') || '';
+    if (sort) params.set('sort', sort);
+
+    try {
+      const res = await fetch(`/api/packages?${params.toString()}`);
+      if (res.ok) {
+        const data = await res.json();
+        setPackages(data);
+      } else {
+        alert('Gagal memuat paket');
+      }
+    } catch (error: any) { 
+      console.error('Error fetching packages:', error);
+      alert(`Gagal memuat paket: ${error.message || 'Terjadi kesalahan.'}`);
+      setPackages([]);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    // Sinkronkan state lokal dengan nilai dari URL saat `searchParams` berubah
+    setSearch(searchParams.get('search') || '');
+    setLocation(searchParams.get('location') || '');
+    setMinPrice(Number(searchParams.get('minPrice')) || 0);
+    setMaxPrice(Number(searchParams.get('maxPrice')) || 10000000);
+    setSelectedCategory(searchParams.get('category') || ''); //
+
+    fetchPackages();
+  }, [searchParams.toString()]);
+
+  const handleFilter = () => {
+    const params = new URLSearchParams()
+    
+    if (search) params.set('search', search)
+    else params.delete('search')
+
+    if (location) params.set('location', location)
+    else params.delete('location')
+
+    params.set('minPrice', minPrice.toString())
+    params.set('maxPrice', maxPrice.toString())
+
+    if (selectedCategory) params.set('category', selectedCategory)
+    else params.delete('category')
+
+    const currentSort = searchParams.get('sort')
+    if (currentSort) {
+      params.set('sort', currentSort)
+    } else {
+      params.delete('sort')
+    }
+
+    router.push(`/packages?${params.toString()}`)
+  }
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSelectedCategory(value);
+
+    const params = new URLSearchParams(searchParams.toString());
+    
+    if (value) {
+      params.set('category', value);
+    } else {
+      params.delete('category');
+    }
+
+    if (search) params.set('search', search); else params.delete('search');
+    if (location) params.set('location', location); else params.delete('location');
+    params.set('minPrice', minPrice.toString());
+    params.set('maxPrice', maxPrice.toString());
+
+    const currentSort = searchParams.get('sort');
+    if (currentSort) {
+      params.set('sort', currentSort);
+    } else {
+      params.delete('sort');
+    }
+
+    router.push(`/packages?${params.toString()}`); // Push perubahan ke URL
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="max-w-6xl mx-auto p-6">
+      <input
+        type="text"
+        placeholder="Cari Judul"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="border px-3 py-2 rounded w-full mb-4"
+      />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      <input
+        type="text"
+        placeholder="Lokasi"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+        className="border px-3 py-2 rounded w-full mb-4"
+      />
+
+      <div className="mb-2">
+        <label className="block font-medium mb-2">
+          Rentang Harga: {formatRupiah(minPrice)} - {formatRupiah(maxPrice)}
+        </label>
+        <Slider
+          range
+          min={0}
+          max={10000000}
+          step={100000}
+          allowCross={false}
+          value={[minPrice, maxPrice]}
+          onChange={(values: number | number[]) => {
+            if (Array.isArray(values)) {
+              setMinPrice(values[0])
+              setMaxPrice(values[1])
+            }
+          }}
+        />
+      </div>
+
+      <div className='mb-5'>
+        <label className="block mb-1 font-medium">Filter Kategori</label>
+        <select
+          className="border px-3 py-2 rounded mb-4"
+          value={selectedCategory} // <<< Pastikan ini mengikat ke `selectedCategory` state
+          onChange={handleCategoryChange}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          <option value="">Semua Kategori</option>
+          {categories.map((cat) => (
+            <option key={cat._id} value={cat._id}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <button
+        onClick={handleFilter}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-6"
+      >
+        Cari
+      </button>
+
+      <div className="mb-4">
+        <label className="mr-2 font-medium">Sort:</label>
+        <select
+          value={searchParams.get('sort') || ''}
+          onChange={(e) => {
+            const params = new URLSearchParams(searchParams.toString())
+            const value = e.target.value
+
+            if (value) {
+              params.set('sort', value)
+            } else {
+              params.delete('sort')
+            }
+
+            router.push(`/packages?${params.toString()}`)
+          }}
+          className="border px-3 py-2 rounded"
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <option value="">Default</option>
+          <option value="price_asc">Harga Termurah</option>
+          <option value="price_desc">Harga Termahal</option>
+          <option value="newest">Terbaru</option>
+        </select>
+      </div>
+
+      <h1 className="text-3xl font-bold mb-6">Paket Travel Tersedia</h1>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {loading ? (
+          <p>Memuat paket...</p>
+        ) : packages.length > 0 ? (
+          packages.map((pkg) => <PackageCard key={pkg._id} pkg={pkg} />)
+        ) : (
+          <p>Tidak ada paket tersedia saat ini.</p>
+        )}
+      </div>
     </div>
-  );
+  )
 }

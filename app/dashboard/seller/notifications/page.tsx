@@ -43,7 +43,7 @@ const NotificationPage = () => {
           const res = await fetch('/api/notifications/mark-all-as-read', {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sellerId: session.user.id }),
+            body: JSON.stringify({ userId: session.user.id }),
           })
 
           if (res.ok) {

@@ -41,7 +41,7 @@ const AdminNotifications = () => {
             )
             // trigger update icon bell
             if (typeof window !== 'undefined') {
-                const event = new CustomEvent('adminNotificationsRead')
+                const event = new CustomEvent('notificationsRead')
                 window.dispatchEvent(event)
             }
             }

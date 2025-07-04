@@ -22,10 +22,10 @@ const NavbarAdmin = () => {
         const handleRead = () => fetchUnread()
 
         fetchUnread()
-        window.addEventListener('adminNotificationsRead', handleRead)
+        window.addEventListener('notificationsRead', handleRead)
 
         return () => {
-            window.removeEventListener('adminNotificationsRead', handleRead)
+            window.removeEventListener('notificationsRead', handleRead)
         }
     }, [pathname])
 
