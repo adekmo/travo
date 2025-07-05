@@ -1,6 +1,6 @@
 'use client'
 
-import { Bell, LogIn, LogOut, MessageSquare } from 'lucide-react'
+import { Bell, MessageSquare } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -85,7 +85,7 @@ const MainNavbar = () => {
       <Link href="/" className="text-xl font-bold">Travoo Admin</Link>
       
       <div className="flex items-center gap-6">
-        <Link href="/dashboard/admin" className="text-blue-600 underline">
+        {/* <Link href="/dashboard/admin" className="text-blue-600 underline">
           Dashboard
         </Link>
         <Link href="/dashboard/admin/bookings" className="text-blue-600 underline">
@@ -99,7 +99,7 @@ const MainNavbar = () => {
         </Link>
         <Link href="/dashboard/admin/activity" className="text-blue-600 underline">
           Activity Logs
-        </Link>
+        </Link> */}
         <Link href="/dashboard/admin/notifications" className="relative">
           <Bell className="w-6 h-6 text-gray-700 hover:text-blue-600 transition" />
           {hasNotifUnread && (
@@ -111,12 +111,10 @@ const MainNavbar = () => {
         </Link>
         {session ? (
                     <button onClick={handleLogout} className="flex items-center text-gray-700 hover:text-blue-600 transition">
-                        <LogOut className="w-5 h-5" />
                         <p className="ml-1">Logout</p>
                     </button>
                 ) : (
                     <Link href="/auth/signin" className="flex items-center">
-                        <LogIn className="w-5 h-5 text-gray-700 hover:text-blue-600 transition" />
                         <p className="ml-1">Sign-In</p>
                     </Link>
                 )}
@@ -129,7 +127,7 @@ const MainNavbar = () => {
             <Link href="/" className="text-xl font-bold">Travoo</Link>
 
             <div className="flex items-center gap-6">
-                <Link href="/dashboard/seller" className="text-blue-600 underline">
+                {/* <Link href="/dashboard/seller" className="text-blue-600 underline">
                     Dashboard
                 </Link>
                 <Link href="/dashboard/seller/packages" className="text-blue-600 underline">
@@ -140,7 +138,7 @@ const MainNavbar = () => {
                 </Link>
                 <Link href="/dashboard/profile" className="text-blue-600 underline">
                     <p>Profile {session.user.name}</p>    
-                </Link>
+                </Link> */}
 
                 <Link href="/dashboard/seller/chat" className={`relative text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 ${pathname.startsWith('/dashboard/seller/chat') ? 'text-blue-600 font-semibold' : ''}`}>
                     <MessageSquare className="w-6 h-6 inline-block mr-1" /> {/* Menggunakan ikon chat */}
@@ -165,12 +163,10 @@ const MainNavbar = () => {
 
                 {session ? (
                     <button onClick={handleLogout} className="flex items-center text-gray-700 hover:text-blue-600 transition">
-                        <LogOut className="w-5 h-5" />
                         <p className="ml-1">Logout</p>
                     </button>
                 ) : (
                     <Link href="/auth/signin" className="flex items-center">
-                        <LogIn className="w-5 h-5 text-gray-700 hover:text-blue-600 transition" />
                         <p className="ml-1">Sign-In</p>
                     </Link>
                 )}
@@ -182,7 +178,7 @@ const MainNavbar = () => {
         <nav className="flex justify-between items-center px-6 py-4 bg-white shadow">
             <Link href="/" className="text-xl font-bold">Travoo</Link>
                     <div className="flex items-center gap-6">
-                        <Link href="/dashboard/customer" className="text-blue-600 underline">
+                        {/* <Link href="/dashboard/customer" className="text-blue-600 underline">
                             Dashboard
                         </Link>
                         <Link href="/dashboard/customer/bookings" className="text-blue-600 underline">
@@ -190,11 +186,8 @@ const MainNavbar = () => {
                         </Link>
                         <Link href="/dashboard/customer/wishlist" className="text-blue-600 underline mr-2">
                             Wishlists
-                        </Link>
+                        </Link> */}
 
-                        <Link href="/dashboard/profile" className="text-blue-600 underline">
-                            <p>Profile "{session.user.name}"</p>    
-                        </Link>
                         <Link href="/dashboard/customer/chat" className={`relative text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 ${pathname.startsWith('/dashboard/customer/chat') ? 'text-blue-600 font-semibold' : ''}`}>
                             <MessageSquare className="w-6 h-6 inline-block mr-1" />
                             {hasChatUnread && (
@@ -213,15 +206,17 @@ const MainNavbar = () => {
                                 <span className="absolute top-0 right-0 block w-2 h-2 bg-red-600 rounded-full"></span>
                                 </>
                             )}
+                        </Link>
+
+                        <Link href="/dashboard/customer" className="text-blue-600 underline">
+                            <p>Selamat Datang "{session.user.name}"</p>    
                         </Link> 
                         {session ? (
                             <button onClick={handleLogout} className="flex items-center text-gray-700 hover:text-blue-600 transition">
-                                <LogOut className="w-5 h-5" />
                                 <p className="ml-1">Logout</p>
                             </button>
                         ) : (
                             <Link href="/auth/signin" className="flex items-center">
-                                <LogIn className="w-5 h-5 text-gray-700 hover:text-blue-600 transition" />
                                 <p className="ml-1">Sign-In</p>
                             </Link>
                         )}
@@ -233,9 +228,8 @@ const MainNavbar = () => {
         <nav className="flex justify-between items-center px-6 py-4 bg-white shadow">
             <Link href="/" className="text-xl font-bold">Travoo</Link>
                 <div className="flex items-center gap-6">
-                    <Link href="/auth/signin" className="flex items-center">
-                        <LogIn className="w-5 h-5 text-gray-700 hover:text-blue-600 transition" />
-                         <p className="ml-1">Sign-In</p>
+                    <Link href="/auth/signin" className="flex items-center mr-1">
+                         <p className="ml-1">Sign-In / Sign-Up</p>
                     </Link>
                 </div>
         </nav>

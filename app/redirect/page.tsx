@@ -15,7 +15,7 @@ const RedirectPage = () => {
 
         if (role === "admin") router.replace("/dashboard/admin");
         else if (role === "seller") router.replace("/dashboard/seller");
-        else if (role === "customer") router.replace("/dashboard/customer");
+        else if (role === "customer") router.replace("/");
         else router.replace("/auth/signin");
     }, [session, status, router]);
   return (
