@@ -1,237 +1,270 @@
-// 'use client'
+'use client'
 
-// import { useEffect, useState } from 'react'
-// import { useRouter, useSearchParams } from 'next/navigation'
-// import PackageCard from '@/components/PackageCard'
-// import { TravelPackage } from '@/types/travelPackage'
+import { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import PackageCard from '@/components/PackageCard'
+import { TravelPackage } from '@/types/travelPackage'
 
-// import Slider from 'rc-slider'
-// import 'rc-slider/assets/index.css'
-// import { Category } from '@/types/category'
+import Slider from 'rc-slider'
+import 'rc-slider/assets/index.css'
+import { Category } from '@/types/category'
+import { Filter, MapPin, Search } from 'lucide-react'
 
-// const formatRupiah = (value: number) => `Rp${new Intl.NumberFormat('id-ID').format(value)}`
+const formatRupiah = (value: number) => `Rp${new Intl.NumberFormat('id-ID').format(value)}`
 
-// export default function PackagesPage() {
+export default function PackagesPage() {
 
-//   const router = useRouter()
-//   const searchParams = useSearchParams()
+  const router = useRouter()
+  const searchParams = useSearchParams()
 
-//   const [packages, setPackages] = useState<TravelPackage[]>([])
-//   const [loading, setLoading] = useState(false)
+  const [packages, setPackages] = useState<TravelPackage[]>([])
+  const [loading, setLoading] = useState(false)
 
-//   const [search, setSearch] = useState('')
-//   const [location, setLocation] = useState('')
-//   const [minPrice, setMinPrice] = useState<number>(0)
-//   const [maxPrice, setMaxPrice] = useState<number>(10000000)
-//   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '')
-//   const [categories, setCategories] = useState<Category[]>([])
+  const [search, setSearch] = useState('')
+  const [location, setLocation] = useState('')
+  const [minPrice, setMinPrice] = useState<number>(0)
+  const [maxPrice, setMaxPrice] = useState<number>(10000000)
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '')
+  const [categories, setCategories] = useState<Category[]>([])
 
-//   useEffect(() => {
-//     const fetchCategories = async () => {
-//       const res = await fetch('/api/categories');
-//       const data = await res.json();
-//       setCategories(data);
-//     }
-//     fetchCategories();
-//   }, []);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const res = await fetch('/api/categories');
+      const data = await res.json();
+      setCategories(data);
+    }
+    fetchCategories();
+  }, []);
   
-//   const fetchPackages = async () => {
-//     setLoading(true)
-//     const params = new URLSearchParams()
+  const fetchPackages = async () => {
+    setLoading(true)
+    const params = new URLSearchParams()
 
-//     // Ambil semua filter dari `searchParams` yang merupakan representasi URL terkini
-//     const currentSearch = searchParams.get('search') || '';
-//     const currentLoc = searchParams.get('location') || '';
-//     const currentMinPrice = Number(searchParams.get('minPrice')) || 0;
-//     const currentMaxPrice = Number(searchParams.get('maxPrice')) || 10000000;
-//     const currentCategory = searchParams.get('category') || ''; 
+    // Ambil semua filter dari `searchParams` yang merupakan representasi URL terkini
+    const currentSearch = searchParams.get('search') || '';
+    const currentLoc = searchParams.get('location') || '';
+    const currentMinPrice = Number(searchParams.get('minPrice')) || 0;
+    const currentMaxPrice = Number(searchParams.get('maxPrice')) || 10000000;
+    const currentCategory = searchParams.get('category') || ''; 
 
-//     if (currentSearch) params.set('search', currentSearch);
-//     if (currentLoc) params.set('location', currentLoc);
-//     if (currentMinPrice) params.set('minPrice', currentMinPrice.toString());
-//     if (currentMaxPrice) params.set('maxPrice', currentMaxPrice.toString());
-//     if (currentCategory) params.set('category', currentCategory); // <<< Tambahkan kategori ke params
+    if (currentSearch) params.set('search', currentSearch);
+    if (currentLoc) params.set('location', currentLoc);
+    if (currentMinPrice) params.set('minPrice', currentMinPrice.toString());
+    if (currentMaxPrice) params.set('maxPrice', currentMaxPrice.toString());
+    if (currentCategory) params.set('category', currentCategory); // <<< Tambahkan kategori ke params
 
-//     const sort = searchParams.get('sort') || '';
-//     if (sort) params.set('sort', sort);
+    const sort = searchParams.get('sort') || '';
+    if (sort) params.set('sort', sort);
 
-//     try {
-//       const res = await fetch(`/api/packages?${params.toString()}`);
-//       if (res.ok) {
-//         const data = await res.json();
-//         setPackages(data);
-//       } else {
-//         alert('Gagal memuat paket');
-//       }
-//     } catch (error: any) { 
-//       console.error('Error fetching packages:', error);
-//       alert(`Gagal memuat paket: ${error.message || 'Terjadi kesalahan.'}`);
-//       setPackages([]);
-//     } finally {
-//       setLoading(false);
-//     }
-//   }
+    try {
+      const res = await fetch(`/api/packages?${params.toString()}`);
+      if (res.ok) {
+        const data = await res.json();
+        setPackages(data);
+      } else {
+        alert('Gagal memuat paket');
+      }
+    } catch (error: any) { 
+      console.error('Error fetching packages:', error);
+      alert(`Gagal memuat paket: ${error.message || 'Terjadi kesalahan.'}`);
+      setPackages([]);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-//   useEffect(() => {
-//     // Sinkronkan state lokal dengan nilai dari URL saat `searchParams` berubah
-//     setSearch(searchParams.get('search') || '');
-//     setLocation(searchParams.get('location') || '');
-//     setMinPrice(Number(searchParams.get('minPrice')) || 0);
-//     setMaxPrice(Number(searchParams.get('maxPrice')) || 10000000);
-//     setSelectedCategory(searchParams.get('category') || ''); //
+  useEffect(() => {
+    // Sinkronkan state lokal dengan nilai dari URL saat `searchParams` berubah
+    setSearch(searchParams.get('search') || '');
+    setLocation(searchParams.get('location') || '');
+    setMinPrice(Number(searchParams.get('minPrice')) || 0);
+    setMaxPrice(Number(searchParams.get('maxPrice')) || 10000000);
+    setSelectedCategory(searchParams.get('category') || ''); //
 
-//     fetchPackages();
-//   }, [searchParams.toString()]);
+    fetchPackages();
+  }, [searchParams.toString()]);
 
-//   const handleFilter = () => {
-//     const params = new URLSearchParams()
+  const handleFilter = () => {
+    const params = new URLSearchParams()
     
-//     if (search) params.set('search', search)
-//     else params.delete('search')
+    if (search) params.set('search', search)
+    else params.delete('search')
 
-//     if (location) params.set('location', location)
-//     else params.delete('location')
+    if (location) params.set('location', location)
+    else params.delete('location')
 
-//     params.set('minPrice', minPrice.toString())
-//     params.set('maxPrice', maxPrice.toString())
+    params.set('minPrice', minPrice.toString())
+    params.set('maxPrice', maxPrice.toString())
 
-//     if (selectedCategory) params.set('category', selectedCategory)
-//     else params.delete('category')
+    if (selectedCategory) params.set('category', selectedCategory)
+    else params.delete('category')
 
-//     const currentSort = searchParams.get('sort')
-//     if (currentSort) {
-//       params.set('sort', currentSort)
-//     } else {
-//       params.delete('sort')
-//     }
+    const currentSort = searchParams.get('sort')
+    if (currentSort) {
+      params.set('sort', currentSort)
+    } else {
+      params.delete('sort')
+    }
 
-//     router.push(`/packages?${params.toString()}`)
-//   }
+    router.push(`/packages?${params.toString()}`)
+  }
 
-//   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-//     const value = e.target.value;
-//     setSelectedCategory(value);
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSelectedCategory(value);
 
-//     const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams.toString());
     
-//     if (value) {
-//       params.set('category', value);
-//     } else {
-//       params.delete('category');
-//     }
+    if (value) {
+      params.set('category', value);
+    } else {
+      params.delete('category');
+    }
 
-//     if (search) params.set('search', search); else params.delete('search');
-//     if (location) params.set('location', location); else params.delete('location');
-//     params.set('minPrice', minPrice.toString());
-//     params.set('maxPrice', maxPrice.toString());
+    if (search) params.set('search', search); else params.delete('search');
+    if (location) params.set('location', location); else params.delete('location');
+    params.set('minPrice', minPrice.toString());
+    params.set('maxPrice', maxPrice.toString());
 
-//     const currentSort = searchParams.get('sort');
-//     if (currentSort) {
-//       params.set('sort', currentSort);
-//     } else {
-//       params.delete('sort');
-//     }
+    const currentSort = searchParams.get('sort');
+    if (currentSort) {
+      params.set('sort', currentSort);
+    } else {
+      params.delete('sort');
+    }
 
-//     router.push(`/packages?${params.toString()}`); // Push perubahan ke URL
-//   };
+    router.push(`/packages?${params.toString()}`); // Push perubahan ke URL
+  };
 
-//   return (
-//     <div className="max-w-6xl mx-auto p-6">
-//       <input
-//         type="text"
-//         placeholder="Cari Judul"
-//         value={search}
-//         onChange={(e) => setSearch(e.target.value)}
-//         className="border px-3 py-2 rounded w-full mb-4"
-//       />
+  return (
+    <div className="max-w-6xl mx-auto p-6">
+        {/* search & filter */}
+      <section className="py-16 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              Cari Paket Wisata Impianmu
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Gunakan filter pencarian untuk menemukan paket wisata yang sesuai
+              dengan preferensi dan budget Anda.
+            </p>
+          </div>
+          {/* <SearchFilters /> */}
+          <div className='rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-4xl mx-auto'>
+            <div className='p-6'>
+                <div className='flex justify-between'>
+                    <div>
+                        <label className="text-sm font-medium text-foreground mb-2 flex items-center gap-2"><Search className="h-4 w-4" />Kata Kunci</label>
+                        <input
+                            type="text"
+                            placeholder="Cari destinasi atau nama paket..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="border px-3 py-2 rounded w-full mb-4"
+                        />
+                    </div>
+                    <div>
+                        <label className="text-sm font-medium text-foreground mb-2 flex items-center gap-2"><MapPin className="h-4 w-4" />Lokasi Tujuan</label>
+                        <input
+                            type="text"
+                            placeholder="Bandung..."
+                            value={location}
+                            onChange={(e) => setLocation(e.target.value)}
+                            className="border px-3 py-2 rounded w-full mb-4"
+                        />
+                    </div>
+                    <div>
+                        <label className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
+                        <Filter className="h-4 w-4" />
+                        Kategori
+                        </label>
+                        <select
+                        className="border px-3 py-2 rounded mb-4"
+                        value={selectedCategory} // <<< Pastikan ini mengikat ke `selectedCategory` state
+                        onChange={handleCategoryChange}
+                        >
+                        <option value="">Semua Kategori</option>
+                        {categories.map((cat) => (
+                            <option key={cat._id} value={cat._id}>
+                            {cat.name}
+                            </option>
+                        ))}
+                        </select>
+                    </div>
+                </div>
+                <div className="my-6 space-y-3">
+                    <label className="text-sm font-medium text-foreground flex items-center gap-2">
+                        Rentang Harga: {formatRupiah(minPrice)} - {formatRupiah(maxPrice)}
+                    </label>
+                    <Slider
+                        range
+                        min={0}
+                        max={10000000}
+                        step={100000}
+                        allowCross={false}
+                        value={[minPrice, maxPrice]}
+                        onChange={(values: number | number[]) => {
+                            if (Array.isArray(values)) {
+                            setMinPrice(values[0])
+                            setMaxPrice(values[1])
+                            }
+                        }}
+                    />
+                </div>
+                <div className='flex justify-center'> 
+                        <button
+                            onClick={handleFilter}
+                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-6 flex items-center gap-2"
+                        >
+                            <Search className="h-4 w-4 mr-2" />
+                            Cari Paket
+                        </button>
+                </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-//       <input
-//         type="text"
-//         placeholder="Lokasi"
-//         value={location}
-//         onChange={(e) => setLocation(e.target.value)}
-//         className="border px-3 py-2 rounded w-full mb-4"
-//       />
+      <div className='flex justify-between'>
+        <h1 className="text-3xl font-bold mb-6">Paket Travel Tersedia</h1>
+        <div>
+                    <label className="text-sm font-medium text-foreground mb-2 items-center mr-2">
+                        Sort :
+                    </label>
+                    <select
+                    value={searchParams.get('sort') || ''}
+                    onChange={(e) => {
+                        const params = new URLSearchParams(searchParams.toString())
+                        const value = e.target.value
 
-//       <div className="mb-2">
-//         <label className="block font-medium mb-2">
-//           Rentang Harga: {formatRupiah(minPrice)} - {formatRupiah(maxPrice)}
-//         </label>
-//         <Slider
-//           range
-//           min={0}
-//           max={10000000}
-//           step={100000}
-//           allowCross={false}
-//           value={[minPrice, maxPrice]}
-//           onChange={(values: number | number[]) => {
-//             if (Array.isArray(values)) {
-//               setMinPrice(values[0])
-//               setMaxPrice(values[1])
-//             }
-//           }}
-//         />
-//       </div>
+                        if (value) {
+                        params.set('sort', value)
+                        } else {
+                        params.delete('sort')
+                        }
 
-//       <div className='mb-5'>
-//         <label className="block mb-1 font-medium">Filter Kategori</label>
-//         <select
-//           className="border px-3 py-2 rounded mb-4"
-//           value={selectedCategory} // <<< Pastikan ini mengikat ke `selectedCategory` state
-//           onChange={handleCategoryChange}
-//         >
-//           <option value="">Semua Kategori</option>
-//           {categories.map((cat) => (
-//             <option key={cat._id} value={cat._id}>
-//               {cat.name}
-//             </option>
-//           ))}
-//         </select>
-//       </div>
+                        router.push(`/packages?${params.toString()}`)
+                    }}
+                    className="border px-3 py-2 rounded"
+                    >
+                    <option value="">Default</option>
+                    <option value="price_asc">Harga Termurah</option>
+                    <option value="price_desc">Harga Termahal</option>
+                    <option value="newest">Terbaru</option>
+                    </select>
+                </div>
+      </div>
 
-//       <button
-//         onClick={handleFilter}
-//         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-6"
-//       >
-//         Cari
-//       </button>
-
-//       <div className="mb-4">
-//         <label className="mr-2 font-medium">Sort:</label>
-//         <select
-//           value={searchParams.get('sort') || ''}
-//           onChange={(e) => {
-//             const params = new URLSearchParams(searchParams.toString())
-//             const value = e.target.value
-
-//             if (value) {
-//               params.set('sort', value)
-//             } else {
-//               params.delete('sort')
-//             }
-
-//             router.push(`/packages?${params.toString()}`)
-//           }}
-//           className="border px-3 py-2 rounded"
-//         >
-//           <option value="">Default</option>
-//           <option value="price_asc">Harga Termurah</option>
-//           <option value="price_desc">Harga Termahal</option>
-//           <option value="newest">Terbaru</option>
-//         </select>
-//       </div>
-
-//       <h1 className="text-3xl font-bold mb-6">Paket Travel Tersedia</h1>
-
-//       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-//         {loading ? (
-//           <p>Memuat paket...</p>
-//         ) : packages.length > 0 ? (
-//           packages.map((pkg) => <PackageCard key={pkg._id} pkg={pkg} />)
-//         ) : (
-//           <p>Tidak ada paket tersedia saat ini.</p>
-//         )}
-//       </div>
-//     </div>
-//   )
-// }
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {loading ? (
+          <p>Memuat paket...</p>
+        ) : packages.length > 0 ? (
+          packages.map((pkg) => <PackageCard key={pkg._id} pkg={pkg} />)
+        ) : (
+          <p>Tidak ada paket tersedia saat ini.</p>
+        )}
+      </div>
+    </div>
+  )
+}
