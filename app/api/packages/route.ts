@@ -1,4 +1,5 @@
 import { connectDB } from '@/lib/mongodb'
+import Review from '@/models/Review'
 import TravelPackage from '@/models/TravelPackage'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -33,8 +34,21 @@ export async function GET(req: NextRequest) {
     const packages = await TravelPackage.find(query)
           .populate('category', 'name')
           .sort(sortQuery)
+          .lean()
+    
+    const packagesWithRating = await Promise.all(
+      packages.map(async (pkg) => {
+        const reviews = await Review.find({ package: pkg._id })
+        const totalRating = reviews.reduce((sum, r) => sum + r.rating, 0)
+        const averageRating = reviews.length ? totalRating / reviews.length : 0
+        return {
+          ...pkg,
+          averageRating: Number(averageRating.toFixed(1)),
+        }
+      })
+    )
 
-    return NextResponse.json(packages)
+    return NextResponse.json(packagesWithRating)
   } catch (error) {
     console.error(error)
     return NextResponse.json({ message: "Internal Server Error, silahkan coba beberapa saat lagi"}, { status: 500 })

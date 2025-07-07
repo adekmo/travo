@@ -1,6 +1,6 @@
 'use client'
 
-import { Bell, MessageSquare } from 'lucide-react'
+import { Bell, MapPlusIcon, MessageSquare, UserCircleIcon } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -82,7 +82,12 @@ const MainNavbar = () => {
   if(session?.user?.role === "admin") {
     return (
         <nav className="flex justify-between items-center px-6 py-4 bg-white shadow">
-      <Link href="/packages" className="text-xl font-bold">Travoo Admin</Link>
+            <Link href="/packages" className="flex items-center gap-2">
+              <div className="bg-primary rounded-lg p-2">
+                <MapPlusIcon className="h-6 w-6 text-white" />
+              </div>
+              <span className="text-xl font-bold text-foreground">Travoo</span>
+            </Link>
       
       <div className="flex items-center gap-6">
         {/* <Link href="/dashboard/admin" className="text-blue-600 underline">
@@ -124,7 +129,12 @@ const MainNavbar = () => {
   } else if(session?.user?.role === 'seller'){
     return (
         <nav className="flex justify-between items-center px-6 py-4 bg-white shadow">
-            <Link href="/packages" className="text-xl font-bold">Travoo</Link>
+            <Link href="/packages" className="flex items-center gap-2">
+              <div className="bg-primary rounded-lg p-2">
+                <MapPlusIcon className="h-6 w-6 text-white" />
+              </div>
+              <span className="text-xl font-bold text-foreground">Travoo</span>
+            </Link>
 
             <div className="flex items-center gap-6">
                 {/* <Link href="/dashboard/seller" className="text-blue-600 underline">
@@ -176,7 +186,12 @@ const MainNavbar = () => {
   } else if(session?.user?.role === 'customer'){
     return (
         <nav className="flex justify-between items-center px-6 py-4 bg-white shadow">
-            <Link href="/packages" className="text-xl font-bold">Travoo</Link>
+            <Link href="/packages" className="flex items-center gap-2">
+              <div className="bg-primary rounded-lg p-2">
+                <MapPlusIcon className="h-6 w-6 text-white" />
+              </div>
+              <span className="text-xl font-bold text-foreground">Travoo</span>
+            </Link>
                     <div className="flex items-center gap-6">
                         {/* <Link href="/dashboard/customer" className="text-blue-600 underline">
                             Dashboard
@@ -208,8 +223,9 @@ const MainNavbar = () => {
                             )}
                         </Link>
 
-                        <Link href="/dashboard/customer" className="text-blue-600 underline">
-                            <p>Selamat Datang "{session.user.name}"</p>    
+                        <Link href="/dashboard/customer" className="flex gap-2 ">
+                          <UserCircleIcon className="w-6 h-6 text-gray-700 hover:text-blue-600 transition " />
+                            <p className="text-gray-700">{session.user.name}</p>    
                         </Link> 
                         {session ? (
                             <button onClick={handleLogout} className="flex items-center text-gray-700 hover:text-blue-600 transition">
@@ -226,7 +242,12 @@ const MainNavbar = () => {
   } else{
     return (
         <nav className="flex justify-between items-center px-6 py-4 bg-white shadow">
-            <Link href="/packages" className="text-xl font-bold">Travoo</Link>
+            <Link href="/packages" className="flex items-center gap-2">
+              <div className="bg-primary rounded-lg p-2">
+                <MapPlusIcon className="h-6 w-6 text-white" />
+              </div>
+              <span className="text-xl font-bold text-foreground">Travoo</span>
+            </Link>
                 <div className="flex items-center gap-6">
                     <Link href="/auth/signin" className="flex items-center mr-1">
                          <p className="ml-1">Sign-In / Sign-Up</p>

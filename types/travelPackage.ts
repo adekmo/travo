@@ -13,4 +13,5 @@ export interface TravelPackage  {
     _id: string
     name: string
   }
+  averageRating?: number
 };
