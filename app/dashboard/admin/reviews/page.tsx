@@ -59,15 +59,30 @@ const AdminReviewsPage = () => {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">Moderasi Review</h1>
-      <ul className="space-y-4">
+      <div className="space-y-4">
         {reviews.length === 0 && <p>Belum ada review.</p>}
         {reviews.map((r: any) => (
-          <li key={r._id} className="border p-4 rounded shadow text-sm">
-            <p><strong>Customer:</strong> {r.customer?.name || 'N/A'}</p>
-            <p><strong>Paket:</strong> {r.package?.title || 'N/A'}</p>
-            <p><strong>Rating:</strong> {r.rating} / 5</p>
-            <p><strong>Komentar:</strong> {r.comment || '-'}</p>
-            <p className="text-xs text-gray-500">{new Date(r.createdAt).toLocaleString()}</p>
+          <div key={r._id} className="p-4 bg-muted/50 rounded-lg space-y-2">
+            <div className='flex items-center justify-between'>
+              <h4 className="font-medium text-sm">
+                {r.package?.title || 'N/A'}
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                Rating: {r.rating} / 5
+              </p>
+            </div>
+
+              <p className="text-sm text-muted-foreground">
+                {r.comment || '-'} - {r.customer?.name || 'N/A'}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {new Date(r.createdAt).toLocaleString()}
+              </p>
+              {/* <p><strong>Customer:</strong> {r.customer?.name || 'N/A'}</p>
+              <p><strong>Paket:</strong> {r.package?.title || 'N/A'}</p>
+              <p><strong>Rating:</strong> {r.rating} / 5</p>
+              <p><strong>Komentar:</strong> {r.comment || '-'}</p>
+              <p className="text-xs text-gray-500">{new Date(r.createdAt).toLocaleString()}</p> */}
             <div className="mt-2 flex gap-2">
                 {!r.hidden ? (
                   <>
@@ -93,9 +108,9 @@ const AdminReviewsPage = () => {
                   </button>
                 )}
             </div>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   )
 }

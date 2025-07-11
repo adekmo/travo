@@ -1,6 +1,7 @@
 'use client'
 
 import { Stat } from '@/types/stat'
+import { Calendar, LucideIcon, Package, UserCheck, Users2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 const StatsCard = () => {
@@ -21,11 +22,11 @@ const StatsCard = () => {
     if (!stats) return <p className="mb-4">Memuat statistik...</p>
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <Card title="Total Booking" value={stats.totalBookings} />
-        <Card title="Total Paket" value={stats.totalPackages} />
-        <Card title="Total Customer" value={stats.totalCustomers} />
-        <Card title="Total Seller" value={stats.totalSellers} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <Card title="Total Booking" value={stats.totalBookings} icon={Calendar} />
+        <Card title="Total Paket" value={stats.totalPackages} icon={Package} />
+        <Card title="Total Customer" value={stats.totalCustomers} icon={Users2} />
+        <Card title="Total Seller" value={stats.totalSellers} icon={UserCheck} />
       </div>
       <div className='bg-white rounded-lg shadow p-4 mb-6'>
         <h2 className="text-lg font-semibold mb-2">Booking Berdasarkan Status</h2>
@@ -41,10 +42,15 @@ const StatsCard = () => {
   )
 }
 
-const Card = ({ title, value }: { title: string; value: number; }) => (
-  <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center justify-centerp-4 bg-white shadow rounded border text-center">
-    <h3 className="text-sm text-gray-500">{title}</h3>
-    <p className="text-2xl font-bold text-gray-800">{value}</p>
+const Card = ({ title, value, icon: Icon }: { title: string; value: number; icon: LucideIcon  }) => (
+  <div className='bg-blue-100 p-5 rounded'>
+    <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <h3 className="text-sm text-gray-500">{title}</h3>
+      <Icon className="h-4 w-4 text-muted-foreground" />
+    </div>
+    <div>
+      <div className="text-2xl font-bold">{value}</div>
+    </div>
   </div>
 )
 

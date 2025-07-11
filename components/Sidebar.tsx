@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Home, Settings, Package, Users, Menu, X, MessageSquare, Bell } from 'lucide-react';
+import { Home, Settings, Package, Users, Menu, X, MessageSquare, Bell, LayoutDashboard, Calendar } from 'lucide-react';
 
 interface NavItem {
     name: string;
@@ -39,8 +39,8 @@ const Sidebar = ({ children, role}: SidebarProps) => {
         switch (userRole) {
             case 'admin':
                 return [
-                    { name: 'Dashboard', href: '/dashboard/admin', icon: Home },
-                    { name: 'Bookings', href: '/dashboard/admin/bookings', icon: Package },
+                    { name: 'Dashboard', href: '/dashboard/admin', icon: LayoutDashboard },
+                    { name: 'Bookings', href: '/dashboard/admin/bookings', icon: Calendar },
                     { name: 'Users', href: '/dashboard/admin/users', icon: Users },
                     { name: 'Reviews', href: '/dashboard/admin/reviews', icon: Bell },
                     { name: 'Activity Logs', href: '/dashboard/admin/activity', icon: Settings },
@@ -56,8 +56,8 @@ const Sidebar = ({ children, role}: SidebarProps) => {
                 return [
                     { name: 'Dashboard', href: '/dashboard/customer', icon: Home },
                     { name: 'Bookings', href: '/dashboard/customer/bookings', icon: Package },
-                    { name: 'Wishlists', href: '/dashboard/customer/wishlist', icon: Bell }, // Contoh ikon
-                    { name: 'Profile', href: '/dashboard/profile', icon: Users }, // Contoh ikon
+                    { name: 'Wishlists', href: '/dashboard/customer/wishlist', icon: Bell },
+                    { name: 'Profile', href: '/dashboard/profile', icon: Users },
                 ];
             default:
                 return [];

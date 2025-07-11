@@ -41,21 +41,23 @@ const AdminDashboardBookingPage = () => {
       ) : bookings.length === 0 ? (
         <p>Tidak ada Paket Booking</p>
       ) : (
-        <ul className="space-y-4">
-        {bookings.map((booking: any) => (
-          <li key={booking._id} className="border p-4 rounded shadow-sm">
-            <p><strong>Customer:</strong> {booking.customerId?.name || '-'}</p>
-            <p><strong>Paket:</strong> {booking.packageId?.title || '-'}</p>
-            <p><strong>Status:</strong> {booking.status}</p>
-            <button
-              className="mt-2 px-3 py-1 bg-red-500 text-white rounded"
-              onClick={() => handleDelete(booking._id)}
-            >
-              Hapus Booking
-            </button>
-          </li>
-        ))}
-      </ul>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
+          {/* <ul className="space-y-4"> */}
+          {bookings.map((booking: any) => (
+            <div key={booking._id} className="bg-blue-100 border p-4 rounded shadow-sm">
+              <p><strong>Customer:</strong> {booking.customerId?.name || '-'}</p>
+              <p><strong>Paket:</strong> {booking.packageId?.title || '-'}</p>
+              <p><strong>Status:</strong> {booking.status}</p>
+              <button
+                className="mt-2 px-3 py-1 bg-red-500 text-white rounded"
+                onClick={() => handleDelete(booking._id)}
+              >
+                Hapus Booking
+              </button>
+            </div>
+          ))}
+          {/* </ul> */}
+        </div>
       )   
       }
     </div>
