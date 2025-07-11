@@ -3,7 +3,7 @@
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
 import { format, parse, startOfWeek, getDay } from 'date-fns'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { id } from 'date-fns/locale/id'
+import  id  from 'date-fns/locale/id'
 import { CalendarEvent } from '@/types/calendarEvents'
 import { useState } from 'react'
 import { Booking } from '@/types/booking'
@@ -41,7 +41,7 @@ const BookingCalendar = ({ bookings, events }: { bookings: Booking[], events: Ca
 
 
   return (
-    <div className="p-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-6 my-8 border rounded shadow p-4">
       <Calendar
         localizer={localizer}
         events={events}
@@ -57,7 +57,7 @@ const BookingCalendar = ({ bookings, events }: { bookings: Booking[], events: Ca
           return { style: { backgroundColor: bgColor, color: 'white' } }
         }}
       />
-      <div className="mt-6">
+      <div className="">
         <h2 className="text-lg font-semibold mb-2">Keterangan Warna:</h2>
         <div className="flex gap-4">
           <div className="flex items-center gap-2">

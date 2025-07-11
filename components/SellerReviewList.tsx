@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { Review } from "@/types/review"
 import Link from "next/link"
+import { Star } from "lucide-react"
 
 interface Props {
   limit?: number
@@ -39,17 +40,26 @@ const SellerReviewList = ({ limit, showSeeMore }: Props) => {
   return (
     <div>
       <h2 className="text-xl font-semibold mb-4">Ulasan dari Customer</h2>
-      <ul className="space-y-4">
+      <div className="space-y-4">
         {reviews.map((review) => (
-          <li key={review._id} className="p-4 border rounded shadow-sm">
-            <p className="text-sm text-gray-500">{new Date(review.createdAt).toLocaleDateString("id-ID")}</p>
-            <p><strong>Paket:</strong> {review.package?.title}</p>
-            <p><strong>Customer:</strong> {review.customer?.name}</p>
-            <p className="text-yellow-500">Rating: {review.rating} / 5</p>
-            {review.comment && <p className="italic">"{review.comment}"</p>}
-          </li>
+          <div key={review._id} className="p-4 bg-muted/50 rounded-lg space-y-2">
+            <div className='flex items-center justify-between'>
+              <h4 className="font-medium text-sm">
+                {review.package?.title || 'N/A'}
+              </h4>
+              <p className="text-sm text-muted-foreground flex items-center gap-3">
+                <Star className="h-4 w-4 text-yellow-500" /> {review.rating} / 5
+              </p>
+            </div>
+            <p className="text-sm text-muted-foreground">
+                <span className="italic">{review.comment || '-'}</span> - {review.customer?.name || 'N/A'}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {new Date(review.createdAt).toLocaleString()}
+              </p>
+          </div>
         ))}
-      </ul>
+      </div>
 
       {showSeeMore && hasMore && (
         <div className="mt-4">

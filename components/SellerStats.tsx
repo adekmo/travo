@@ -1,5 +1,6 @@
 'use client'
 
+import { CheckCheck, CheckCircle, DollarSign, Package, Star, ViewIcon, Watch } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const SellerStats = () => {
@@ -20,34 +21,69 @@ const SellerStats = () => {
   if (loading) return <p>Memuat statistik...</p>;
   if (!stats) return <p>Tidak ada data statistik.</p>;
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
-      <div className="p-4 border rounded shadow">
-        <h3 className="font-semibold">Total Paket</h3>
-        <p className="text-xl">{stats.totalPackages}</p>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="bg-blue-100 p-5 rounded">
+        <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <p className="text-sm font-medium">Total Paket</p>
+          <Package className="h-4 w-4 text-muted-foreground" />
+        </div>
+        <div>
+          <div className="text-2xl font-bold">{stats.totalPackages}</div>
+        </div>
       </div>
-      <div className="p-4 border rounded shadow">
-        <h3 className="font-semibold">Semua Booking</h3>
-        <p className="text-xl">{stats.totalBookings}</p>
+      <div className="bg-blue-100 p-5 rounded">
+        <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <p className="text-sm font-medium">Semua Booking</p>
+          <CheckCheck className="h-4 w-4 text-muted-foreground" />
+        </div>
+        <div>
+          <div className="text-2xl font-bold">{stats.totalBookings}</div>
+        </div>
       </div>
-      <div className="p-4 border rounded shadow">
-        <h3 className="font-semibold">Booking (Pending)</h3>
-        <p className="text-xl">{stats.pendingBookings}</p>
+      <div className="bg-blue-100 p-5 rounded">
+        <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <p className="text-sm font-medium">Booking (Pending)</p>
+          <Watch className="h-4 w-4 text-muted-foreground" />
+        </div>
+        <div>
+          <div className="text-2xl font-bold">{stats.pendingBookings}</div>
+        </div>
       </div>
-      <div className="p-4 border rounded shadow">
-        <h3 className="font-semibold">Booking (Confirmed)</h3>
-        <p className="text-xl">{stats.confirmedBookings}</p>
+      <div className="bg-blue-100 p-5 rounded">
+        <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <p className="text-sm font-medium">Booking (Confirmed)</p>
+          <CheckCircle className="h-4 w-4 text-muted-foreground" />
+        </div>
+        <div>
+          <div className="text-2xl font-bold">{stats.confirmedBookings}</div>
+        </div>
       </div>
-      <div className="p-4 border rounded shadow">
-        <h3 className="font-semibold">Total Pendapatan</h3>
-        <p className="text-xl">Rp {stats.totalRevenue.toLocaleString("id-ID")}</p>
+      <div className="bg-blue-100 p-5 rounded">
+        <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <p className="text-sm font-medium">Total Pendapatan</p>
+          <DollarSign className="h-4 w-4 text-muted-foreground" />
+        </div>
+        <div>
+          <div className="text-2xl font-bold">Rp {stats.totalRevenue.toLocaleString("id-ID")}</div>
+        </div>
       </div>
-      <div className="p-4 border rounded shadow">
-        <h3 className="font-semibold">Total Review</h3>
-        <p className="text-xl">{stats.totalReviews}</p>
+      <div className="bg-blue-100 p-5 rounded">
+        <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <p className="text-sm font-medium">Total Reviews</p>
+          <ViewIcon className="h-4 w-4 text-muted-foreground" />
+        </div>
+        <div>
+          <div className="text-2xl font-bold">{stats.totalReviews}</div>
+        </div>
       </div>
-      <div className="p-4 border rounded shadow">
-        <h3 className="font-semibold">Rata-rata Rating</h3>
-        <p className="text-xl">{stats.avgRating} / 5</p>
+      <div className="bg-blue-100 p-5 rounded">
+        <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <p className="text-sm font-medium">Rata-Rata Rating</p>
+          <Star className="h-4 w-4 text-muted-foreground" />
+        </div>
+        <div>
+          <div className="text-2xl font-bold">{stats.avgRating} / 5</div>
+        </div>
       </div>
     </div>
   )

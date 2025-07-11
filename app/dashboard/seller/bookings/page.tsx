@@ -1,6 +1,7 @@
 'use client'
 
 import { SellerBooking } from "@/types/sellerBooking"
+import { Check, X } from "lucide-react"
 import { useEffect, useState } from "react"
 
 const SellerBookingPage = () => {
@@ -42,7 +43,7 @@ const SellerBookingPage = () => {
 
     if (loading) return <div className="p-6">Loading...</div>
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <div className="grid grid-cols-1 gap-6 mb-8">
       <h1 className="text-2xl font-bold mb-4">Booking Masuk</h1>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <input
@@ -66,7 +67,7 @@ const SellerBookingPage = () => {
       {bookings.length === 0 ? (
         <p>Belum ada booking yang masuk.</p>
       ) : (
-        <ul className="space-y-4">
+        <div className="space-y-4">
           {bookings.filter((book) => {
             const matchesSearch =
               book.customerId.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -78,8 +79,33 @@ const SellerBookingPage = () => {
             return matchesSearch && matchesStatus
           })
           .map((booking) => (
-            <li key={booking._id} className="border rounded p-4 shadow-sm">
-              <h2 className="text-lg font-semibold">{booking.packageId.title}</h2>
+            <div key={booking._id} className="flex items-center justify-between p-5 bg-muted/50 rounded-lg">
+              <div className="flex-1">
+                <p className="font-medium text-sm">
+                  {booking.packageId.title}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {booking.customerId.name} • {booking.numberOfPeople} orang
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {booking.note}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {new Date(booking.date).toLocaleDateString()}
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="font-medium text-sm">
+                  Rp {booking.packageId.price * booking.numberOfPeople}
+                </p>
+                <span
+                    className={`text-xs px-2 py-1 rounded-full ${booking.status === "confirmed" ? "text-green-600" :
+                  booking.status === "cancelled" ? "text-red-600" : "text-yellow-600"}`}
+                >
+                  {booking.status}
+                </span>
+              </div>
+              {/* <h2 className="text-lg font-semibold">{booking.packageId.title}</h2>
               <p><strong>Lokasi:</strong> {booking.packageId.location}</p>
               <p><strong>Customer:</strong> {booking.customerId.name} ({booking.customerId.email})</p>
               <p><strong>Tanggal Booking:</strong> {new Date(booking.date).toLocaleDateString()}</p>
@@ -93,26 +119,26 @@ const SellerBookingPage = () => {
                 }>
                   {booking.status}
                 </span>
-              </p>
+              </p> */}
               {booking.status === "pending" && (
-                <div className="mt-2 space-x-2">
+                <div className="ml-5 mt-2 space-x-2">
                   <button
                     onClick={() => handleUpdateStatus(booking._id, "confirmed")}
-                    className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700"
+                    className="font-medium text-white text-sm px-3 py-1 bg-green-600 rounded hover:bg-green-700"
                   >
-                    Konfirmasi
+                    <Check className="h-4 w-4" />
                   </button>
                   <button
                     onClick={() => handleUpdateStatus(booking._id, "cancelled")}
-                    className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                    className=" font-medium text-white text-sm px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
                   >
-                    Batalkan
+                    <X className="h-4 w-4" />
                   </button>
                 </div>
               )}
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   )
