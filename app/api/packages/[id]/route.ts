@@ -8,7 +8,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
   try {
     const travelPackage = await TravelPackage.findById(params.id)
-      .populate('seller', 'name');
+      .populate('seller', 'name')
+      .populate('category', 'name');
 
     if (!travelPackage) {
       return NextResponse.json({ message: "Paket tidak ditemukan" }, { status: 404 });

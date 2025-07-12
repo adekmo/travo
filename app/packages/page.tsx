@@ -210,7 +210,7 @@ export default function PackagesPage() {
         </div>
       </section>
         {/* search & filter */}
-      <section className="py-16 relative">
+      <section className="pt-10 pb-5 relative">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-4">
@@ -361,9 +361,9 @@ export default function PackagesPage() {
 
           {/* Card */}
           <div className='flex justify-between'>
-            <h1 className="text-3xl font-bold mb-6">Paket Travel Tersedia</h1>
+            <h1 className="text-3xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-blue-800 bg-clip-text text-transparent dark:from-white dark:to-blue-200">Paket Travel Tersedia</h1>
             <div>
-                        <label className="text-sm font-medium text-foreground mb-2 items-center mr-2">
+                        <label className="text-sm font-semibold text-gray-700 dark:text-gray-200 items-center mr-2">
                             Sort :
                         </label>
                         <select
@@ -380,7 +380,7 @@ export default function PackagesPage() {
 
                             router.push(`/packages?${params.toString()}`)
                         }}
-                        className="border px-3 py-2 rounded"
+                        className="border px-3 py-2 rounded pl-4 pr-10 h-12 border-2 border-gray-200 focus:border-blue-500 dark:border-gray-700 dark:focus:border-blue-400 transition-colors"
                         >
                         <option value="">Default</option>
                         <option value="price_asc">Harga Termurah</option>
