@@ -82,11 +82,18 @@ const MainNavbar = () => {
   if(session?.user?.role === "admin") {
     return (
         <nav className="flex justify-between items-center px-6 py-4 bg-white shadow">
-            <Link href="/packages" className="flex items-center gap-2">
-              <div className="bg-primary rounded-lg p-2">
+            <Link href="/packages" className="flex items-center gap-3 group">
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-2.5 shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
                 <MapPlusIcon className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-foreground">Travoo</span>
+              <div className="flex flex-col">
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Travoo
+                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 font-medium -mt-1">
+                  Travel Marketplace
+                </span>
+              </div>
             </Link>
       
       <div className="flex items-center gap-6">
@@ -105,7 +112,7 @@ const MainNavbar = () => {
         <Link href="/dashboard/admin/activity" className="text-blue-600 underline">
           Activity Logs
         </Link> */}
-        <Link href="/dashboard/admin/notifications" className="relative">
+        <Link href="/dashboard/admin/notifications" className="relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
           <Bell className="w-6 h-6 text-gray-700 hover:text-blue-600 transition" />
           {hasNotifUnread && (
             <>
@@ -115,7 +122,7 @@ const MainNavbar = () => {
           )}
         </Link>
         {session ? (
-                    <button onClick={handleLogout} className="flex items-center text-gray-700 hover:text-blue-600 transition">
+                    <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
                         <p className="ml-1">Logout</p>
                     </button>
                 ) : (
@@ -129,11 +136,18 @@ const MainNavbar = () => {
   } else if(session?.user?.role === 'seller'){
     return (
         <nav className="flex justify-between items-center px-6 py-4 bg-white shadow">
-            <Link href="/packages" className="flex items-center gap-2">
-              <div className="bg-primary rounded-lg p-2">
+            <Link href="/packages" className="flex items-center gap-3 group">
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-2.5 shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
                 <MapPlusIcon className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-foreground">Travoo</span>
+              <div className="flex flex-col">
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Travoo
+                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 font-medium -mt-1">
+                  Travel Marketplace
+                </span>
+              </div>
             </Link>
 
             <div className="flex items-center gap-6">
@@ -160,7 +174,7 @@ const MainNavbar = () => {
                 </Link>
 
                 {pathname.includes('/dashboard/seller') && (
-                    <Link href="/dashboard/seller/notifications" className="relative">
+                    <Link href="/dashboard/seller/notifications" className="relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
                         <Bell className="w-6 h-6 text-gray-700 hover:text-blue-600 transition" />
                         {hasNotifUnread  && (
                         <span className="absolute top-0 right-0 block w-2 h-2 bg-red-600 rounded-full animate-ping"></span>
@@ -172,7 +186,7 @@ const MainNavbar = () => {
                 )}
 
                 {session ? (
-                    <button onClick={handleLogout} className="flex items-center text-gray-700 hover:text-blue-600 transition">
+                    <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
                         <p className="ml-1">Logout</p>
                     </button>
                 ) : (
@@ -186,11 +200,18 @@ const MainNavbar = () => {
   } else if(session?.user?.role === 'customer'){
     return (
         <nav className="flex justify-between items-center px-6 py-4 bg-white shadow">
-            <Link href="/packages" className="flex items-center gap-2">
-              <div className="bg-primary rounded-lg p-2">
+            <Link href="/packages" className="flex items-center gap-3 group">
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-2.5 shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
                 <MapPlusIcon className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-foreground">Travoo</span>
+              <div className="flex flex-col">
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Travoo
+                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 font-medium -mt-1">
+                  Travel Marketplace
+                </span>
+              </div>
             </Link>
                     <div className="flex items-center gap-6">
                         {/* <Link href="/dashboard/customer" className="text-blue-600 underline">
@@ -213,7 +234,7 @@ const MainNavbar = () => {
                             )}
                         </Link>
 
-                        <Link href="/dashboard/customer/notifications" className="w-6 h-6 inline-block">
+                        <Link href="/dashboard/customer/notifications" className="realtive flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
                             <Bell className="w-6 h-6 text-gray-700 hover:text-blue-600 transition" />
                             {hasNotifUnread && (
                                 <>
@@ -223,12 +244,12 @@ const MainNavbar = () => {
                             )}
                         </Link>
 
-                        <Link href="/dashboard/customer" className="flex gap-2 ">
+                        <Link href="/dashboard/customer" className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
                           <UserCircleIcon className="w-6 h-6 text-gray-700 hover:text-blue-600 transition " />
                             <p className="text-gray-700">{session.user.name}</p>    
                         </Link> 
                         {session ? (
-                            <button onClick={handleLogout} className="flex items-center text-gray-700 hover:text-blue-600 transition">
+                            <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
                                 <p className="ml-1">Logout</p>
                             </button>
                         ) : (
@@ -242,14 +263,21 @@ const MainNavbar = () => {
   } else{
     return (
         <nav className="flex justify-between items-center px-6 py-4 bg-white shadow">
-            <Link href="/packages" className="flex items-center gap-2">
-              <div className="bg-primary rounded-lg p-2">
+            <Link href="/packages" className="flex items-center gap-3 group">
+              <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-2.5 shadow-lg group-hover:shadow-xl transition-all duration-300 transform group-hover:scale-105">
                 <MapPlusIcon className="h-6 w-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-foreground">Travoo</span>
+              <div className="flex flex-col">
+                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Travoo
+                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 font-medium -mt-1">
+                  Travel Marketplace
+                </span>
+              </div>
             </Link>
                 <div className="flex items-center gap-6">
-                    <Link href="/auth/signin" className="flex items-center mr-1">
+                    <Link href="/auth/signin" className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
                          <p className="ml-1">Sign-In / Sign-Up</p>
                     </Link>
                 </div>

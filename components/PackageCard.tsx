@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation"
 
 import { TravelPackage } from '@/types/travelPackage'
 import Link from 'next/link'
-import { Badge, Clock, MapPin, Star, Users } from "lucide-react"
+import { ArrowRight, Badge, Calendar, Clock, MapPin, Star, Tag, Users } from "lucide-react"
+import Image from "next/image"
 
 const PackageCard = ({ pkg }: { pkg: TravelPackage }) => {
   const { data: session, status } = useSession()
@@ -59,17 +60,25 @@ const PackageCard = ({ pkg }: { pkg: TravelPackage }) => {
 
 
   return (
-    <div className="border rounded-lg shadow p-4 relative">
+    <div className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white dark:bg-gray-900">
       {pkg.image && (
-        <div className="relative h-48 overflow-hidden">
-          <img
+        <div className="relative h-56 overflow-hidden">
+          <Image
             src={pkg.image}
             alt={pkg.title}
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-700"
           />
-      </div>
-        
-        )}
+            <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-full px-3 py-1 shadow-lg">
+            <div className="flex items-center gap-1">
+              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+              <span className="text-sm font-semibold text-gray-800">
+                {pkg.averageRating?.toFixed(1) || "0.0"}
+              </span>
+            </div>
+        </div>
+        </div>
+        )}  
 
         {session?.user?.role === 'customer' && (
           <button
@@ -81,55 +90,80 @@ const PackageCard = ({ pkg }: { pkg: TravelPackage }) => {
             {isWishlisted ? '💖' : '🤍'}
           </button>
         )}
-        <div className="p-4">
-          <h3 className="font-semibold text-lg text-foreground mb-2 line-clamp-1">
-              {pkg.title}
+        <div className="p-6 space-y-2">
+          <h3 className="font-bold text-xl text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors duration-300 line-clamp-1">
+            {pkg.title}
           </h3>
 
-          <div className="flex justify-between items-center text-muted-foreground mb-2">
-            <div className="flex gap-1 items-center">
-              <MapPin className="h-4 w-4" />
-              <span className="text-sm">{pkg.location}</span>
+          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+            <div className="bg-green-100 dark:bg-green-900/30 p-1 rounded-full">
+              <MapPin className="h-4 w-4 text-green-600 dark:text-green-400" />
             </div>
-            <p className="text-sm">#{pkg.category?.name ? pkg.category?.name : 'Tanpa Kategori'}</p>
+            <span className="text-sm font-medium">{pkg.location}</span>
           </div>
 
-          <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+          <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed">
             {pkg.description}
           </p>
 
-          <div className="flex items-center justify-between text-sm text-muted-foreground mb-3">
-            <div className="flex items-center gap-1">
-              <Clock className="h-4 w-4" />
-              {/* <span>{duration}</span> */}
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+              <div className="bg-blue-100 dark:bg-blue-900/30 p-1 rounded-full">
+                <Clock className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+              </div>
+              {/* <span className="font-medium">{pkg.duration}</span> */}
             </div>
-            <div className="flex items-center gap-1">
-              <Users className="h-4 w-4" />
-              {/* <span>{maxPeople} orang</span> */}
-            </div>
-            <div className="flex items-center gap-1">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <span>{pkg.averageRating?.toFixed(1) || "0.0"}</span>
+            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+              <div className="bg-purple-100 dark:bg-purple-900/30 p-1 rounded-full">
+                <Users className="h-3 w-3 text-purple-600 dark:text-purple-400" />
+              </div>
+              {/* <span className="font-medium">{pkg.maxPeople} orang</span> */}
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="text-sm text-muted-foreground">Harga</span>
-              <p className="text-lg font-bold text-primary">
-                Rp{pkg.price.toLocaleString()} / orang
-              </p>
+          <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">
+                  Mulai dari
+                </span>
+                <p className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Rp{pkg.price.toLocaleString()}
+                </p>
+              </div>
+              <div className="text-right">
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  per orang
+                </div>
+                <div className="text-xs text-green-600 dark:text-green-400 font-semibold">
+                  💰 Hemat 20%
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-      {/* <p className="text-sm mb-2">{new Date(pkg.date).toLocaleDateString()}</p> */}
-      <Link
-        href={`/packages/${pkg._id}`}
-        className="w-full text-white bg-blue-600 px-3 py-1 rounded hover:bg-blue-700"
-      >
-        Lihat Detail
-      </Link>
+      <div className="p-6 pt-0 flex items-center justify-between">
+        <button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 rounded">
+          <Link
+            href={`/packages/${pkg._id}`}
+            className="flex items-center justify-center p-3"
+          >
+            <span>Lihat Detail</span>
+            <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+          </Link>
+        </button>
+        <div className="flex flex-col items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400 p-2">
+          <div className="flex items-center gap-1">
+            <Calendar className="h-3 w-3" />
+            <span>Tersedia hari ini</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Tag className="h-3 w-3" />
+            <span>Free cancellation</span>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
