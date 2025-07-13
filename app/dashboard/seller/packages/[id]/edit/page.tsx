@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation'
 import { TravelPackage } from '@/types/travelPackage'
 
 import { CldUploadWidget } from 'next-cloudinary'
-import User from '@/models/User'
 import { Category } from '@/types/category'
+import DynamicInputList from '@/components/form/DynamicInputList'
+import FacilitiesInputList from '@/components/form/FacilitiesInputList'
+import ItineraryEditor from '@/components/form/ItineraryEditor'
 
 type Params = { id: string }
 
@@ -35,7 +37,14 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
         category: {
           _id: '',
           name: '',
-        }
+        },
+        duration: '',
+        maxPeople: 0,
+        highlights: [],
+        included: [],
+        excluded: [],
+        facilities: [{ name: '', icon: '' }],
+        itinerary: []
     })
     const [loading, setLoading] = useState(false)
     const router = useRouter()
@@ -51,7 +60,20 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
         const res = await fetch(`/api/seller/packages/${id}`)
         if (res.ok) {
             const data = await res.json()
-            setForm(data)
+            setForm({
+            ...data,
+            facilities: data.facilities?.map((f: any) => ({
+              name: f.name,
+              icon: f.icon ?? '',
+            })) ?? [],
+            itinerary: data.itinerary?.map((item: any) => ({
+              day: item.day,
+              title: item.title,
+              activities: item.activities ?? [],
+              meals: item.meals ?? '',
+              accommodation: item.accommodation ?? ''
+            })) ?? []
+          })
         } else {
             alert('Data paket tidak ditemukan')
         }
@@ -72,13 +94,20 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
+        const cleanData = {
+          ...form,
+          facilities: form.facilities.map((f) => ({
+            name: f.name,
+            icon: f.icon ?? '',
+          })),
+        }
 
         const res = await fetch(`/api/seller/packages/${id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify(cleanData),
         })
 
         if (res.ok) {
@@ -141,7 +170,7 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
           <label className="block font-medium mb-1">Kategori</label>
           <select
             name="category"
-            value={form.category._id}
+            value={form.category?._id}
             onChange={(e) => {
               const selectedId = e.target.value;
               const selectedCategory = categories.find((cat) => cat._id === selectedId);
@@ -166,6 +195,56 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
             ))}
           </select>
         </div>
+
+        <input
+          type="text"
+          name="duration"
+          placeholder="Contoh: 2 hari 3 malam"
+          value={form.duration}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded"
+        />
+        <input
+          type="number"
+          name="maxPeople"
+          placeholder="Maksimum Peserta"
+          value={form.maxPeople}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded"
+        />
+        {/* Highlight */}
+        <DynamicInputList
+          label="Highlight Perjalanan"
+          values={form.highlights}
+          onChange={(vals) => setForm({ ...form, highlights: vals })}
+        />
+
+        {/* included */}
+        <DynamicInputList
+          label="Included"
+          values={form.included}
+          onChange={(vals) => setForm({ ...form, included: vals })}
+        />
+
+        {/* excluded */}
+        <DynamicInputList
+          label="Excluded"
+          values={form.excluded}
+          onChange={(vals) => setForm({ ...form, excluded: vals })}
+        />
+
+        {/* facilities */}
+        <FacilitiesInputList
+          facilities={form.facilities}
+          onChange={(updated) => setForm({ ...form, facilities: updated })}
+        />
+
+        {/* itinerary */}
+        <ItineraryEditor
+          itinerary={form.itinerary}
+          onChange={(updated) => setForm({ ...form, itinerary: updated })}
+        />
+
 
         <div>
           <label className="block mb-2 font-medium">Upload Gambar</label>

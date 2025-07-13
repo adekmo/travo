@@ -111,13 +111,13 @@ const PackageCard = ({ pkg }: { pkg: TravelPackage }) => {
               <div className="bg-blue-100 dark:bg-blue-900/30 p-1 rounded-full">
                 <Clock className="h-3 w-3 text-blue-600 dark:text-blue-400" />
               </div>
-              {/* <span className="font-medium">{pkg.duration}</span> */}
+              <span className="font-medium">{pkg.duration}</span>
             </div>
             <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
               <div className="bg-purple-100 dark:bg-purple-900/30 p-1 rounded-full">
                 <Users className="h-3 w-3 text-purple-600 dark:text-purple-400" />
               </div>
-              {/* <span className="font-medium">{pkg.maxPeople} orang</span> */}
+              <span className="font-medium">{pkg.maxPeople} orang</span>
             </div>
           </div>
 

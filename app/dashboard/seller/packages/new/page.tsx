@@ -6,6 +6,9 @@ import { useRouter } from 'next/navigation'
 import { CldUploadWidget } from 'next-cloudinary'
 import { useSession } from 'next-auth/react'
 import { Category } from '@/types/category'
+import DynamicInputList from '@/components/form/DynamicInputList'
+import ItineraryEditor from '@/components/form/ItineraryEditor'
+import FacilitiesInputList from '@/components/form/FacilitiesInputList'
 
 
 const CreatePackagePage = () => {
@@ -19,6 +22,21 @@ const CreatePackagePage = () => {
         location: '',
         image: '',
         category: '',
+        duration: "",
+        maxPeople: 1,
+        highlights: [""],
+        included: [""],
+        excluded: [""],
+        facilities: [{ name: "", icon: "" }], 
+        itinerary: [
+          {
+            day: 1,
+            title: "",
+            activities: [""],
+            meals: "",
+            accommodation: ""
+          }
+        ]
     })
     const [loading, setLoading] = useState(false)
     const [checking, setChecking] = useState(true)
@@ -68,13 +86,19 @@ const CreatePackagePage = () => {
         e.preventDefault()
         setLoading(true)
 
+        const cleanFacilities = form.facilities.map((f) => ({
+          name: f.name,
+          icon: f.icon ?? '', // ubah undefined jadi string kosong
+        }))
+
         const res = await fetch('/api/seller/packages', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            ...form
+            ...form,
+            facilities: cleanFacilities,
         }),
         })
 
@@ -146,6 +170,24 @@ const CreatePackagePage = () => {
           className="w-full border px-3 py-2 rounded"
           required
         />
+        <input
+          name="duration"
+          type="text"
+          placeholder="Contoh: 2 hari 3 malam"
+          value={form.duration}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded"
+          required
+        />
+        <input
+          name="maxPeople"
+          type="number"
+          placeholder="Maksimal Peserta"
+          value={form.maxPeople}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded"
+          required
+        />
 
         <div>
           <label className="block mb-2 font-semibold">Kategori</label>
@@ -164,6 +206,39 @@ const CreatePackagePage = () => {
             ))}
           </select>
         </div>
+
+        {/* Highlight */}
+        <DynamicInputList
+          label="Highlight Perjalanan"
+          values={form.highlights}
+          onChange={(vals) => setForm({ ...form, highlights: vals })}
+        />
+
+        {/* included */}
+        <DynamicInputList
+          label="Included"
+          values={form.included}
+          onChange={(vals) => setForm({ ...form, included: vals })}
+        />
+
+        {/* excluded */}
+        <DynamicInputList
+          label="Excluded"
+          values={form.excluded}
+          onChange={(vals) => setForm({ ...form, excluded: vals })}
+        />
+
+        {/* facilities */}
+        <FacilitiesInputList
+          facilities={form.facilities}
+          onChange={(updated) => setForm({ ...form, facilities: updated })}
+        />
+
+        {/* itinerary */}
+        <ItineraryEditor
+          itinerary={form.itinerary}
+          onChange={(updated) => setForm({ ...form, itinerary: updated })}
+        />
 
         <div>
           <label className="block mb-2 font-medium">Upload Gambar</label>

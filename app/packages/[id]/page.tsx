@@ -152,7 +152,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
                         Highlights Perjalanan:
                       </h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        {/* {packageData.highlights.map((highlight, index) => (
+                        {packageData.highlights.map((highlight, index) => (
                           <div
                             key={index}
                             className="flex items-center gap-2 text-gray-700"
@@ -160,7 +160,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
                             <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
                             <span className="text-sm">{highlight}</span>
                           </div>
-                        ))} */}
+                        ))}
                       </div>
                     </div>
                   </CardContent>
@@ -173,7 +173,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {/* {packageData.facilities.map((facility, index) => (
+                      {packageData.facilities.map((facility, index) => (
                         <div
                           key={index}
                           className="flex flex-col items-center gap-2 p-4 bg-gray-50 rounded-lg"
@@ -183,7 +183,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
                             {facility.name}
                           </span>
                         </div>
-                      ))} */}
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -198,7 +198,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2">
-                        {/* {packageData.included.map((item, index) => (
+                        {packageData.included.map((item, index) => (
                           <li
                             key={index}
                             className="flex items-start gap-2 text-sm"
@@ -206,7 +206,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
                             <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 flex-shrink-0" />
                             <span>{item}</span>
                           </li>
-                        ))} */}
+                        ))}
                       </ul>
                     </CardContent>
                   </Card>
@@ -219,7 +219,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2">
-                        {/* {packageData.excluded.map((item, index) => (
+                        {packageData.excluded.map((item, index) => (
                           <li
                             key={index}
                             className="flex items-start gap-2 text-sm text-gray-600"
@@ -227,7 +227,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
                             <span className="text-red-400 mt-0.5">•</span>
                             <span>{item}</span>
                           </li>
-                        ))} */}
+                        ))}
                       </ul>
                     </CardContent>
                   </Card>
@@ -235,7 +235,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
               </TabsContent>
 
               <TabsContent value="itinerary" className="space-y-4">
-                {/* {packageData.itinerary.map((day, index) => (
+                {packageData.itinerary.map((day, index) => (
                   <Card key={index}>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-3">
@@ -281,7 +281,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
                       </div>
                     </CardContent>
                   </Card>
-                ))} */}
+                ))}
               </TabsContent>
 
               <TabsContent value="reviews" className="space-y-6">
@@ -364,7 +364,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
                           Durasi
                         </span>
                         <span className="font-medium">
-                          {/* {packageData.duration} */}
+                          {packageData.duration}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
@@ -373,7 +373,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
                           Maks. Peserta
                         </span>
                         <span className="font-medium">
-                          {/* {packageData.maxPeople} orang */}
+                          {packageData.maxPeople} orang
                         </span>
                       </div>
                       <div className="flex items-center justify-between">

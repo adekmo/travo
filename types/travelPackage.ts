@@ -1,3 +1,5 @@
+import { Facility } from "./facility";
+import { ItineraryDay } from "./itineraryDay";
 import { User } from "./user";
 
 export interface TravelPackage  {
@@ -13,5 +15,15 @@ export interface TravelPackage  {
     _id: string
     name: string
   }
-  averageRating?: number
+  averageRating?: number;
+  duration: string;
+  maxPeople: number;
+
+  highlights: string[];
+
+  included: string[];
+  excluded: string[];
+
+  facilities: Facility[]
+  itinerary: ItineraryDay[]
 };

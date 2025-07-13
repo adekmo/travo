@@ -34,7 +34,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Seller belum diverifikasi" }, { status: 403 });
     }
 
-    const { category, ...bodyWithoutCategory } = await req.json();
+    // const { category, ...bodyWithoutCategory } = await req.json();
+    const {
+      title, description, price, location, image,
+      duration, maxPeople,
+      highlights, facilities,
+      included, excluded, itinerary,
+      category
+    } = await req.json();
 
     if (category) { // Hanya validasi jika 'category' diberikan
       const existingCategory = await Category.findById(category);
@@ -44,7 +51,18 @@ export async function POST(req: NextRequest) {
     }
 
     const newPackage = await TravelPackage.create({
-      ...bodyWithoutCategory, // Data body yang lain
+      title,
+      description,
+      price,
+      location,
+      image,
+      duration,
+      maxPeople,
+      highlights,
+      facilities,
+      included,
+      excluded,
+      itinerary,
       seller: session.user.id,
       category: category || null,
     });
