@@ -15,8 +15,12 @@ export async function POST(req: NextRequest) {
     if(!session || session.user.role !== 'customer'){
       return NextResponse.json({ message: 'Harap Login Terlebih Dahulu' }, { status: 401 });
     }
-    const { packageId, date, numberOfPeople, note } = await req.json()
+    const { packageId, date, numberOfPeople, note, contact } = await req.json()
     const customerId = session.user.id;
+
+    if (!contact?.name || !contact?.email || !contact?.phone) {
+      return NextResponse.json({ message: 'Informasi kontak tidak lengkap' }, { status: 400 })
+    }
 
     // Hitung jumlah booking untuk packageId + date (tanggal saja, tanpa jam)
     const targetDate = new Date(date)
@@ -41,6 +45,11 @@ export async function POST(req: NextRequest) {
       date,
       numberOfPeople,
       note,
+      contact: {
+        name: contact.name,
+        email: contact.email,
+        phone: contact.phone,
+      },
     })
 
     const travelPackage = await TravelPackage.findById(packageId)

@@ -10,6 +10,11 @@ const BookingSchema = new mongoose.Schema(
     numberOfPeople: Number,
     note: String,
     hasReviewed: { type: Boolean, default: false },
+    contact: {
+      name: { type: String, required: true },
+      email: { type: String, required: true },
+      phone: { type: String, required: true },
+    },
   },
   { timestamps: true }
 );

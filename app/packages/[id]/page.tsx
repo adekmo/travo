@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/Button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/Dialog'
+import BookingModal from '@/components/BookingModal'
 
 type Params = { id: string }
 
@@ -27,6 +28,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
         const res = await fetch(`/api/packages/${id}`)
         if (res.ok) {
             const data = await res.json()
+            // console.log('📦 Package Data:', data)
             setPackageData(data)
         } else {
             alert('Paket tidak ditemukan')
@@ -392,7 +394,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
                         <Button
                           size="lg"
                           className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                          onClick={() => router.push(`/packages/${id}/booking`)}
+                          // onClick={() => router.push(`/packages/${id}/booking`)}
                         >
                           🎯 Pesan Paket Sekarang
                         </Button>
@@ -403,7 +405,12 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
                             Pesan Paket: {packageData.title}
                           </DialogTitle>
                         </DialogHeader>
-                        {/* <BookingForm packageData={packageData} /> */}
+                        <BookingModal
+                          packageId={packageData._id!}
+                          packageTitle={packageData.title}
+                          maxPeople={packageData.maxPeople}
+                          pricePerPerson={packageData.price}
+                        />
                       </DialogContent>
                     </Dialog>
 
@@ -476,34 +483,6 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
           </div>
         </div>
       </div>
-      {/* <h1 className="text-3xl font-bold mb-4">{packageData.title}</h1> */}
-      {/* <img src={packageData.image} alt={packageData.title} className="w-full h-80 object-cover mb-6" />
-      <p className="text-lg mb-6">{packageData.description}</p>
-      <div className="mb-6">
-        <strong>Harga: </strong> Rp {packageData.price}
-      </div>
-      <div className="mb-6">
-        <strong>Lokasi: </strong> {packageData.location}
-      </div>
-      <div className="mb-6">
-        <strong>Seller: </strong> {packageData.seller?.name}
-      </div> */}
-      {/* <div className="mb-6">
-        <strong>Tanggal: </strong> {new Date(packageData.date).toLocaleDateString()}
-      </div> */}
-      {/* <PackagesReviewList packageId={packageData._id ?? ''} />
-      <button
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        onClick={() => router.push(`/packages/${id}/booking`)}
-      >
-        Pesan Paket
-      </button>
-      <Link
-        href={`/dashboard/customer/chat/${packageData.seller._id}`}
-        className="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded mx-2"
-      >
-        💬 Chat Seller
-      </Link> */}
     </div>
   )
 }
