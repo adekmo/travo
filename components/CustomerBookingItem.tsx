@@ -17,6 +17,17 @@ const formatRupiah = (number: number) =>
 const CustomerBookingItem = ({ booking, onCancel }: Props) => {
 
     const [submitting, setSubmitting] = useState(false)
+    if (
+      !booking.packageId ||
+      typeof booking.packageId === "string" ||
+      !("title" in booking.packageId)
+    ) {
+      return (
+        <li className="border rounded p-4 shadow-sm bg-red-100 text-red-700">
+          <p className="font-semibold">Paket wisata tidak tersedia atau belum berhasil dimuat.</p>
+        </li>
+      )
+    }
 
     const handleSubmitReview = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -48,6 +59,7 @@ const CustomerBookingItem = ({ booking, onCancel }: Props) => {
         setSubmitting(false)
         }
     }
+  
   return (
     <li className="border rounded p-4 shadow-sm">
       <h2 className="text-lg font-semibold">{booking.packageId.title}</h2>

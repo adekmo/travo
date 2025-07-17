@@ -16,8 +16,12 @@ export async function GET() {
     .populate("packageId")
     .sort({ createdAt: -1 });
 
-    const sorted = bookings.sort((a, b) => b.createdAt - a.createdAt);
-    console.log("✅ Fetched bookings count:", sorted.length);
+    // const sorted = bookings.sort((a, b) => b.createdAt - a.createdAt);
+    const validBookings = bookings.filter(b => b.packageId && typeof b.packageId !== "string");
+
+    const sorted = validBookings.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()).reverse();
+    // console.log("✅ Fetched bookings count:", sorted.length);
+    // console.log("Booking sample:", bookings[0])
     return NextResponse.json(sorted);
   } catch (error) {
     console.error("🔴 Error in booking GET:", error);

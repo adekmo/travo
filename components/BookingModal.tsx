@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import DatePicker from 'react-datepicker'
@@ -40,8 +40,20 @@ const BookingModal = ({
   const [note, setNote] = useState('')
   const [specialRequest, setSpecialRequest] = useState('')
   const [loading, setLoading] = useState(false)
+  const [isSnapReady, setIsSnapReady] = useState(false)
 
   const totalPrice = pricePerPerson * numberOfPeople
+
+   useEffect(() => {
+    const interval = setInterval(() => {
+      if (typeof window !== 'undefined' && window.snap && typeof window.snap.pay === 'function') {
+        setIsSnapReady(true)
+        clearInterval(interval)
+      }
+    }, 300)
+
+    return () => clearInterval(interval)
+  }, [])
 
   const handleSubmit = async () => {
     if (!session?.user) {
@@ -52,30 +64,90 @@ const BookingModal = ({
 
     setLoading(true)
 
-    const res = await fetch('/api/bookings', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        customerId: session.user.id,
-        packageId,
-        date,
-        numberOfPeople,
-        note: `Pantangan: ${note} | Permintaan Khusus: ${specialRequest}`,
-        contact: { name, email, phone },
-      }),
-    })
+    try {
+      // Step 1: Simpan booking
+      const bookingRes = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customerId: session.user.id,
+          packageId,
+          date,
+          numberOfPeople,
+          note: `Pantangan: ${note} | Permintaan Khusus: ${specialRequest}`,
+          contact: { name, email, phone },
+        }),
+      })
 
-    const result = await res.json()
+      const bookingData = await bookingRes.json()
 
-    if (res.ok) {
-      toast.success('Booking berhasil!')
-      if (onSuccess) onSuccess()
-      setTimeout(() => router.push('/dashboard/customer'), 1500)
-    } else {
-      toast.error(result.message || 'Gagal membuat booking')
+      if (!bookingRes.ok) {
+        toast.error(bookingData.message || 'Gagal membuat booking')
+        return
+      }
+
+      toast.success('Booking berhasil! Menyiapkan pembayaran...')
+      const orderId = `TRV-${bookingData._id}`
+
+      // Step 2: Request Snap token
+      const tokenRes = await fetch('/api/payment/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId,
+          grossAmount: totalPrice,
+          customerDetails: {
+            first_name: name,
+            email,
+            phone,
+          },
+        }),
+      })
+
+      const tokenData = await tokenRes.json()
+      // console.log('✅ Snap token:', tokenData.token)
+
+      if (!tokenRes.ok || !tokenData.token) {
+        toast.error('Gagal menyiapkan pembayaran')
+        return
+      }
+
+      // ✅ Cek Snap siap sebelum pay
+      if (!isSnapReady || !window.snap || typeof window.snap.pay !== 'function') {
+        console.error('❌ window.snap tidak tersedia')
+        toast.error('Pembayaran tidak dapat diproses. Snap belum siap.')
+        return
+      }
+
+      console.log('🔔 Memanggil Snap dengan token:', tokenData.token)
+
+      // Step 3: Tampilkan popup Snap
+      window.snap.pay(tokenData.token, {
+        onSuccess: (result: any) => {
+          console.log('Pembayaran sukses', result)
+          toast.success('Pembayaran berhasil!')
+          if (onSuccess) onSuccess()
+          router.push('/dashboard/customer')
+        },
+        onPending: (result: any) => {
+          console.log('Menunggu pembayaran', result)
+          toast.info('Menunggu pembayaran...')
+          router.push('/dashboard/customer/bookings')
+        },
+        onError: (err: any) => {
+          console.error('Gagal bayar', err)
+          toast.error('Gagal memproses pembayaran')
+        },
+        onClose: () => {
+          toast.warning('Kamu menutup popup pembayaran')
+        },
+      })
+    } catch (err) {
+      console.error(err)
+      toast.error('Terjadi kesalahan saat memproses booking')
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
   return (

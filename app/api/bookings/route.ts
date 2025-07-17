@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
     }
     
 
-    return NextResponse.json(newBooking)
+    return NextResponse.json(newBooking, { status: 201 })
   } catch (error) {
     console.error(error)
     return NextResponse.json({ message: 'Terjadi kesalahan' }, { status: 500 })
