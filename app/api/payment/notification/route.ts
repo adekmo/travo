@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Booking from "@/models/Booking";
 import mongoose from "mongoose"
+import { sendBookingEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   await connectDB();
@@ -44,6 +45,18 @@ export async function POST(req: NextRequest) {
 
     if (status === "settlement" || status === "capture") {
       booking.status = "confirmed";
+      await booking.populate("packageId")
+      if (booking.contact?.email) {
+        await sendBookingEmail({
+          to: booking.contact.email,
+          name: booking.contact.name || "Customer",
+          orderId: body.order_id,
+          packageTitle: booking.packageId?.title || "Paket Wisata",
+          date: new Date(booking.date).toLocaleDateString(),
+          numberOfPeople: booking.numberOfPeople,
+          total: Number(body.gross_amount),
+        })
+      }
     } else if (status === "cancel" || status === "expire") {
       booking.status = "cancelled";
     }

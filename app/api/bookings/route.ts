@@ -63,7 +63,6 @@ export async function POST(req: NextRequest) {
       })
     }
     
-
     return NextResponse.json(newBooking, { status: 201 })
   } catch (error) {
     console.error(error)
