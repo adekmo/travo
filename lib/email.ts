@@ -26,20 +26,53 @@ export async function sendBookingEmail({
   })
 
   const html = `
-    <div style="font-family: sans-serif; padding: 16px;">
-      <h2 style="color: #1e40af;">Booking Berhasil 🎉</h2>
-      <p>Halo <strong>${name}</strong>,</p>
-      <p>Terima kasih sudah booking di <strong>Travoo</strong>. Berikut detail pemesananmu:</p>
-      <ul>
-        <li><strong>Order ID:</strong> ${orderId}</li>
-        <li><strong>Nama Paket:</strong> ${packageTitle}</li>
-        <li><strong>Tanggal Keberangkatan:</strong> ${date}</li>
-        <li><strong>Jumlah Peserta:</strong> ${numberOfPeople} orang</li>
-        <li><strong>Total Pembayaran:</strong> Rp ${total.toLocaleString()}</li>
-      </ul>
-      <p>Silakan cek kembali detailmu. Jika ada pertanyaan, hubungi kami kapan saja.</p>
-      <p>Salam hangat,</p>
-      <p><strong>Travoo Team</strong></p>
+    <div style="font-family: 'Segoe UI', sans-serif; color: #333; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+      <div style="background-color: #1e40af; color: white; padding: 20px; text-align: center;">
+        <h2 style="margin: 0;">Konfirmasi Booking Anda</h2>
+      </div>
+
+      <div style="padding: 24px;">
+        <p>Halo <strong>${name}</strong>,</p>
+        <p>Terima kasih telah melakukan booking melalui <strong>Travoo</strong>. Berikut adalah rincian pemesanan Anda:</p>
+
+        <table style="width: 100%; margin-top: 16px; font-size: 14px;">
+          <tr>
+            <td style="padding: 8px 0;"><strong>📦 Paket</strong></td>
+            <td>: ${packageTitle}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0;"><strong>🆔 Order ID</strong></td>
+            <td>: ${orderId}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0;"><strong>📅 Tanggal</strong></td>
+            <td>: ${date}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0;"><strong>👥 Peserta</strong></td>
+            <td>: ${numberOfPeople} orang</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0;"><strong>💰 Total</strong></td>
+            <td>: Rp ${total.toLocaleString("id-ID")}</td>
+          </tr>
+        </table>
+
+        <div style="margin: 24px 0;">
+          <a href="https://yourdomain.com/dashboard/customer" target="_blank" style="background-color: #1e40af; color: white; padding: 12px 20px; border-radius: 6px; text-decoration: none; display: inline-block;">
+            Lihat Detail Booking
+          </a>
+        </div>
+
+        <p>Jika Anda memiliki pertanyaan, silakan hubungi tim support kami kapan saja.</p>
+
+        <p>Salam hangat,</p>
+        <p><strong>Tim Travoo</strong></p>
+      </div>
+
+      <div style="background-color: #f1f5f9; padding: 16px; text-align: center; font-size: 12px; color: #6b7280;">
+        Email ini dikirim otomatis oleh sistem Travoo. Mohon untuk tidak membalas email ini.
+      </div>
     </div>
   `
 
