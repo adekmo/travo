@@ -11,4 +11,5 @@ export interface Booking  {
     numberOfPeople: number
     note?: string
     hasReviewed?: boolean
+    hasStory?: boolean
 }
