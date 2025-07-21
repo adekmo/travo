@@ -5,6 +5,22 @@ import { connectDB } from "@/lib/mongodb";
 import TravelStory from "@/models/TravelStory";
 import Booking from "@/models/Booking";
 
+export async function GET() {
+  try {
+    await connectDB();
+
+    const stories = await TravelStory.find()
+      .sort({ createdAt: -1})
+      .populate("userId", "name image content")
+      .populate("packageId", "title")
+    
+    return NextResponse.json(stories, {status: 200})
+  } catch (error) {
+    console.error("❌ Error fetching stories:", error);
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
+  }
+}
+
 export async function POST(req: NextRequest) {
     try {
     await connectDB();

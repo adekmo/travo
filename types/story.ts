@@ -7,5 +7,9 @@ export interface Story {
     title: string
     _id: string
   }
+  userId?: {
+    name: string
+    image?: string
+  }
   media?: string[]
 }

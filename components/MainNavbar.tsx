@@ -163,6 +163,9 @@ const MainNavbar = () => {
                 <Link href="/dashboard/profile" className="text-blue-600 underline">
                     <p>Profile {session.user.name}</p>    
                 </Link> */}
+                <Link href="/stories" className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
+                      <p className="ml-1">Story Perjalan</p>
+                </Link>
 
                 <Link href="/dashboard/seller/chat" className={`relative text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 ${pathname.startsWith('/dashboard/seller/chat') ? 'text-blue-600 font-semibold' : ''}`}>
                     <MessageSquare className="w-6 h-6 inline-block mr-1" /> {/* Menggunakan ikon chat */}
@@ -223,6 +226,9 @@ const MainNavbar = () => {
                         <Link href="/dashboard/customer/wishlist" className="text-blue-600 underline mr-2">
                             Wishlists
                         </Link> */}
+                        <Link href="/stories" className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
+                          <p className="ml-1">Story Perjalan</p>
+                      </Link>
 
                         <Link href="/dashboard/customer/chat" className={`relative text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 ${pathname.startsWith('/dashboard/customer/chat') ? 'text-blue-600 font-semibold' : ''}`}>
                             <MessageSquare className="w-6 h-6 inline-block mr-1" />
@@ -277,6 +283,9 @@ const MainNavbar = () => {
               </div>
             </Link>
                 <div className="flex items-center gap-6">
+                    <Link href="/stories" className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
+                         <p className="ml-1">Story Perjalan</p>
+                    </Link>
                     <Link href="/auth/signin" className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
                          <p className="ml-1">Sign-In / Sign-Up</p>
                     </Link>
