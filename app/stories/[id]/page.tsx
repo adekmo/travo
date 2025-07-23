@@ -3,6 +3,7 @@ import React from "react"
 import { notFound } from "next/navigation"
 import { format } from "date-fns"
 import id from "date-fns/locale/id"
+import CommentSection from "@/components/CommentSection"
 
 const getStory = async (id: string) => {
   try {
@@ -53,7 +54,9 @@ const DetailStory = async ({ params }: { params: { id: string } }) => {
           ))}
         </div>
       )}
+      <CommentSection storyId={story._id} />
     </div>
+    
   )
 }
 

@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { CldUploadWidget } from "next-cloudinary";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -75,9 +76,11 @@ const ProfilePage = () => {
         <div>
           <label className="block font-medium mb-1">Foto Profil</label>
           {form.avatar && (
-            <img
+            <Image
               src={form.avatar}
               alt="Avatar"
+              width={20}
+              height={20}
               className="w-20 h-20 rounded-full mb-2 object-cover"
             />
           )}
