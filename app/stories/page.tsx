@@ -35,13 +35,19 @@ const StoriesPage = () => {
               <Link href={`/stories/${story._id}`}>
                 <h2 className="text-lg font-bold hover:underline">{story.title}</h2>
               </Link>
-              <p className="text-gray-700 line-clamp-3 mt-1">{story.content}</p>
+              <p className="text-gray-700 line-clamp-3 mt-1">{story.content.slice(0, 200)}...</p>
+              <Link
+                href={`/stories/${story._id}`}
+                className="text-blue-600 hover:underline mt-2 inline-block"
+              >
+                Baca Selengkapnya
+              </Link>
 
-              {story.packageId?.title && (
+              {/* {story.packageId?.title && (
                 <p className="text-sm text-blue-600 mt-2">
                   Paket: <Link href={`/packages/${story.packageId._id}`} className="underline">{story.packageId.title}</Link>
                 </p>
-              )}
+              )} */}
 
               {Array.isArray(story.media) && story.media.length > 0 && (
                 <img src={story.media[0]} alt="cover" className="mt-3 w-full max-w-md rounded" />
