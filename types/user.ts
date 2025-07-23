@@ -9,4 +9,6 @@ export interface User {
   isBlocked: boolean;
   phone?: string;
   address?: string;
+  avatar?: string;
+  bio?: string;
 }

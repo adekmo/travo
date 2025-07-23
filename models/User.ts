@@ -10,6 +10,8 @@ const UserSchema = new mongoose.Schema(
     isBlocked: { type: Boolean, default: false },
     phone: String,
     address: String,
+    avatar: String,
+    bio: String,
     wishlist: [
     {
       type: mongoose.Schema.Types.ObjectId,

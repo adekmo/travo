@@ -11,6 +11,8 @@ declare module "next-auth" {
       isVerified: boolean;
       phone?: string;
       address?: string;
+      avatar?: string;
+      bio?:string;
     };
   }
 
