@@ -6,10 +6,11 @@ export interface Story {
   packageId?: {
     title: string
     _id: string
+    location: string
   }
   userId?: {
     name: string
-    image?: string
+    avatar?: string
   }
   media?: string[]
 }

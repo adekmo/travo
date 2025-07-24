@@ -11,8 +11,8 @@ export async function GET() {
 
     const stories = await TravelStory.find()
       .sort({ createdAt: -1})
-      .populate("userId", "name image content")
-      .populate("packageId", "title")
+      .populate("userId", "name avatar")
+      .populate("packageId", "title location")
     
     return NextResponse.json(stories, {status: 200})
   } catch (error) {
