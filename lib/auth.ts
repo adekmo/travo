@@ -38,6 +38,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           role: user.role,
           isVerified: user.isVerified,
+          avatar: user.avatar, 
         };
       },
     }),
@@ -48,6 +49,7 @@ export const authOptions: NextAuthOptions = {
         token.role = (user as any).role as "admin" | "seller" | "customer";
         token.id = user.id as string;
         token.isVerified = user.isVerified;
+        token.avatar = user.avatar;
       }
       return token;
     },
@@ -55,6 +57,7 @@ export const authOptions: NextAuthOptions = {
       session.user.role = token.role as "admin" | "seller" | "customer";
       session.user.id = token.id as string;
       session.user.isVerified = token.isVerified
+      session.user.avatar = token.avatar;
       return session;
     },
     async redirect({ url, baseUrl }) {

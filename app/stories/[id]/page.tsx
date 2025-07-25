@@ -6,10 +6,11 @@ import id from "date-fns/locale/id"
 import CommentSection from "@/components/CommentSection"
 import Link from "next/link"
 import { Button } from "@/components/ui/Button"
-import { ArrowLeft, Calendar, ExternalLink, Eye, MapPin } from "lucide-react"
+import { Calendar, ExternalLink, Eye, MapPin } from "lucide-react"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar"
 import { Card, CardContent } from "@/components/ui/Card"
+import BackButton from "@/components/BackButton"
 
 const getStory = async (id: string) => {
   try {
@@ -26,7 +27,6 @@ const getStory = async (id: string) => {
 const DetailStory = async ({ params }: { params: { id: string } }) => {
   const story = await getStory(params.id)
   
-
   if (!story) return notFound()
   return (
     <div className="max-w-3xl mx-auto py-10 px-4">
@@ -41,14 +41,7 @@ const DetailStory = async ({ params }: { params: { id: string } }) => {
         </div>
 
         {/* BackButton */}
-        <Button
-          variant="ghost"
-          // onClick={() => window.history.back()}
-          className="mb-6 -ml-3"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Kembali
-        </Button>
+        <BackButton />
 
         {/* StoryHeader */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8">
@@ -57,18 +50,6 @@ const DetailStory = async ({ params }: { params: { id: string } }) => {
               <Image src={story.media[0]} alt={story.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500 rounded" />
             </div> 
           )}
-          {/* {Array.isArray(story.media) && story.media.length > 0 && (
-            <div className="mt-5 border grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {story.media.map((url: string, idx: number) => (
-                <img
-                  key={idx}
-                  src={url}
-                  alt={`media-${idx}`}
-                  className="rounded-lg border shadow-sm"
-                />
-              ))}
-            </div>
-          )}   */}
         </div>
 
         <div className="p-8">
@@ -154,6 +135,8 @@ const DetailStory = async ({ params }: { params: { id: string } }) => {
             </div>
           )}
         </div>
+
+        {/* Related Package CTA */}
         <Card className="mb-8 bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
