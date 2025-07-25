@@ -8,8 +8,8 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   try {
     await connectDB()
     const story = await TravelStory.findById(params.id)
-      .populate("userId", "name image content")
-      .populate("packageId", "title")
+      .populate("userId", "name image avatar")
+      .populate("packageId", "title location")
 
     if (!story) {
       return NextResponse.json({ message: "Not Found" }, { status: 404 })
