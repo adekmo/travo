@@ -11,6 +11,7 @@ import { Category } from '@/types/category'
 import { Badge, Calendar, DollarSign, Filter, Map, MapPin, Search, Shield } from 'lucide-react'
 import Features from '@/components/Features'
 import Footer from '@/components/Footer'
+import Hero from '@/components/Hero'
 
 const formatRupiah = (value: number) => `Rp${new Intl.NumberFormat('id-ID').format(value)}`
 
@@ -141,74 +142,7 @@ export default function PackagesPage() {
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Hero */}
-      <section className="relative bg-gradient-to-r from-primary/10 via-primary/5 to-background">
-        <div className="container mx-auto px-4 py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <div className="space-y-6">
-              <Badge className="bg-primary/10 text-primary border-primary/20" />
-                Platform Travel Terpercaya #1 di Indonesia
-              <h1 className="text-4xl lg:text-6xl font-bold text-foreground leading-tight">
-                Temukan dan Booking
-                <span className="text-primary block">
-                  Paket Wisata Favoritmu!
-                </span>
-              </h1>
-              <p className="text-lg text-muted-foreground max-w-lg">
-                Jelajahi destinasi eksotis Indonesia dengan paket wisata
-                terlengkap. Booking mudah, harga terjangkau, dan pelayanan
-                terbaik.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button className="text-white bg-blue-500 rounded p-4">
-                  Mulai Jelajahi
-                </button>
-              </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-6 pt-8">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">50K+</div>
-                  <div className="text-sm text-muted-foreground">Wisatawan</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">200+</div>
-                  <div className="text-sm text-muted-foreground">Destinasi</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">4.9</div>
-                  <div className="text-sm text-muted-foreground">Rating</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Content - Hero Image */}
-            <div className="relative">
-              <div className="aspect-[4/3] overflow-hidden rounded-2xl shadow-2xl">
-                <img
-                  src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=600&h=450&fit=crop"
-                  alt="Beautiful Indonesian destination"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              {/* Floating Cards */}
-              <div className="absolute -bottom-6 -left-6 p-4 bg-white shadow-xl border-0">
-                <div className="p-0 flex items-center gap-3">
-                  <div className="bg-green-100 p-2 rounded-full">
-                    <Shield className="h-5 w-5 text-green-600" />
-                  </div>
-                  <div>
-                    <div className="font-semibold text-sm">100% Aman</div>
-                    <div className="text-xs text-muted-foreground">
-                      Terjamin & Terpercaya
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Hero />
         {/* search & filter */}
       <section className="pt-10 pb-5 relative">
         <div className="container mx-auto px-4">
