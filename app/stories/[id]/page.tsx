@@ -6,11 +6,13 @@ import id from "date-fns/locale/id"
 import CommentSection from "@/components/CommentSection"
 import Link from "next/link"
 import { Button } from "@/components/ui/Button"
-import { Calendar, ExternalLink, Eye, MapPin } from "lucide-react"
+import { Bookmark, Calendar, ExternalLink, Eye, MapPin, Share2 } from "lucide-react"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar"
 import { Card, CardContent } from "@/components/ui/Card"
 import BackButton from "@/components/BackButton"
+import LikeButton from "@/components/LikeButton"
+import ShareButton from "@/components/ShareButton"
 
 const getStory = async (id: string) => {
   try {
@@ -90,6 +92,10 @@ const DetailStory = async ({ params }: { params: { id: string } }) => {
                     </div>
                   </div>
                 </div>
+            </div>
+            <div className="flex items-center justify-between gap-2 pt-4 border-t border-gray-100">
+                <LikeButton storyId={story._id} />
+                <ShareButton title={story.title} />
             </div>
           </div>
         </div>

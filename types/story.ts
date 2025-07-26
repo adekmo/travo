@@ -1,3 +1,5 @@
+import { Types } from "mongoose"
+
 export interface Story {
   _id: string
   title: string
@@ -13,4 +15,6 @@ export interface Story {
     avatar?: string
   }
   media?: string[]
+  likes: Types.ObjectId[]
+  commentCount: number
 }

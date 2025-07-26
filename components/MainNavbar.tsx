@@ -270,7 +270,7 @@ const MainNavbar = () => {
                             </Link>
                         )}
                     </div>
-            </nav>
+        </nav>
     )
   } else{
     return (

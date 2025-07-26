@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import TravelStory from "@/models/TravelStory";
 import Booking from "@/models/Booking";
+import Comment from "@/models/Comment";
 
 export async function GET() {
   try {
@@ -14,7 +15,17 @@ export async function GET() {
       .populate("userId", "name avatar")
       .populate("packageId", "title location")
     
-    return NextResponse.json(stories, {status: 200})
+    const storiesWithCommentCount = await Promise.all(
+      stories.map(async (story) => {
+        const commentCount = await Comment.countDocuments({ storyId: story._id });
+        return {
+          ...story.toObject(),
+          commentCount: commentCount || 0,
+        };
+      })
+    );
+    
+    return NextResponse.json(storiesWithCommentCount, {status: 200})
   } catch (error) {
     console.error("❌ Error fetching stories:", error);
     return NextResponse.json({ message: "Server error" }, { status: 500 });

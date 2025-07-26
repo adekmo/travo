@@ -8,6 +8,12 @@ const travelStorySchema = new Schema(
     content: { type: String, required: true },
     media: [{ type: String }],
     tags: [{ type: String }],
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      }
+    ]
   },
   { timestamps: true }
 )

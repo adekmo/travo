@@ -8,7 +8,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   try {
     await connectDB()
     const story = await TravelStory.findById(params.id)
-      .populate("userId", "name image avatar")
+      .populate("userId", "name image avatar like")
       .populate("packageId", "title location")
 
     if (!story) {

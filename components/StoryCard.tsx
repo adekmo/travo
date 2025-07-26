@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Story } from "@/types/story"
 import { Card, CardContent } from "./ui/Card"
-import { ArrowRight, Clock, Heart, MapPin, MessageCircle, Play, Share2 } from "lucide-react"
+import { ArrowRight, Clock, Heart, HeartHandshake, MapPin, MessageCircle, Play, Share2 } from "lucide-react"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/Avatar"
 import { formatDistanceToNow } from "date-fns"
@@ -68,33 +68,14 @@ const StoryCard = ({ story }: StoryCardProps ) => {
             {/* Action */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                 <div className="flex items-center gap-4">
-                    {/* <button
-                    onClick={handleLike}
-                    className={`flex items-center gap-2 transition-colors ${
-                        isLiked
-                        ? "text-red-500"
-                        : "text-gray-500 hover:text-red-500"
-                    }`}
-                    >
-                    <Heart
-                        className={`h-5 w-5 ${isLiked ? "fill-current" : ""}`}
-                    />
-                    <span className="text-sm font-medium">
-                        {story.likes + (isLiked ? 1 : 0)}
-                    </span>
-                    </button> */}
-
-                    <Link 
-                    href={`/stories/${story._id}#comments`}
-                    className="flex items-center gap-2 text-gray-500 hover:text-blue-600 transition-colors"
-                    >
-                    <MessageCircle className="h-5 w-5" />
-                    {/* <span className="text-sm font-medium">{story.comments.length}</span> */}
-                    </Link>
-
-                    <button className="flex items-center gap-2 text-gray-500 hover:text-green-600 transition-colors">
-                    <Share2 className="h-5 w-5" />
-                    </button>
+                    <div className="flex items-center gap-2">
+                        <Heart className="h-5 w-5 text-gray-500" />
+                         <span className="text-sm text-gray-500 font-medium">{story.likes.length}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <MessageCircle className="h-5 w-5 text-gray-500" />
+                        <span className="text-sm text-gray-500 font-medium">{story.commentCount}</span>
+                    </div>
                 </div>
 
                 <Link href={`/stories/${story._id}`}>
