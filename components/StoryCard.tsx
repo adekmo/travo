@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/Avatar"
 import { formatDistanceToNow } from "date-fns"
 import { id } from "date-fns/locale"
 import { Button } from "./ui/Button"
+import { Badge } from "./ui/Badge"
 
 type StoryCardProps = {
   story: Story
@@ -64,6 +65,26 @@ const StoryCard = ({ story }: StoryCardProps ) => {
                     {story.content}
                 </p>
             </Link>
+
+            {/* Tags */}
+            {story.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-4">
+                {story.tags.slice(0, 3).map((tag) => (
+                <Badge
+                    key={tag}
+                    variant="secondary"
+                    className="text-xs bg-blue-50 text-blue-700 hover:bg-blue-100 cursor-pointer"
+                >
+                    #{tag}
+                </Badge>
+                ))}
+                {story.tags.length > 3 && (
+                <Badge variant="secondary" className="text-xs bg-gray-100 text-gray-600">
+                    +{story.tags.length - 3} lagi
+                </Badge>
+                )}
+            </div>
+            )}
 
             {/* Action */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">

@@ -4,6 +4,7 @@ export interface Story {
   _id: string
   title: string
   content: string
+  tags: string[]
   createdAt: string
   packageId?: {
     title: string
