@@ -6,11 +6,28 @@ import TravelStory from "@/models/TravelStory";
 import Booking from "@/models/Booking";
 import Comment from "@/models/Comment";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     await connectDB();
+    const { searchParams } = new URL(req.url)
+    const search = searchParams.get("search")
+    const tags = searchParams.get("tags")?.split(",").filter(Boolean)
 
-    const stories = await TravelStory.find()
+    const filter: any = {}
+
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { content: { $regex: search, $options: "i" } }
+      ]
+    }
+
+    if (tags && tags.length > 0) {
+      filter.tags = { $in: tags }
+    }
+
+
+    const stories = await TravelStory.find(filter)
       .sort({ createdAt: -1})
       .populate("userId", "name avatar")
       .populate("packageId", "title location")

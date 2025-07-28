@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/Avatar'
+import { Button } from './ui/Button'
 
 const MainNavbar = () => {
 
@@ -292,9 +293,16 @@ const MainNavbar = () => {
                     <Link href="/stories" className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
                          <p className="ml-1">Story Perjalan</p>
                     </Link>
-                    <Link href="/auth/signin" className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
+                    <Button
+                      size="sm"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                    >
+                      <Link href="/auth/signin">✨ Masuk</Link>
+                    </Button>
+                  
+                    {/* <Link href="/auth/signin" className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
                          <p className="ml-1">Sign-In / Sign-Up</p>
-                    </Link>
+                    </Link> */}
                 </div>
         </nav>
     )

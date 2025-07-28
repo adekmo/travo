@@ -6,18 +6,32 @@ import { Story } from "@/types/story"
 import { PenSquare } from "lucide-react"
 import { Button } from "@/components/ui/Button"
 import StoryCard from "@/components/StoryCard"
+import FilterStory from "@/components/FilterStory"
+import { useSearchParams } from "next/navigation"
 
 const StoriesPage = () => {
     const [stories, setStories] = useState<Story[]>([])
+    const [loading, setLoading] = useState(false)
+    const searchParams = useSearchParams()
 
     useEffect(() => {
-        const fetchStories = async () => {
-            const res = await fetch('/api/stories')
-            const data = await res.json()
-            setStories(data)
-        }
-        fetchStories()
-    }, [])
+      const fetchStories = async () => {
+        setLoading(true)
+        const search = searchParams.get("search")
+        const tags = searchParams.get("tags")
+
+        const query = new URLSearchParams()
+        if (search) query.set("search", search)
+        if (tags) query.set("tags", tags)
+
+        const res = await fetch(`/api/stories?${query.toString()}`)
+        const data = await res.json()
+        setStories(data)
+        setLoading(false)
+      }
+
+      fetchStories()
+    }, [searchParams]) 
   return (
     <div className="min-h-screen bg-gray-50">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -44,6 +58,7 @@ const StoriesPage = () => {
         </div>
 
         {/* Search & Filter */}
+        <FilterStory />
 
         {/* Story Grid */}
         {stories.length === 0 ? (<p className="text-gray-600">Belum ada cerita perjalanan.</p>) :
