@@ -12,6 +12,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url)
     const search = searchParams.get("search")
     const tags = searchParams.get("tags")?.split(",").filter(Boolean)
+     const featured = searchParams.get("featured") === "true"
 
     const filter: any = {}
 
@@ -24,6 +25,10 @@ export async function GET(req: NextRequest) {
 
     if (tags && tags.length > 0) {
       filter.tags = { $in: tags }
+    }
+
+    if (featured) {
+      filter.featured = true
     }
 
 

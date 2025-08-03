@@ -18,4 +18,5 @@ export interface Story {
   media?: string[]
   likes: Types.ObjectId[]
   commentCount: number
+  featured: boolean
 }

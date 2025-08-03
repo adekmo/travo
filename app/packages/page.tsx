@@ -12,6 +12,7 @@ import { Badge, Calendar, DollarSign, Filter, Map, MapPin, Search, Shield } from
 import Features from '@/components/Features'
 import Footer from '@/components/Footer'
 import Hero from '@/components/Hero'
+import FeaturedStory from '@/components/FeaturedStory'
 
 const formatRupiah = (value: number) => `Rp${new Intl.NumberFormat('id-ID').format(value)}`
 
@@ -143,6 +144,7 @@ export default function PackagesPage() {
     <div className="max-w-6xl mx-auto p-6">
       {/* Hero */}
       <Hero />
+
         {/* search & filter */}
       <section className="pt-10 pb-5 relative">
         <div className="container mx-auto px-4">
@@ -314,7 +316,7 @@ export default function PackagesPage() {
 
                             router.push(`/packages?${params.toString()}`)
                         }}
-                        className="border px-3 py-2 rounded pl-4 pr-10 h-12 border-2 border-gray-200 focus:border-blue-500 dark:border-gray-700 dark:focus:border-blue-400 transition-colors"
+                        className="px-3 py-2 rounded pl-4 pr-10 h-12 border-2 border-gray-200 focus:border-blue-500 dark:border-gray-700 dark:focus:border-blue-400 transition-colors"
                         >
                         <option value="">Default</option>
                         <option value="price_asc">Harga Termurah</option>
@@ -338,6 +340,9 @@ export default function PackagesPage() {
           </div>
         </div>
       </section>
+
+      {/* Featured Stories */}
+      <FeaturedStory />
 
       <Features />
       <Footer />

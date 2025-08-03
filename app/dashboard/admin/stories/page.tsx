@@ -7,6 +7,7 @@ import { id } from 'date-fns/locale'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Story } from '@/types/story'
+import { toast } from 'react-toastify'
 
 
 const AdminStoriesPage = () => {
@@ -26,6 +27,29 @@ const AdminStoriesPage = () => {
     fetchStories()
   }, [])
 
+  const handleToggleFeatured = async (id: string) => {
+    try {
+      const res = await fetch(`/api/admin/stories/${id}/featured`, {
+        method: 'PATCH',
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        toast.success('Status featured diperbarui')
+        setStories((prev) =>
+          prev.map((s) =>
+            s._id === id ? { ...s, featured: data.featured } : s
+          )
+        )
+      } else {
+        const error = await res.json()
+        toast.error(error.message || 'Gagal update featured')
+      }
+    } catch (err) {
+      toast.error('Terjadi kesalahan saat update featured')
+    }
+  }
+
   if (loading) return <div className="p-6">Memuat cerita...</div>
 
   return (
@@ -41,6 +65,7 @@ const AdminStoriesPage = () => {
               <th className="px-4 py-2">Tanggal</th>
               <th className="px-4 py-2">Like</th>
               <th className="px-4 py-2">Komentar</th>
+              <th className="px-4 py-2">Featured</th>
               <th className="px-4 py-2">Aksi</th>
             </tr>
           </thead>
@@ -53,6 +78,16 @@ const AdminStoriesPage = () => {
                 <td className="px-4 py-2 text-center">{format(new Date(story.createdAt), 'dd MMM yyyy', { locale: id })}</td>
                 <td className="px-4 py-2 text-center">{story.likes?.length || 0}</td>
                 <td className="px-4 py-2 text-center">{story.commentCount ?? 0}</td>
+                <td className="px-4 py-2 text-center">
+                  <Button
+                    variant={story.featured ? 'outline' : 'ghost'}
+                    size="sm"
+                    className={story.featured ? 'text-green-600 border-green-600' : 'text-gray-500'}
+                    onClick={() => handleToggleFeatured(story._id)}
+                  >
+                    {story.featured ? '✓ Featured' : 'Tandai'}
+                  </Button>
+                </td>
                 <td className="px-4 py-2 text-center">
                   <Link href={`/stories/${story._id}`}>
                     <Button size="sm" variant="outline">Lihat</Button>
