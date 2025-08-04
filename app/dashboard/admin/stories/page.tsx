@@ -88,10 +88,35 @@ const AdminStoriesPage = () => {
                     {story.featured ? '✓ Featured' : 'Tandai'}
                   </Button>
                 </td>
-                <td className="px-4 py-2 text-center">
+                <td className="px-4 py-2 text-center flex  gap-2">
                   <Link href={`/stories/${story._id}`}>
                     <Button size="sm" variant="outline">Lihat</Button>
                   </Link>
+                  <Button
+                    size="sm"
+                    variant={story.hidden ? "secondary" : "destructive"}
+                    onClick={async () => {
+                      const res = await fetch(`/api/admin/stories/${story._id}/hide`, {
+                        method: "PATCH",
+                      })
+                      if (res.ok) {
+                        const data = await res.json()
+                        setStories((prev) =>
+                          prev.map((s) =>
+                            s._id === story._id ? { ...s, hidden: data.hidden } : s
+                          )
+                        )
+                      } else {
+                        alert("Gagal mengubah status tampilan cerita.")
+                      }
+                    }}
+                  >
+                    {story.hidden ? (
+                      <span className="text-red-600 font-medium">Disembunyikan</span>
+                    ) : (
+                      <span className="text-white font-medium">Publik</span>
+                    )}
+                  </Button>
                 </td>
               </tr>
             ))}

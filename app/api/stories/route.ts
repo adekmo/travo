@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
     const tags = searchParams.get("tags")?.split(",").filter(Boolean)
      const featured = searchParams.get("featured") === "true"
 
-    const filter: any = {}
+    const filter: any = { hidden: false }
 
     if (search) {
       filter.$or = [
@@ -31,6 +31,7 @@ export async function GET(req: NextRequest) {
       filter.featured = true
     }
 
+    filter.hidden = false
 
     const stories = await TravelStory.find(filter)
       .sort({ createdAt: -1})

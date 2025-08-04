@@ -19,4 +19,5 @@ export interface Story {
   likes: Types.ObjectId[]
   commentCount: number
   featured: boolean
+  hidden: boolean
 }
