@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
   },
   images: {
-    domains: ['res.cloudinary.com', 'avatars.githubusercontent.com'],
+    domains: ['res.cloudinary.com', 'avatars.githubusercontent.com', 'images.unsplash.com'],
   },
 };
 

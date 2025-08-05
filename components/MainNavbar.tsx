@@ -192,7 +192,6 @@ const MainNavbar = () => {
                 {/* )} */}
 
                 <Link href="/dashboard/seller" className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
-                          {/* <UserCircleIcon className="w-6 h-6 text-gray-700 hover:text-blue-600 transition " /> */}
                           <Avatar className="h-10 w-10 flex-shrink-0">
                             <AvatarImage src={session.user.avatar} alt={session.user.name} />
                             <AvatarFallback>{session.user.name.charAt(0)}</AvatarFallback>

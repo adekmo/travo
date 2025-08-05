@@ -1,3 +1,9 @@
+export const metadata = generateMetadata({
+  title: "Daftar Paket Wisata | Travoo",
+  description: "Jelajahi ratusan paket wisata terbaik dari agen terpercaya.",
+  url: "https://travoo.com/packages",
+});
+
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -13,6 +19,7 @@ import Features from '@/components/Features'
 import Footer from '@/components/Footer'
 import Hero from '@/components/Hero'
 import FeaturedStory from '@/components/FeaturedStory'
+import { generateMetadata } from '@/lib/metadata';
 
 const formatRupiah = (value: number) => `Rp${new Intl.NumberFormat('id-ID').format(value)}`
 
