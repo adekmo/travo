@@ -162,10 +162,10 @@ const MainNavbar = () => {
                 </Link>
                 <Link href="/dashboard/seller/bookings" className="text-blue-600 underline">
                     Booking
-                </Link>
-                <Link href="/dashboard/profile" className="text-blue-600 underline">
-                    <p>Profile {session.user.name}</p>    
                 </Link> */}
+                {/* <Link href="/dashboard/profile" className="text-blue-600 underline">
+                    <p>Profile {session.user.name}</p>    
+                </Link>  */}
                 <Link href="/stories" className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
                       <p className="ml-1">Story Perjalan</p>
                 </Link>
@@ -179,7 +179,7 @@ const MainNavbar = () => {
                     )}
                 </Link>
 
-                {pathname.includes('/dashboard/seller') && (
+                {/* {pathname.includes('/dashboard/seller') && ( */}
                     <Link href="/dashboard/seller/notifications" className="relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
                         <Bell className="w-6 h-6 text-gray-700 hover:text-blue-600 transition" />
                         {hasNotifUnread  && (
@@ -189,7 +189,16 @@ const MainNavbar = () => {
                         <span className="absolute top-0 right-0 block w-2 h-2 bg-red-600 rounded-full"></span>
                         )}
                     </Link>
-                )}
+                {/* )} */}
+
+                <Link href="/dashboard/seller" className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
+                          {/* <UserCircleIcon className="w-6 h-6 text-gray-700 hover:text-blue-600 transition " /> */}
+                          <Avatar className="h-10 w-10 flex-shrink-0">
+                            <AvatarImage src={session.user.avatar} alt={session.user.name} />
+                            <AvatarFallback>{session.user.name.charAt(0)}</AvatarFallback>
+                          </Avatar>
+                            <p className="text-gray-700">Dashboard</p>    
+                        </Link> 
 
                 {session ? (
                     <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 transform hover:scale-105">
