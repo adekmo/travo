@@ -4,7 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { connectDB } from '@/lib/mongodb'
 import Notification from '@/models/Notification'
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     await connectDB()
     const session = await getServerSession(authOptions)
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function PATCH(req: NextRequest) {
+export async function PATCH() {
   try {
     await connectDB()
     const session = await getServerSession(authOptions)

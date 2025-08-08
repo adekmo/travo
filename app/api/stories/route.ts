@@ -5,6 +5,7 @@ import { connectDB } from "@/lib/mongodb";
 import TravelStory from "@/models/TravelStory";
 import Booking from "@/models/Booking";
 import Comment from "@/models/Comment";
+import { FilterQuery } from "mongoose";
 
 export async function GET(req: NextRequest) {
   try {
@@ -14,7 +15,8 @@ export async function GET(req: NextRequest) {
     const tags = searchParams.get("tags")?.split(",").filter(Boolean)
      const featured = searchParams.get("featured") === "true"
 
-    const filter: any = { hidden: false }
+    // const filter: any = { hidden: false }
+    const filter: FilterQuery<typeof TravelStory> = { hidden: false };
 
     if (search) {
       filter.$or = [

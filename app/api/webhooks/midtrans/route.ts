@@ -13,15 +13,15 @@ export async function POST(req: NextRequest) {
     order_id,
     status_code,
     gross_amount,
-    signature_key,
+    // signature_key,
     transaction_status,
   } = body
 
   const serverKey = process.env.MIDTRANS_SERVER_KEY || ''
-  const hash = crypto
-    .createHash('sha512')
-    .update(order_id + status_code + gross_amount + serverKey)
-    .digest('hex')
+  // const hash = crypto
+  //   .createHash('sha512')
+  //   .update(order_id + status_code + gross_amount + serverKey)
+  //   .digest('hex')
 
   // if (signature_key !== hash) {
   //   return NextResponse.json({ message: 'Invalid signature' }, { status: 403 })

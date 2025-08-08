@@ -14,6 +14,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
     return NextResponse.json({ message: 'Berhasil diperbarui' })
   } catch (error) {
+    console.error('Error saat update review:', error);
     return NextResponse.json({ message: 'Gagal update review' }, { status: 500 })
   }
 }

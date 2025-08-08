@@ -1,7 +1,9 @@
 // app/api/admin/users/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
+import { FilterQuery } from 'mongoose';
 import User from '@/models/User';
+import { User as IUser } from '@/types/user'; 
 
 export async function GET(req: NextRequest) {
   try {
@@ -12,28 +14,31 @@ export async function GET(req: NextRequest) {
     const role = req.nextUrl.searchParams.get('role');
     const isVerified = req.nextUrl.searchParams.get('isVerified');
 
-    let query: any = {};
+    // let query: any = {};
+    const query: FilterQuery<IUser> = {};
 
     // Pencarian berdasarkan nama atau email
     if (search) {
-      query = { ...query, $or: [{ name: { $regex: search, $options: 'i' } }, { email: { $regex: search, $options: 'i' } }] };
+      query.$or = [
+        { name: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+      ];
     }
 
     // Filter berdasarkan role
     if (role) {
-      query = { ...query, role };
+      query.role = role as IUser['role'];
     }
 
-    // Filter berdasarkan status verifikasi
     if (isVerified !== null) {
-      query = { ...query, isVerified: isVerified === 'true' };
+      query.isVerified = isVerified === 'true';
     }
 
-    // Ambil data user dari MongoDB
     const users = await User.find(query);
 
     return NextResponse.json(users);
   } catch (error) {
+    console.error('Terdapat kesalahan', error);
     return NextResponse.json({ message: 'Terjadi kesalahan' }, { status: 500 });
   }
 }

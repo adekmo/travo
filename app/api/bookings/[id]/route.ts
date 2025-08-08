@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth"
 import Booking from "@/models/Booking"
 import { connectDB } from "@/lib/mongodb"
 import Notification from "@/models/Notification"
-import TravelPackage from '@/models/TravelPackage'
+// import TravelPackage from '@/models/TravelPackage'
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
@@ -19,15 +19,6 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     if (!validStatus.includes(status)) {
       return NextResponse.json({ message: "Invalid status" }, { status: 400 })
     }
-
-    // Opsi: hanya seller terkait yang bisa mengubah status booking paketnya
-    // const bookingToUpdate = await Booking.findById(params.id).populate('packageId');
-    // if (!bookingToUpdate) {
-    //   return NextResponse.json({ message: "Booking not found" }, { status: 404 });
-    // }
-    // if (session.user.role === 'seller' && bookingToUpdate.packageId.seller.toString() !== session.user.id) {
-    //   return NextResponse.json({ message: "Forbidden: Anda hanya bisa mengubah status booking untuk paket Anda sendiri." }, { status: 403 });
-    // }
 
     const booking = await Booking.findByIdAndUpdate(
       params.id,

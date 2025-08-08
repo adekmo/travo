@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Booking from "@/models/Booking";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);

@@ -1,12 +1,13 @@
 import { authOptions } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
-import TravelPackage from '@/models/TravelPackage'
+import { Types } from "mongoose";
+// import TravelPackage from '@/models/TravelPackage'
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     await connectDB()
     const session = await getServerSession(authOptions)
@@ -53,7 +54,7 @@ export async function POST(req: NextRequest){
         const alreadyInWishlist = user.wishlist.includes(packageId)
 
         if (alreadyInWishlist) {
-            user.wishlist = user.wishlist.filter((id: any) => id.toString() !== packageId)
+            user.wishlist = user.wishlist.filter((id: Types.ObjectId) => id.toString() !== packageId)
         } else {
             user.wishlist.push(packageId)
         }

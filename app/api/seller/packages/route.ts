@@ -7,7 +7,7 @@ import Category from "@/models/Category"
 import User from "@/models/User";
 import ActivityLog from "@/models/ActivityLog";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   await connectDB();
   const session = await getServerSession(authOptions);
 
@@ -77,12 +77,8 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(newPackage, { status: 201 });
-  } catch (error: any) {
-    console.error("Error creating package details:", {
-      message: error.message,
-      stack: error.stack,
-      name: error.name,
-    });
+  } catch (error) {
+    console.error("Error creating package", error)
     return NextResponse.json({ message: 'Terjadi kesalahan pada server saat menambahkan paket. Mohon coba lagi nanti.' }, { status: 500 });
   }
 }

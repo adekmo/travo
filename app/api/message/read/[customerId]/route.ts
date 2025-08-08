@@ -24,7 +24,8 @@ export async function POST(req: NextRequest, { params }: { params: { customerId:
     );
 
     return NextResponse.json({ message: "Marked as read" });
-  } catch (err) {
+  } catch (error) {
+    console.error('terdapat kesalahan', error);
     return NextResponse.json({ message: "Error" }, { status: 500 });
   }
 }

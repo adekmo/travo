@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     const sort = searchParams.get('sort') || ''
     const category = searchParams.get("category");
 
-    const query: any = {
+    const query: Record<string, any> = {
         title: { $regex: search, $options: 'i' },
         location: { $regex: location, $options: 'i' },
         price: { $gte: minPrice, $lte: maxPrice },

@@ -12,13 +12,12 @@ declare module "next-auth" {
       phone?: string;
       address?: string;
       avatar?: string;
-      bio?:string;
+      bio?: string;
     };
   }
 
   interface User {
     id: string;
     role: "admin" | "seller" | "customer";
-    
   }
 }

@@ -11,7 +11,8 @@ export async function GET(req: NextRequest) {
   const page = parseInt(searchParams.get('page') || '1');
   const limit = parseInt(searchParams.get('limit') || '10');
 
-  const filter: any = {};
+  // const filter: any = {};
+  const filter: { createdAt?: { $gte: Date; $lte: Date } } = {};
 
   if (start && end) {
     const startDate = new Date(start);

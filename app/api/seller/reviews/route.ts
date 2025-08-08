@@ -8,7 +8,7 @@ import Review from "@/models/Review"
 import TravelPackage from "@/models/TravelPackage"
 import mongoose from "mongoose";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const session = await getServerSession(authOptions)
 
   if (!session || session.user.role !== "seller") {

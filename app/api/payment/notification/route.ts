@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   console.log("🔥 Webhook masuk:", body);
 
   const serverKey = process.env.MIDTRANS_SERVER_KEY as string;
-  const signatureKeyHeader = req.headers.get("x-callback-signature-key") || "";
+  // const signatureKeyHeader = req.headers.get("x-callback-signature-key") || "";
 
   // 1. Validasi signature
   const crypto = await import("crypto");

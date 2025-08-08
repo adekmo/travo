@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import clientPromise from "@/lib/mongodb-client";
+// import clientPromise from "@/lib/mongodb-client";
 import User from "@/models/User";
 import mongoose from "mongoose";
 

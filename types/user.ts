@@ -11,4 +11,8 @@ export interface User {
   address?: string;
   avatar?: string;
   bio?: string;
+  password?: string;
+  wishlist?: string[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }

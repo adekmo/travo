@@ -17,6 +17,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
     return NextResponse.json(travelPackage);
   } catch (error) {
+    console.error('terdapat kesalahan', error);
     return NextResponse.json({ message: "Terjadi kesalahan" }, { status: 500 });
   }
 }

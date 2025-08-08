@@ -1,7 +1,7 @@
 import { connectDB } from "@/lib/mongodb"
 import TravelStory from "@/models/TravelStory"
-import User from "@/models/User"
-import TravelPackage from "@/models/TravelPackage"
+// import User from "@/models/User"
+// import TravelPackage from "@/models/TravelPackage"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
