@@ -1,11 +1,22 @@
 'use client'
 
+import { Stat } from "@/types/stat";
 import { CheckCheck, CheckCircle, DollarSign, Package, Star, ViewIcon, Watch } from "lucide-react";
 import { useEffect, useState } from "react";
 
+interface SellerStatsType {
+  totalPackages: number
+  totalBookings: number
+  pendingBookings: number
+  confirmedBookings: number
+  totalRevenue: number
+  totalReviews: number
+  avgRating: number
+}
+
 const SellerStats = () => {
 
-    const [stats, setStats] = useState<any>(null);
+    const [stats, setStats] = useState<SellerStatsType | null>(null)
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

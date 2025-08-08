@@ -1,8 +1,8 @@
 'use client'
 
-import { Bell, MapPlusIcon, MessageSquare, UserCircleIcon } from 'lucide-react'
+import { Bell, MapPlusIcon, MessageSquare } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
-import Image from 'next/image'
+// import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -21,43 +21,40 @@ const MainNavbar = () => {
         if (session?.user?.role === 'customer') {
           try {
             const res = await fetch('/api/bookings/customer/notifications')
-            const data = await res.json()
-            const unread = data.some((n: any) => !n.isRead)
+            const data: { isRead: boolean }[] = await res.json()
+            const unread = data.some((n) => !n.isRead)
             setHasNotifUnread(unread)
 
-            const chatRes = await fetch('/api/message/customer-conversations') 
-            const chatData = await chatRes.json()
-            const chatUnread = chatData.some((c: any) => c.unreadCount > 0)
+            const chatRes = await fetch('/api/message/customer-conversations')
+            const chatData: { unreadCount: number }[] = await chatRes.json()
+            const chatUnread = chatData.some((c) => c.unreadCount > 0)
             setHasChatUnread(chatUnread)
-          } catch (err) {
+          } catch {
             console.error('Gagal mengambil notifikasi customer')
           }
-        } else if(session?.user?.role === 'seller') {
-            try {
-            // Notifikasi umum
+        } else if (session?.user?.role === 'seller') {
+          try {
             const notifRes = await fetch('/api/notifications')
-            const notifData = await notifRes.json()
-            const notifUnread = notifData.some((n: any) => !n.isRead)
+            const notifData: { isRead: boolean }[] = await notifRes.json()
+            const notifUnread = notifData.some((n) => !n.isRead)
             setHasNotifUnread(notifUnread)
 
-            // Notifikasi chat
             const chatRes = await fetch('/api/message/conversations')
-            const chatData = await chatRes.json()
-            const chatUnread = chatData.some((c: any) => c.unreadCount > 0)
+            const chatData: { unreadCount: number }[] = await chatRes.json()
+            const chatUnread = chatData.some((c) => c.unreadCount > 0)
             setHasChatUnread(chatUnread)
-
-          } catch (error) {
+          } catch {
             console.error('Gagal mengambil notifikasi seller')
           }
-        } else if(session?.user?.role === 'admin') {
-            try {
-                const res = await fetch('/api/admin-notifications')
-                const data = await res.json()
-                const unreadExists =  (data.notifications || []).some((n: { isRead: any }) => !n.isRead)
-                setHasNotifUnread(unreadExists)
-            } catch (error) {
-                console.error('Gagal mengambil notifikasi Admin')
-            }
+        } else if (session?.user?.role === 'admin') {
+          try {
+            const res = await fetch('/api/admin-notifications')
+            const data: { notifications?: { isRead: boolean }[] } = await res.json()
+            const unreadExists = (data.notifications || []).some((n) => !n.isRead)
+            setHasNotifUnread(unreadExists)
+          } catch {
+            console.error('Gagal mengambil notifikasi Admin')
+          }
         }
       }
 

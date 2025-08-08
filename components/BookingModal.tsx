@@ -13,6 +13,22 @@ import { Input } from './ui/Input'
 import { Mail, Phone, User, Users } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card'
 
+interface SnapResult {
+  transaction_id: string
+  order_id: string
+  gross_amount: string
+  payment_type: string
+  transaction_time: string
+  transaction_status: string
+  fraud_status?: string
+  status_message?: string
+}
+
+interface SnapError {
+  status_code: string
+  status_message: string
+}
+
 interface BookingModalProps {
   packageId: string
   packageTitle: string
@@ -123,18 +139,18 @@ const BookingModal = ({
 
       // Step 3: Tampilkan popup Snap
       window.snap.pay(tokenData.token, {
-        onSuccess: (result: any) => {
+        onSuccess: (result: SnapResult) => {
           console.log('Pembayaran sukses', result)
           toast.success('Pembayaran berhasil!')
           if (onSuccess) onSuccess()
           router.push('/dashboard/customer')
         },
-        onPending: (result: any) => {
+        onPending: (result: SnapResult) => {
           console.log('Menunggu pembayaran', result)
           toast.info('Menunggu pembayaran...')
           router.push('/dashboard/customer/bookings')
         },
-        onError: (err: any) => {
+        onError: (err: SnapError) => {
           console.error('Gagal bayar', err)
           toast.error('Gagal memproses pembayaran')
         },

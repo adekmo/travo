@@ -7,15 +7,23 @@ import { Input } from '@/components/ui/Input'
 import { Textarea } from '@/components/ui/Textarea'
 import { Button } from '@/components/ui/Button'
 import { toast } from 'react-toastify'
-import { CldUploadWidget } from 'next-cloudinary'
+import { CldUploadWidget, CloudinaryUploadWidgetResults } from 'next-cloudinary'
 import { Save, Tag, X } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
+import Image from 'next/image'
 
 interface BookingPackage {
   _id: string
   title: string
 }
+
+type BookingWithPackage = {
+  packageId: {
+    _id: string;
+    title: string;
+  };
+};
 
 const AddStories = () => {
     const { data: session } = useSession()
@@ -37,16 +45,19 @@ const AddStories = () => {
         try {
             const res = await fetch('/api/bookings/customer')
             const allBookings = await res.json()
-            const confirmed = allBookings.filter((b: any) =>
-            b.status === "confirmed" && b.packageId && !b.hasStory
-            )
+            const confirmed = allBookings.filter((b: {
+              status: string;
+              packageId: { _id: string; title: string };
+              hasStory: boolean;
+            }) => b.status === "confirmed" && b.packageId && !b.hasStory)
+
             setPackages(
-            confirmed.map((b: any) => ({
+              confirmed.map((b: BookingWithPackage) => ({
                 _id: b.packageId._id,
                 title: b.packageId.title,
-            }))
-            )
-        } catch (err) {
+              }))
+            );
+        } catch {
             toast.error("Gagal memuat paket")
         }
         }
@@ -69,9 +80,15 @@ const AddStories = () => {
       setTags(tags.filter((_, i) => i !== index))
     }
 
-    const handleUpload = (result: any) => {
-        setMedia((prev) => [...prev, result.info.secure_url])
-    }
+    const handleUpload = (result: CloudinaryUploadWidgetResults) => {
+      const info = result?.info;
+      if (typeof info === 'object' && info && 'secure_url' in info) {
+        const url = (info as { secure_url: string }).secure_url;
+        if (typeof url === 'string') {
+          setMedia((prev): string[] => [...prev, url]);
+        }
+      }
+};
 
     const handleSubmit = async () => {
         if (!title || !content || !selectedPackage) {
@@ -182,7 +199,14 @@ const AddStories = () => {
         <div className="mt-4 space-y-2">
           {media.map((url, idx) => (
             <div key={idx}>
-              <img src={url} alt={`Media ${idx}`} className="max-w-xs rounded" />
+              {/* <img src={url} alt={`Media ${idx}`} className="max-w-xs rounded" /> */}
+              <Image
+                src={url}
+                alt={`Media ${idx}`}
+                width={400} // atau ukuran sesuai kebutuhanmu
+                height={300}
+                className="max-w-xs rounded"
+              />
             </div>
           ))}
         </div>

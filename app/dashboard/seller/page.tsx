@@ -18,7 +18,7 @@ const SellerDashboardPage = () => {
       const res = await fetch('/api/bookings/seller')
       const data = await res.json()
 
-      const mapped = data.map((booking: any) => ({
+      const mapped = data.map((booking: Booking) => ({
         title: `${booking.packageId.title} (${booking.numberOfPeople} org)`,
         start: new Date(booking.date),
         end: new Date(booking.date),

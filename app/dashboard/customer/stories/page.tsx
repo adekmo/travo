@@ -2,14 +2,15 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { useSession } from 'next-auth/react'
+// import { useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/Button'
 import { Story } from '@/types/story'
+import Image from 'next/image'
 
 
 const MyStoriesPage = () => {
   const [stories, setStories] = useState<Story[]>([])
-  const { data: session } = useSession()
+  // const { data: session } = useSession()
 
   useEffect(() => {
     const fetchStories = async () => {
@@ -38,7 +39,7 @@ const MyStoriesPage = () => {
           {stories.map((story) => (
             <li key={story._id} className="border rounded p-4 shadow-sm">
              {Array.isArray(story.media) && story.media.length > 0 && (
-                <img
+                <Image 
                   src={story.media[0]}
                   alt="cover"
                   className="w-full max-h-48 object-cover rounded mb-2"

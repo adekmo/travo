@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Story } from "@/types/story"
 import { Card, CardContent } from "./ui/Card"
-import { ArrowRight, Clock, Heart, HeartHandshake, MapPin, MessageCircle, Play, Share2 } from "lucide-react"
+import { ArrowRight, Clock, Heart, MapPin, MessageCircle } from "lucide-react"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/Avatar"
 import { formatDistanceToNow } from "date-fns"

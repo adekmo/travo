@@ -9,6 +9,7 @@ import { Category } from '@/types/category'
 import DynamicInputList from '@/components/form/DynamicInputList'
 import ItineraryEditor from '@/components/form/ItineraryEditor'
 import FacilitiesInputList from '@/components/form/FacilitiesInputList'
+import Image from 'next/image'
 
 
 const CreatePackagePage = () => {
@@ -266,7 +267,8 @@ const CreatePackagePage = () => {
             </CldUploadWidget>
 
             {form.image && (
-              <img src={form.image} alt="Preview" className="w-40 h-auto mt-2 rounded" />
+              // <img src={form.image} alt="Preview" className="w-40 h-auto mt-2 rounded" />
+              <Image src={form.image} alt="Preview" className="w-40 h-auto mt-2 rounded" />
             )}
         </div>
 

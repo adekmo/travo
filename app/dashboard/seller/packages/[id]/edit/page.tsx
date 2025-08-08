@@ -9,6 +9,9 @@ import { Category } from '@/types/category'
 import DynamicInputList from '@/components/form/DynamicInputList'
 import FacilitiesInputList from '@/components/form/FacilitiesInputList'
 import ItineraryEditor from '@/components/form/ItineraryEditor'
+import Image from 'next/image'
+import { Facility } from '@/types/facility'
+import { ItineraryDay } from '@/types/itineraryDay'
 
 type Params = { id: string }
 
@@ -62,11 +65,11 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
             const data = await res.json()
             setForm({
             ...data,
-            facilities: data.facilities?.map((f: any) => ({
+            facilities: data.facilities?.map((f: Facility) => ({
               name: f.name,
               icon: f.icon ?? '',
             })) ?? [],
-            itinerary: data.itinerary?.map((item: any) => ({
+            itinerary: data.itinerary?.map((item: ItineraryDay) => ({
               day: item.day,
               title: item.title,
               activities: item.activities ?? [],
@@ -272,7 +275,7 @@ const EditPackagePage = ({ params }: { params: Promise<Params> }) => {
           </CldUploadWidget>
 
           {form.image && (
-            <img
+            <Image 
               src={form.image}
               alt="Preview Gambar"
               className="mt-4 rounded w-full max-h-64 object-cover"

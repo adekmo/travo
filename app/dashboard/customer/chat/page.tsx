@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { CustomerConversations } from '@/types/customerConversations'
 
-const page = () => {
+const Page = () => {
 
     const [conversations, setConversations] = useState<CustomerConversations[]>([])
 
@@ -49,4 +49,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

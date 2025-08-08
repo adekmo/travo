@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Home, Settings, Package, Users, Menu, X, MessageSquare, Bell, LayoutDashboard, Calendar } from 'lucide-react';
+import { Home, Settings, Package, Users, Menu, X, Bell, LayoutDashboard, Calendar } from 'lucide-react';
 
 interface NavItem {
     name: string;

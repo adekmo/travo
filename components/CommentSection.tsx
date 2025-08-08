@@ -1,11 +1,11 @@
 'use client'
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { Comment } from "@/types/comment";
-import Image from "next/image";
+// import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/Card";
 import { MessageCircle, MoreHorizontal, Reply, Send } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/Avatar";
@@ -18,15 +18,15 @@ const CommentSection = ({ storyId }: { storyId: string }) => {
     const [newComment, setNewComment] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const fetchComments = async () => {
-        try {
+    const fetchComments = useCallback(async () => {
+      try {
         const res = await fetch(`/api/stories/${storyId}/comments`);
         const data = await res.json();
         setComments(data);
-        } catch (err) {
+      } catch (err) {
         console.error("❌ Failed to fetch comments", err);
-        }
-    };
+      }
+    }, [storyId]);;
 
     const handlePostComment = async () => {
         if (!newComment.trim()) return;
@@ -52,7 +52,7 @@ const CommentSection = ({ storyId }: { storyId: string }) => {
 
     useEffect(() => {
         fetchComments();
-    }, []);
+    }, [fetchComments]);
 
   return (
     <div className="mt-10">

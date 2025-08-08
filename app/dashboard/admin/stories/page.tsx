@@ -45,7 +45,7 @@ const AdminStoriesPage = () => {
         const error = await res.json()
         toast.error(error.message || 'Gagal update featured')
       }
-    } catch (err) {
+    } catch {
       toast.error('Terjadi kesalahan saat update featured')
     }
   }

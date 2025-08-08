@@ -39,9 +39,14 @@ const CategoriesPage = () => {
         }
         const data = await res.json();
         setCategories(data);
-        } catch (error: any) {
-        console.error('Error fetching categories:', error);
-        displayMessage(`Gagal memuat kategori: ${error.message || 'Terjadi kesalahan.'}`, 'error');
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error('Error ...', error)
+            displayMessage(`Gagal ...: ${error.message}`, 'error');
+          } else {
+            console.error('Unexpected error', error)
+            displayMessage('Gagal ...: Terjadi kesalahan tidak diketahui.', 'error');
+          }
         } finally {
         setIsLoading(false); // Set loading false setelah fetch selesai (baik sukses/gagal)
         }
@@ -49,6 +54,7 @@ const CategoriesPage = () => {
 
     useEffect(() => {
         fetchCategories()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleCreate = async () => {
@@ -75,9 +81,14 @@ const CategoriesPage = () => {
         setNewCategoryName('');
         setNewCategoryDescription('');
         fetchCategories();
-        } catch (error: any) {
-        console.error('Error creating category:', error);
-        displayMessage(`Gagal membuat kategori: ${error.message || 'Terjadi kesalahan.'}`, 'error');
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error('Error ...', error)
+            displayMessage(`Gagal ...: ${error.message}`, 'error');
+          } else {
+            console.error('Unexpected error', error)
+            displayMessage('Gagal ...: Terjadi kesalahan tidak diketahui.', 'error');
+          }
         } finally {
         setIsLoading(false);
         }
@@ -118,9 +129,14 @@ const CategoriesPage = () => {
         displayMessage('Kategori berhasil diupdate!', 'success');
         handleCancelEdit();
         fetchCategories();
-        } catch (error: any) {
-        console.error('Error updating category:', error);
-        displayMessage(`Gagal mengupdate kategori: ${error.message || 'Terjadi kesalahan.'}`, 'error');
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error('Error ...', error)
+            displayMessage(`Gagal ...: ${error.message}`, 'error');
+          } else {
+            console.error('Unexpected error', error)
+            displayMessage('Gagal ...: Terjadi kesalahan tidak diketahui.', 'error');
+          }
         } finally {
         setIsLoading(false);
         }
@@ -150,9 +166,14 @@ const CategoriesPage = () => {
         setShowConfirmModal(false);
         setCategoryToDeleteId(null);
         fetchCategories();
-        } catch (error: any) {
-        console.error('Error deleting category:', error);
-        displayMessage(`Gagal menghapus kategori: ${error.message || 'Terjadi kesalahan.'}`, 'error');
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error('Error ...', error)
+            displayMessage(`Gagal ...: ${error.message}`, 'error');
+          } else {
+            console.error('Unexpected error', error)
+            displayMessage('Gagal ...: Terjadi kesalahan tidak diketahui.', 'error');
+          }
         } finally {
         setIsLoading(false);
         }

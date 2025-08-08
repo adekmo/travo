@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react'
 import { useState, useEffect } from 'react'
 import { Heart } from 'lucide-react' // pakai ikon lucide (pastikan kamu sudah install)
-import { cn } from '@/lib/utils'
+// import { cn } from '@/lib/utils'
 
 type Props = {
   storyId: string

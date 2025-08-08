@@ -4,7 +4,9 @@ import clientPromise from "./mongodb-client";
 import { connectDB } from "./mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions, User as NextAuthUser } from "next-auth";
+import type { JWT } from "next-auth/jwt";
+import type { Session } from "next-auth";
 
 export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
@@ -38,31 +40,53 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           role: user.role,
           isVerified: user.isVerified,
-          avatar: user.avatar, 
+          avatar: user.avatar,
         };
       },
     }),
   ],
   callbacks: {
-    async jwt({ token, user }: { token: any; user?: any }) {
+    async jwt({
+      token,
+      user,
+    }: {
+      token: JWT;
+      user?: NextAuthUser & {
+        id?: string;
+        role?: "admin" | "seller" | "customer";
+        isVerified?: boolean;
+        avatar?: string;
+      };
+    }): Promise<JWT> {
       if (user) {
-        token.role = (user as any).role as "admin" | "seller" | "customer";
-        token.id = user.id as string;
+        token.role = user.role;
+        token.id = user.id;
         token.isVerified = user.isVerified;
         token.avatar = user.avatar;
       }
       return token;
     },
-    async session({ session, token }: { session: any; token: any }) {
-      session.user.role = token.role as "admin" | "seller" | "customer";
-      session.user.id = token.id as string;
-      session.user.isVerified = token.isVerified
-      session.user.avatar = token.avatar;
+    async session({
+      session,
+      token,
+    }: {
+      session: Session;
+      token: JWT & {
+        id?: string;
+        role?: "admin" | "seller" | "customer";
+        isVerified?: boolean;
+        avatar?: string;
+      };
+    }): Promise<Session> {
+      session.user.id = token.id!;
+      session.user.role = token.role!;
+      session.user.isVerified = token.isVerified!;
+      session.user.avatar = token.avatar!;
       return session;
     },
-    async redirect({ url, baseUrl }) {
+    async redirect({ baseUrl }: { baseUrl: string }): Promise<string> {
       return baseUrl + "/redirect";
-  },
+    },
   },
   pages: {
     signIn: "/auth/signin",

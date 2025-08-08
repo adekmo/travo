@@ -2,9 +2,23 @@
 
 import { useEffect, useState } from 'react'
 import { DateRange, RangeKeyDict } from 'react-date-range'
-import { addDays, format } from 'date-fns'
+// import { addDays, format } from 'date-fns'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
+
+type ActivityLog = {
+  _id: string;
+  seller: {
+    name: string;
+    email: string;
+  };
+  action: string;
+  message: string;
+  packageId?: {
+    title: string;
+  };
+  createdAt: string;
+};
 
 const ActivityLogPage = () => {
 
@@ -16,7 +30,7 @@ const ActivityLogPage = () => {
       },
     ])
 
-    const [logs, setLogs] = useState<any[]>([])
+    const [logs, setLogs] = useState<ActivityLog[]>([])
     const [page, setPage] = useState(1)
     const [totalPages, setTotalPages] = useState(1)
 
@@ -50,7 +64,7 @@ const ActivityLogPage = () => {
         />
       </div>
       <ul className="space-y-4">
-        {logs.map((log: any) => (
+        {logs.map((log) => (
           <li key={log._id} className="border p-4 rounded shadow text-sm">
             <p><strong>Seller:</strong> {log.seller.name} ({log.seller.email})</p>
             <p><strong>Aksi:</strong> {log.action}</p>

@@ -1,14 +1,14 @@
 'use client'
 
-import { useSession } from "next-auth/react";
-import { CldUploadWidget } from "next-cloudinary";
+// import { useSession } from "next-auth/react";
+import { CldUploadWidget, CloudinaryUploadWidgetResults } from "next-cloudinary";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const ProfilePage = () => {
 
-    const { data: session } = useSession();
+    // const { data: session } = useSession();
     // const user = session?.user;
     const router = useRouter();
 
@@ -63,8 +63,12 @@ const ProfilePage = () => {
             if (!res.ok) throw new Error(data.message || "Gagal update profil");
 
             router.back();
-        } catch (err: any) {
+        } catch (err: unknown) {
+          if (err instanceof Error) {
             alert(err.message);
+          } else {
+            alert("Terjadi kesalahan.");
+          }
         }
     };
   return (
@@ -86,11 +90,13 @@ const ProfilePage = () => {
           )}
           <CldUploadWidget
             uploadPreset="recipe_upload"
-            onSuccess={(result: any) => {
-              setForm((prev) => ({
-                ...prev,
-                avatar: result.info.secure_url,
-              }))
+            onSuccess={(result: CloudinaryUploadWidgetResults) => {
+              if (result.info && typeof result.info === "object" && "secure_url" in result.info) {
+                setForm((prev) => ({
+                  ...prev,
+                  avatar: (result.info as { secure_url: string }).secure_url,
+                }));
+              }
             }}
           >
             {({ open }) => (

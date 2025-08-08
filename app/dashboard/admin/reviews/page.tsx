@@ -25,7 +25,7 @@ const AdminReviewsPage = () => {
         })
 
         if (res.ok) {
-        setReviews(reviews.filter((r: any) => r._id !== id))
+        setReviews(reviews.filter((r) => r._id !== id))
         }
     }
 
@@ -61,7 +61,7 @@ const AdminReviewsPage = () => {
       <h1 className="text-2xl font-bold mb-6">Moderasi Review</h1>
       <div className="space-y-4">
         {reviews.length === 0 && <p>Belum ada review.</p>}
-        {reviews.map((r: any) => (
+        {reviews.map((r) => (
           <div key={r._id} className="p-4 bg-muted/50 rounded-lg space-y-2">
             <div className='flex items-center justify-between'>
               <h4 className="font-medium text-sm">

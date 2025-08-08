@@ -36,12 +36,12 @@ const UserList = () => {
             cache: 'no-store',
         });
 
-        const data = await res.json();
+        // const data = await res.json();
 
         if (res.ok) {
             // Refresh data setelah verifikasi berhasil
             setUsers((prev) =>
-                prev.map((u: any) =>
+                prev.map((u) =>
                     u._id === id ? { ...u, isVerified: true } : u
                 )
             );
@@ -60,7 +60,7 @@ const UserList = () => {
     if (res.ok) {
       const updatedUser = await res.json();
       setUsers((prev) =>
-        prev.map((u: any) =>
+        prev.map((u) =>
           u._id === id ? { ...u, isBlocked: updatedUser.isBlocked } : u
         )
       );
@@ -113,7 +113,7 @@ const UserList = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user: any) => (
+          {users.map((user) => (
             <tr key={user._id} className="border-t">
               <td className="p-3">{user.name}</td>
               <td className="p-3">{user.email}</td>

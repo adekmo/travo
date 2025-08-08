@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import { Message } from '@/types/message'
 
@@ -10,19 +10,19 @@ const SellerChatPage = () => {
   const [newMessage, setNewMessage] = useState('')
   const chatEndRef = useRef<HTMLDivElement>(null)
 
-  const fetchMessages = async () => {
-    const res = await fetch(`/api/message/${customerId}`)
-    if (res.ok) {
-      const data = await res.json()
-      setMessages(data)
-    }
-  }
+    const fetchMessages = useCallback(async () => {
+      const res = await fetch(`/api/message/${customerId}`)
+      if (res.ok) {
+        const data = await res.json()
+        setMessages(data)
+      }
+    }, [customerId])
 
-  useEffect(() => {
-    fetchMessages()
-    // const interval = setInterval(fetchMessages, 3000)
-    // return () => clearInterval(interval)
-  }, [])
+    useEffect(() => {
+      fetchMessages()
+      // const interval = setInterval(fetchMessages, 3000)
+      // return () => clearInterval(interval)
+    }, [fetchMessages])
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })

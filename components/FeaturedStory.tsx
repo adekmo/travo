@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Story } from '@/types/story'
 import Link from 'next/link'
-import { UserCircle, CalendarDays, Award, Star, Heart, Eye, MapPin, Calendar, TrendingUp, ArrowRight, Bookmark, Box, Combine, MessageCircle } from 'lucide-react'
+import { Award, Star, Heart, Eye, MapPin, Calendar, TrendingUp, ArrowRight, MessageCircle } from 'lucide-react'
 import { format } from 'date-fns'
 import { id } from 'date-fns/locale'
 import Image from 'next/image'

@@ -8,12 +8,12 @@ import { TravelPackage } from '@/types/travelPackage'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import { Category } from '@/types/category'
-import { Badge, Calendar, DollarSign, Filter, Map, MapPin, Search, Shield } from 'lucide-react'
+import { DollarSign, Filter, Map, MapPin, Search } from 'lucide-react'
 import Features from '@/components/Features'
 import Footer from '@/components/Footer'
 import Hero from '@/components/Hero'
 import FeaturedStory from '@/components/FeaturedStory'
-import { generateMetadata } from '@/lib/metadata';
+// import { generateMetadata } from '@/lib/metadata';
 
 const formatRupiah = (value: number) => `Rp${new Intl.NumberFormat('id-ID').format(value)}`
 
@@ -69,9 +69,13 @@ export default function PackagesPage() {
       } else {
         alert('Gagal memuat paket');
       }
-    } catch (error: any) { 
+    } catch (error: unknown) {
       console.error('Error fetching packages:', error);
-      alert(`Gagal memuat paket: ${error.message || 'Terjadi kesalahan.'}`);
+      if (error instanceof Error) {
+        alert(`Gagal memuat paket: ${error.message}`);
+      } else {
+        alert('Terjadi kesalahan saat memuat paket.');
+      }
       setPackages([]);
     } finally {
       setLoading(false);

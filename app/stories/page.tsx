@@ -61,15 +61,17 @@ const StoriesPage = () => {
         <FilterStory />
 
         {/* Story Grid */}
-        {stories.length === 0 ? (<p className="text-gray-600">Belum ada cerita perjalanan.</p>) :
-          (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {stories.map((story, index) => (
-                <StoryCard key={story._id} story={story} />
-              ))}
-            </div>
-          )
-        }
+        {loading ? (
+          <p className="text-gray-500 text-center">Memuat cerita perjalanan...</p>
+        ) : stories.length === 0 ? (
+          <p className="text-gray-600">Belum ada cerita perjalanan.</p>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {stories.map((story) => (
+              <StoryCard key={story._id} story={story} />
+            ))}
+          </div>
+        )}
 
       </main>
     </div>

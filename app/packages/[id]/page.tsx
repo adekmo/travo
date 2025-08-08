@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { TravelPackage } from '@/types/travelPackage'
 import PackagesReviewList from '@/components/PackagesReviewList'
 import Link from 'next/link'
-import { Award, Calendar, CheckCircle, Clock, Gift, Heart, MapPin, Shield, Star, Users, Zap } from 'lucide-react'
+import { Award, Calendar, CheckCircle, Clock, Gift, MapPin, Shield, Star, Users, Zap } from 'lucide-react'
 import Image from 'next/image'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -21,7 +21,7 @@ const DetailPackagesPage = ({ params }: { params: Promise<Params> }) => {
     const [packageData, setPackageData] = useState<TravelPackage | null>(null)
     const [loading, setLoading] = useState(true)
     const [activeTab, setActiveTab] = useState("overview");
-    const router = useRouter()
+    // const router = useRouter()
 
     useEffect(() => {
         const fetchPackage = async () => {

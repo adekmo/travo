@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { TravelPackage } from '@/types/travelPackage';
-import { Edit, Hash, HashIcon, MapPin, PlusCircle, Star, Trash2 } from 'lucide-react';
+import { Edit, HashIcon, MapPin, PlusCircle, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 
 const SellerPackagePage = () => {

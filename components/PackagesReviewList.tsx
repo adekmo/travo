@@ -38,7 +38,7 @@ const PackagesReviewList = ({ packageId }: { packageId: string }) => {
           <li key={review._id} className="p-4 border rounded shadow-sm">
             <p className="font-semibold">{review.customer.name}</p>
             <p className="text-yellow-500">Rating: {review.rating} / 5</p>
-            {review.comment && <p className="italic">"{review.comment}"</p>}
+            {review.comment && <p className="italic">{review.comment}</p>}
             <p className="text-sm text-gray-500">
               {new Date(review.createdAt).toLocaleDateString('id-ID')}
             </p>

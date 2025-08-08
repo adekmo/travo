@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import { Message } from '@/types/message'
 
@@ -12,19 +12,19 @@ const ChatPage = () => {
     const chatEndRef = useRef<HTMLDivElement>(null)
     const [sending, setSending] = useState(false)
 
-    const fetchMessages = async () => {
-        const res = await fetch(`/api/message/${sellerId}`)
-        if (res.ok) {
+    const fetchMessages = useCallback(async () => {
+      const res = await fetch(`/api/message/${sellerId}`)
+      if (res.ok) {
         const data = await res.json()
         setMessages(data)
-        }
-    }
+      }
+    }, [sellerId])
 
     useEffect(() => {
       fetchMessages().then(() => {
         window.dispatchEvent(new Event("notificationsRead"))
       })
-    }, [])
+    }, [fetchMessages])
 
 
     useEffect(() => {

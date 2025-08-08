@@ -12,8 +12,8 @@ const CustomerNotificationPage  = () => {
             const res = await fetch('/api/bookings/customer/notifications')
             const data = await res.json()
             setNotifications(data)
-        } catch (err) {
-            console.error('Gagal mengambil notifikasi')
+        } catch (error) {
+            console.error('Gagal mengambil notifikasi', error)
         } finally {
             setLoading(false)
         }
@@ -32,8 +32,8 @@ const CustomerNotificationPage  = () => {
             fetchNotifications()
             window.dispatchEvent(new Event('notificationsRead')) // update navbar
         }
-        } catch (err) {
-        console.error('Gagal menandai notifikasi sebagai dibaca')
+        } catch (error) {
+        console.error('Gagal menandai notifikasi sebagai dibaca', error)
         }
     }
   return (
