@@ -40,7 +40,7 @@ const CreatePackagePage = () => {
         ]
     })
     const [loading, setLoading] = useState(false)
-    const [checking, setChecking] = useState(true)
+    // const [checking, setChecking] = useState(true)
     const [isVerified, setIsVerified] = useState(false)
     const [categories, setCategories] = useState<Category[]>([]);
 
@@ -69,7 +69,7 @@ const CreatePackagePage = () => {
       // Cek verifikasi dari session
       if (session?.user.role === 'seller') {
         setIsVerified(session.user.isVerified) // Dapatkan status verifikasi dari session
-        setChecking(false)
+        // setChecking(false)
       } else {
         router.push('/dashboard/seller/packages') // Jika bukan seller, redirect
       }

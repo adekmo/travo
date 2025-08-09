@@ -1,6 +1,6 @@
 'use client'
 
-import { Stat } from "@/types/stat";
+// import { Stat } from "@/types/stat";
 import { CheckCheck, CheckCircle, DollarSign, Package, Star, ViewIcon, Watch } from "lucide-react";
 import { useEffect, useState } from "react";
 

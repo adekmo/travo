@@ -9,7 +9,7 @@ if (!process.env.MONGODB_URI) {
 }
 
 // Tambahkan properti global dengan tipe aman
-let globalWithMongo = global as typeof globalThis & {
+const globalWithMongo = global as typeof globalThis & {
   _mongoClientPromise?: Promise<MongoClient>;
 };
 

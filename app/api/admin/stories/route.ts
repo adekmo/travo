@@ -1,5 +1,5 @@
 // app/api/admin/stories/route.ts
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import TravelStory from "@/models/TravelStory";
 import Comment from "@/models/Comment";

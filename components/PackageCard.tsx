@@ -2,16 +2,16 @@
 
 import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+// import { useRouter } from "next/navigation"
 
 import { TravelPackage } from '@/types/travelPackage'
 import Link from 'next/link'
-import { ArrowRight, Badge, Calendar, Clock, MapPin, Star, Tag, Users } from "lucide-react"
+import { ArrowRight, Calendar, Clock, MapPin, Star, Tag, Users } from "lucide-react"
 import Image from "next/image"
 
 const PackageCard = ({ pkg }: { pkg: TravelPackage }) => {
-  const { data: session, status } = useSession()
-  const router = useRouter()
+  const { data: session } = useSession()
+  // const router = useRouter()
 
   const [isWishlisted, setIsWishlisted] = useState(false)
   const [loading, setLoading] = useState(false)

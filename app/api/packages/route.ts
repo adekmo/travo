@@ -1,6 +1,8 @@
 import { connectDB } from '@/lib/mongodb'
 import Review from '@/models/Review'
 import TravelPackage from '@/models/TravelPackage'
+import { TravelPackage as ITravelPackage  } from '@/types/travelPackage'
+import { FilterQuery } from 'mongoose'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
@@ -16,11 +18,11 @@ export async function GET(req: NextRequest) {
     const sort = searchParams.get('sort') || ''
     const category = searchParams.get("category");
 
-    const query: Record<string, any> = {
-        title: { $regex: search, $options: 'i' },
-        location: { $regex: location, $options: 'i' },
-        price: { $gte: minPrice, $lte: maxPrice },
-    }
+    const query: FilterQuery<ITravelPackage > = {
+      title: { $regex: search, $options: 'i' },
+      location: { $regex: location, $options: 'i' },
+      price: { $gte: minPrice, $lte: maxPrice },
+    };
 
     if (category) {
     query.category = category;
