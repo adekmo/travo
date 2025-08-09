@@ -22,7 +22,8 @@ const PackageCard = ({ pkg }: { pkg: TravelPackage }) => {
           const res = await fetch('/api/wishlist')
           const data = await res.json()
           if (Array.isArray(data)) {
-            const exists = data.some((item: any) => item._id === pkg._id)
+            // const exists = data.some((item: any) => item._id === pkg._id)
+            const exists = data.some((item: { _id: string }) => item._id === pkg._id)
             setIsWishlisted(exists)
           } else {
             console.warn("Wishlist response is not an array:", data)
@@ -48,7 +49,7 @@ const PackageCard = ({ pkg }: { pkg: TravelPackage }) => {
         body: JSON.stringify({ packageId: pkg._id }),
       })
 
-      const data = await res.json()
+      await res.json()
       setIsWishlisted((prev) => !prev)
     } catch (err) {
       console.error(err)
