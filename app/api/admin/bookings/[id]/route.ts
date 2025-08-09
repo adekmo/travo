@@ -1,30 +1,38 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { connectDB } from "@/lib/mongodb";
-import Booking from "@/models/Booking";
+import { NextResponse } from 'next/server';
+import { connectDB } from '@/lib/mongodb';
+import Booking from '@/models/Booking';
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+// Handler DELETE untuk menghapus booking berdasarkan ID
+export async function DELETE(
+  req: Request,
+  context: { params: { id: string } }
+) {
   try {
     await connectDB();
-    const session = await getServerSession(authOptions);
 
-    if (!session || session.user.role !== "admin") {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    const { id } = context.params;
+
+    // Cek apakah booking ada
+    const booking = await Booking.findById(id);
+    if (!booking) {
+      return NextResponse.json(
+        { success: false, message: 'Booking not found' },
+        { status: 404 }
+      );
     }
 
-    // const booking = await Booking.findById(params.id);
-    const deleteBooking = await Booking.findByIdAndDelete(params.id);
+    // Hapus booking
+    await Booking.findByIdAndDelete(id);
 
-    if (!deleteBooking) {
-      return NextResponse.json({ message: "Booking not found" }, { status: 404 });
-    }
-
-    // await Booking.findByIdAndDelete(params.id);
-
-    return NextResponse.json({ message: "Booking deleted successfully" });
+    return NextResponse.json(
+      { success: true, message: 'Booking deleted successfully' },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error("Delete Booking Error:", error);
-    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+    console.error('Error deleting booking:', error);
+    return NextResponse.json(
+      { success: false, message: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }
