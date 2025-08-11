@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import TravelStory from "@/models/TravelStory";
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -13,7 +13,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const story = await TravelStory.findById(params.id);
+    const { id } = await params;
+    const story = await TravelStory.findById(id);
     if (!story) {
       return NextResponse.json({ message: "Story not found" }, { status: 404 });
     }

@@ -6,7 +6,7 @@ import { authOptions } from "@/lib/auth";
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await connectDB();
@@ -17,7 +17,8 @@ export async function PATCH(
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const story = await TravelStory.findById(params.id);
+    const { id } = await params;
+    const story = await TravelStory.findById(id);
     if (!story) {
       return NextResponse.json({ message: "Story not found" }, { status: 404 });
     }

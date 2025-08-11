@@ -3,11 +3,12 @@ import { connectDB } from "@/lib/mongodb";
 import TravelPackage from "@/models/TravelPackage";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
 
   try {
-    const travelPackage = await TravelPackage.findById(params.id)
+    const { id } = await params;
+    const travelPackage = await TravelPackage.findById(id)
       .populate('seller', 'name')
       .populate('category', 'name');
 

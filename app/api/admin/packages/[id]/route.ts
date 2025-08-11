@@ -4,7 +4,7 @@ import { authOptions } from '@/lib/auth';
 import { connectDB } from '@/lib/mongodb';
 import TravelPackage from '@/models/TravelPackage';
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
 
@@ -14,7 +14,15 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       return NextResponse.json({ message: 'Unauthorized'}, { status: 401});
     }
 
-    const deleteDocument = await TravelPackage.findByIdAndDelete(params.id);
+    const { id } = await params;
+
+    if (!id) {
+      return NextResponse.json(
+        { success: false, message: 'Missing pakcage id' },
+        { status: 400 }
+      );
+    }
+    const deleteDocument = await TravelPackage.findByIdAndDelete(id);
 
     if(!deleteDocument){
       return NextResponse.json({ message: 'Document Not Found' }, { status: 404 })

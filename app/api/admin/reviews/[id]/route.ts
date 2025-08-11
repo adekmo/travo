@@ -2,11 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { connectDB } from '@/lib/mongodb'
 import Review from '@/models/Review'
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB()
     const body = await req.json()
-    const updated = await Review.findByIdAndUpdate(params.id, { hidden: body.hidden }, { new: true })
+    const { id } = await params;
+    const updated = await Review.findByIdAndUpdate(id, { hidden: body.hidden }, { new: true })
 
     if (!updated) {
       return NextResponse.json({ message: 'Review tidak ditemukan' }, { status: 404 })
@@ -19,10 +20,11 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB()
-    const deleted = await Review.findByIdAndDelete(params.id)
+    const { id } = await params;
+    const deleted = await Review.findByIdAndDelete(id)
 
     if (!deleted) {
       return NextResponse.json({ message: 'Review tidak ditemukan' }, { status: 404 })

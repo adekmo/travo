@@ -4,10 +4,11 @@ import { authOptions } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 import Comment from "@/models/Comment";
 
-export async function GET(_: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
-    const comments = await Comment.find({ storyId: params.id })
+    const { id } = await params;
+    const comments = await Comment.find({ storyId: id })
       .populate("userId", "name avatar")
       .sort({ createdAt: -1 });
 
@@ -18,7 +19,7 @@ export async function GET(_: NextRequest, { params }: { params: { id: string } }
   }
 }
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -31,8 +32,9 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       return NextResponse.json({ message: "Komentar tidak boleh kosong" }, { status: 400 });
     }
 
+    const { id } = await params;
     const newComment = await Comment.create({
-      storyId: params.id,
+      storyId: id,
       userId: session.user.id,
       content,
     });

@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 
-export async function POST(req: NextRequest, { params }: { params: { customerId: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ customerId: string }> }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -17,7 +17,8 @@ export async function POST(req: NextRequest, { params }: { params: { customerId:
     }
 
     const sellerId = new mongoose.Types.ObjectId(session.user.id);
-    const customerId = new mongoose.Types.ObjectId(params.customerId);
+    const { customerId } = await params;
+    // const customerId = new mongoose.Types.ObjectId(params.customerId);
     await Message.updateMany(
       { senderId: customerId, receiverId: sellerId, isRead: false },
       { $set: { isRead: true } }

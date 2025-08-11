@@ -6,7 +6,7 @@ import { connectDB } from "@/lib/mongodb"
 import Notification from "@/models/Notification"
 // import TravelPackage from '@/models/TravelPackage'
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
      await connectDB()
      const session = await getServerSession(authOptions)
@@ -20,8 +20,9 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       return NextResponse.json({ message: "Invalid status" }, { status: 400 })
     }
 
+    const { id } = await params;
     const booking = await Booking.findByIdAndUpdate(
-      params.id,
+      id,
       { status },
       { new: true }
     )
@@ -30,7 +31,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       return NextResponse.json({ message: "Booking not found" }, { status: 404 })
     }
 
-    const updatedBooking = await Booking.findById(params.id).populate('packageId')
+    const updatedBooking = await Booking.findById(id).populate('packageId')
 
     await Notification.create({
       userId: updatedBooking.customerId, // ✅ untuk customer
@@ -54,7 +55,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 }
 
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -63,7 +64,8 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const booking = await Booking.findById(params.id);
+    const { id } = await params;
+    const booking = await Booking.findById(id);
 
     if (!booking) {
       return NextResponse.json({ message: "Booking not found" }, { status: 404 });
@@ -77,7 +79,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       return NextResponse.json({ message: "Booking cannot be cancelled" }, { status: 400 });
     }
 
-    await Booking.findByIdAndDelete(params.id);
+    await Booking.findByIdAndDelete(id);
 
     return NextResponse.json({ message: "Booking cancelled successfully" });
   } catch (error) {

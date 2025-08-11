@@ -10,7 +10,7 @@ import { TravelPackage as TravelPackageType } from "@/types/travelPackage";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectDB();
   const session = await getServerSession(authOptions);
@@ -18,8 +18,9 @@ export async function GET(
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
+  const { id } = await params;
   const travelPackage = await TravelPackage.findOne({
-    _id: params.id,
+    _id: id,
     seller: session.user.id,
   });
 
@@ -30,7 +31,7 @@ export async function GET(
   return NextResponse.json(travelPackage);
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -38,6 +39,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
+    const { id } = await params;
     const body = await req.json();
     const { category, ...updateData } = body;
 
@@ -83,7 +85,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
     // ✅ Update data di database
     const updated = await TravelPackage.findOneAndUpdate(
-      { _id: params.id, seller: session.user.id },
+      { _id: id, seller: session.user.id },
       updateFields,
       { new: true }
     );
@@ -123,7 +125,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectDB();
   const session = await getServerSession(authOptions);
@@ -131,8 +133,9 @@ export async function DELETE(
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
+  const { id } = await params;
   const existingPackage = await TravelPackage.findOne({
-    _id: params.id,
+    _id: id,
     seller: session.user.id,
   });
 
@@ -140,7 +143,7 @@ export async function DELETE(
     return NextResponse.json({ message: "Not found or not yours" }, { status: 404 });
   }
 
-  await TravelPackage.findOneAndDelete({ _id: params.id, seller: session.user.id });
+  await TravelPackage.findOneAndDelete({ _id: id, seller: session.user.id });
 
   await ActivityLog.create({
     seller: session.user.id,

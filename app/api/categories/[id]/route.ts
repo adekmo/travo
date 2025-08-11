@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { connectDB } from "@/lib/mongodb";
 import Category from "@/models/Category";
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -13,6 +13,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
+    const { id } = await params;
     const { name, description } = await req.json();
 
     if (name === undefined || name === null || name.trim() === '') {
@@ -20,14 +21,14 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     }
 
     if (name) { // Hanya cek duplikasi jika nama diberikan
-        const existingWithSameName = await Category.findOne({ name, _id: { $ne: params.id } });
+        const existingWithSameName = await Category.findOne({ name, _id: { $ne: id } });
         if (existingWithSameName) {
             return NextResponse.json({ message: "Nama kategori sudah ada untuk kategori lain" }, { status: 400 });
         }
     }
 
     const updated = await Category.findByIdAndUpdate(
-        params.id,
+        id,
         { name, description },
         { new: true }
     );
@@ -43,7 +44,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -52,7 +53,8 @@ export async function DELETE(_req: NextRequest, { params }: { params: { id: stri
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const deleted = await Category.findByIdAndDelete(params.id);
+    const { id } = await params;
+    const deleted = await Category.findByIdAndDelete(id);
 
     if (!deleted) {
         return NextResponse.json({ message: "Kategori tidak ditemukan" }, { status: 404 });

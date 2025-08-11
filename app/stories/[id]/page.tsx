@@ -14,9 +14,9 @@ import BackButton from "@/components/BackButton"
 import LikeButton from "@/components/LikeButton"
 import ShareButton from "@/components/ShareButton"
 
-const getStory = async (id: string) => {
+const getStory = async (storyId: string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/stories/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/stories/${storyId}`, {
       cache: "no-store",
     })
     if (!res.ok) return null
@@ -26,8 +26,9 @@ const getStory = async (id: string) => {
   }
 }
 
-const DetailStory = async ({ params }: { params: { id: string } }) => {
-  const story = await getStory(params.id)
+const DetailStory = async ({ params }: { params: Promise<{ storyId: string }> }) => {
+  const { storyId } = await params;
+  const story = await getStory(storyId)
   
   if (!story) return notFound()
   return (

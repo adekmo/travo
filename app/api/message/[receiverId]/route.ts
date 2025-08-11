@@ -4,7 +4,7 @@ import Message from "@/models/Message";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, { params }: { params: { receiverId: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ receiverId: string }> }) {
   try {
     await connectDB();
     const session = await getServerSession(authOptions);
@@ -13,8 +13,9 @@ export async function GET(req: NextRequest, { params }: { params: { receiverId: 
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
+    const { receiverId } = await params;
     const userId = session.user.id;
-    const receiverId = params.receiverId;
+    // const receiverId = receiverId;
 
     await Message.updateMany(
       {

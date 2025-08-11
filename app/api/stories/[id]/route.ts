@@ -4,10 +4,11 @@ import TravelStory from "@/models/TravelStory"
 // import TravelPackage from "@/models/TravelPackage"
 import { NextRequest, NextResponse } from "next/server"
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB()
-    const story = await TravelStory.findById(params.id)
+    const { id } = await params;
+    const story = await TravelStory.findById(id)
       .populate("userId", "name image avatar like")
       .populate("packageId", "title location")
 

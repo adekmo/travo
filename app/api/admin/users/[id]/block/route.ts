@@ -3,11 +3,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectDB } from '@/lib/mongodb';
 import User from '@/models/User';
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     await connectDB();
 
-    const userId = params.id;
+    const userId = await params;
     const { isBlocked } = await req.json();
 
     const updatedUser = await User.findByIdAndUpdate(

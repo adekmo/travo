@@ -1,18 +1,24 @@
 import { NextResponse } from 'next/server';
-import { connectDB } from '@/lib/mongodb';
+import {connectDB} from '@/lib/mongodb';
 import Booking from '@/models/Booking';
 
-// Handler DELETE untuk menghapus booking berdasarkan ID
 export async function DELETE(
-  req: Request,
-  context: { params: { id: string } }
+  request: Request,
+  { params }: { params: Promise<{ id: string }> } // <--- penting: Promise<{ id: string }>
 ) {
   try {
     await connectDB();
 
-    const { id } = context.params;
+    // params is a Promise in Next.js 15+, so await it
+    const { id } = await params;
 
-    // Cek apakah booking ada
+    if (!id) {
+      return NextResponse.json(
+        { success: false, message: 'Missing booking id' },
+        { status: 400 }
+      );
+    }
+
     const booking = await Booking.findById(id);
     if (!booking) {
       return NextResponse.json(
@@ -21,7 +27,6 @@ export async function DELETE(
       );
     }
 
-    // Hapus booking
     await Booking.findByIdAndDelete(id);
 
     return NextResponse.json(
