@@ -2,7 +2,7 @@
 import React from "react"
 import { notFound } from "next/navigation"
 import { format } from "date-fns"
-import id from "date-fns/locale/id"
+import { id as localeId} from "date-fns/locale"
 import CommentSection from "@/components/CommentSection"
 import Link from "next/link"
 import { Button } from "@/components/ui/Button"
@@ -14,9 +14,9 @@ import BackButton from "@/components/BackButton"
 import LikeButton from "@/components/LikeButton"
 import ShareButton from "@/components/ShareButton"
 
-const getStory = async (storyId: string) => {
+const getStory = async (id: string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/stories/${storyId}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/stories/${id}`, {
       cache: "no-store",
     })
     if (!res.ok) return null
@@ -26,9 +26,9 @@ const getStory = async (storyId: string) => {
   }
 }
 
-const DetailStory = async ({ params }: { params: Promise<{ storyId: string }> }) => {
-  const { storyId } = await params;
-  const story = await getStory(storyId)
+const DetailStory = async ({ params }: { params: { id: string } }) => {
+  const { id } = params;
+  const story = await getStory(id)
   
   if (!story) return notFound()
   return (
@@ -85,7 +85,7 @@ const DetailStory = async ({ params }: { params: Promise<{ storyId: string }> })
                   <div className="flex items-center gap-4 text-sm text-gray-500">
                     <div className="flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
-                      {format(new Date(story.createdAt), "dd MMMM yyyy", { locale: id })}
+                      {format(new Date(story.createdAt), "dd MMMM yyyy", { locale: localeId })}
                     </div>
                     <div className="flex items-center gap-1">
                       <Eye className="h-3 w-3" />
