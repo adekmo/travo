@@ -2,7 +2,7 @@
 import React from "react"
 import { notFound } from "next/navigation"
 import { format } from "date-fns"
-import { id as localeId} from "date-fns/locale"
+import {id as localeId} from "date-fns/locale"
 import CommentSection from "@/components/CommentSection"
 import Link from "next/link"
 import { Button } from "@/components/ui/Button"
@@ -13,12 +13,6 @@ import { Card, CardContent } from "@/components/ui/Card"
 import BackButton from "@/components/BackButton"
 import LikeButton from "@/components/LikeButton"
 import ShareButton from "@/components/ShareButton"
-
-interface StoryPageProps {
-  params: {
-    id: string
-  }
-}
 
 const getStory = async (id: string) => {
   try {
@@ -32,8 +26,8 @@ const getStory = async (id: string) => {
   }
 }
 
-const DetailStory = async ({ params }: StoryPageProps) => {
-  const { id } = params;
+const DetailStory = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
   const story = await getStory(id)
   
   if (!story) return notFound()
